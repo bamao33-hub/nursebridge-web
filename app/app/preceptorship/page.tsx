@@ -134,3 +134,20 @@ const buttonStyle: React.CSSProperties = {
   fontWeight: 700,
   cursor: "pointer",
 };
+<div style={{ marginTop: 18 }}>
+  <a
+    href="/preceptorship"
+    style={{
+      display: "inline-block",
+      padding: "12px 16px",
+      borderRadius: 12,
+      background: "white",
+      color: "black",
+      fontWeight: 700,
+      textDecoration: "none",
+      border: "1px solid #444",
+    }}
+  >
+    Apply for Preceptorship
+  </a>
+</div>
