@@ -1,0 +1,178 @@
+"use client";
+
+import type { CSSProperties, FormEvent } from "react";
+
+export default function PreceptorshipPage() {
+  const pageStyle: CSSProperties = {
+    fontFamily: "Arial, sans-serif",
+    padding: "40px",
+    maxWidth: "900px",
+    margin: "0 auto",
+    color: "white",
+  };
+
+  const cardStyle: CSSProperties = {
+    border: "1px solid #444",
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 24,
+    background: "black",
+  };
+
+  const inputStyle: CSSProperties = {
+    width: "100%",
+    marginTop: 6,
+    padding: "10px 12px",
+    borderRadius: 10,
+    border: "1px solid #444",
+    background: "black",
+    color: "white",
+  };
+
+  const textareaStyle: CSSProperties = {
+    ...inputStyle,
+    minHeight: 110,
+  };
+
+  const buttonStyle: CSSProperties = {
+    marginTop: 16,
+    padding: "12px 16px",
+    borderRadius: 12,
+    border: "1px solid #444",
+    background: "white",
+    color: "black",
+    fontWeight: 700,
+    cursor: "pointer",
+  };
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    const fullName = String(data.get("fullName") || "");
+    const email = String(data.get("email") || "");
+    const phone = String(data.get("phone") || "");
+    const school = String(data.get("school") || "");
+    const program = String(data.get("program") || "");
+    const startDate = String(data.get("startDate") || "");
+    const hours = String(data.get("hours") || "");
+    const availability = String(data.get("availability") || "");
+    const goals = String(data.get("goals") || "");
+
+    const subject = encodeURIComponent(`Preceptorship Inquiry — ${fullName}`);
+    const body = encodeURIComponent(
+      `Preceptorship Inquiry\n\n` +
+        `Name: ${fullName}\n` +
+        `Email: ${email}\n` +
+        `Phone: ${phone}\n` +
+        `School: ${school}\n` +
+        `Program/Track: ${program}\n` +
+        `Target start date: ${startDate}\n` +
+        `Required hours: ${hours}\n` +
+        `Availability: ${availability}\n\n` +
+        `Goals:\n${goals}\n`
+    );
+
+    window.location.href = `mailto:info@nursebridgeconsulting.com?subject=${subject}&body=${body}`;
+  }
+
+  return (
+    <main style={pageStyle}>
+      <h1 style={{ fontSize: 40, marginBottom: 10 }}>Preceptorship Inquiry</h1>
+      <p style={{ color: "#9ca3af", marginTop: 0 }}>
+        For MSN/DNP Nursing Informatics students seeking a structured preceptorship experience.
+      </p>
+
+      <div style={cardStyle}>
+        <h2 style={{ marginTop: 0 }}>Student Details</h2>
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            Full name
+            <input name="fullName" required style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Email
+            <input name="email" type="email" required style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Phone
+            <input name="phone" style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            School
+            <input name="school" required style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Program/Track (e.g., MSN Informatics, DNP Informatics)
+            <input name="program" required style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Target start date
+            <input name="startDate" placeholder="MM/DD/YYYY" style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Required hours
+            <input name="hours" placeholder="e.g., 120" style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Availability (days/times)
+            <input name="availability" placeholder="e.g., Mon/Wed evenings" style={inputStyle} />
+          </label>
+
+          <div style={{ height: 12 }} />
+
+          <label>
+            Goals / What you want to learn
+            <textarea name="goals" style={textareaStyle} />
+          </label>
+
+          <button type="submit" style={buttonStyle}>
+            Email NurseBridge Consulting
+          </button>
+        </form>
+      </div>
+
+      <div style={{ marginTop: 18 }}>
+        <a
+          href="/"
+          style={{
+            display: "inline-block",
+            padding: "12px 16px",
+            borderRadius: 12,
+            background: "black",
+            color: "white",
+            fontWeight: 700,
+            textDecoration: "none",
+            border: "1px solid #444",
+          }}
+        >
+          ← Back to Home
+        </a>
+      </div>
+    </main>
+  );
+}
