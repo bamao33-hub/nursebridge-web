@@ -1,320 +1,416 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useMemo, useState } from "react";
 
 export default function PreceptorshipPage() {
-  const [submitted, setSubmitted] = useState(false);
+  // --- theme (matches your teal + light home page) ---
+  const COLORS = {
+    teal: "#0f766e",
+    tealDark: "#0b5f58",
+    bg: "#f7faf9",
+    card: "#ffffff",
+    border: "#dbe7e5",
+    text: "#0f172a",
+    muted: "#475569",
+    soft: "#ecf7f5",
+  };
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    school: "",
+    program: "",
+    track: "",
+    startDate: "",
+    hours: "",
+    timeZone: "",
+    preferred: "Email",
+    availability: "",
+    goals: "",
+  });
 
-    const form = e.currentTarget;
-    const data = new FormData(form);
+  const update = (k: keyof typeof form) => (e: any) =>
+    setForm((p) => ({ ...p, [k]: e.target.value }));
 
-    const fullName = String(data.get("fullName") || "");
-    const email = String(data.get("email") || "");
-    const phone = String(data.get("phone") || "");
-    const school = String(data.get("school") || "");
-    const program = String(data.get("program") || "");
-    const track = String(data.get("track") || "");
-    const startDate = String(data.get("startDate") || "");
-    const hours = String(data.get("hours") || "");
-    const availability = String(data.get("availability") || "");
-    const goals = String(data.get("goals") || "");
-    const timezone = String(data.get("timezone") || "");
-    const preferredContact = String(data.get("preferredContact") || "");
+  const subject = useMemo(() => {
+    const who = form.fullName?.trim() ? ` - ${form.fullName.trim()}` : "";
+    return `Preceptorship Inquiry${who}`;
+  }, [form.fullName]);
 
-    const subject = encodeURIComponent(`Preceptorship Inquiry — ${fullName}`);
-    const body = encodeURIComponent(
-      [
-        "Preceptorship Inquiry",
-        "",
-        `Name: ${fullName}`,
-        `Email: ${email}`,
-        `Phone: ${phone}`,
-        `School: ${school}`,
-        `Program: ${program}`,
-        `Track/Focus: ${track}`,
-        `Target start date: ${startDate}`,
-        `Hours needed: ${hours}`,
-        `Availability: ${availability}`,
-        `Time zone: ${timezone}`,
-        `Preferred contact method: ${preferredContact}`,
-        "",
-        "Goals / What you need help with:",
-        goals,
-      ].join("\n")
-    );
+  const body = useMemo(() => {
+    return [
+      "Hello NurseBridge Consulting,",
+      "",
+      "I am requesting a Nursing Informatics preceptorship.",
+      "",
+      `Full name: ${form.fullName}`,
+      `Email: ${form.email}`,
+      `Phone: ${form.phone || "N/A"}`,
+      "",
+      `School: ${form.school}`,
+      `Program: ${form.program}`,
+      `Track/Focus: ${form.track}`,
+      "",
+      `Target start date: ${form.startDate || "N/A"}`,
+      `Hours needed: ${form.hours}`,
+      `Time zone: ${form.timeZone || "N/A"}`,
+      `Preferred contact: ${form.preferred}`,
+      "",
+      `Availability: ${form.availability}`,
+      "",
+      "Goals / what I want from the preceptorship:",
+      form.goals,
+      "",
+      "Thank you,",
+      form.fullName || "",
+    ].join("\n");
+  }, [form]);
 
-    window.location.href = `mailto:info@nursebridgeconsulting.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
-    form.reset();
-  }
+  const mailtoHref = useMemo(() => {
+    const to = "info@nursebridgeconsulting.com";
+    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }, [subject, body]);
 
-  const page = {
-    maxWidth: 980,
-    margin: "0 auto",
-    padding: "56px 20px 72px",
-    fontFamily:
-      'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"',
-    color: "white",
-  } as const;
-
-  const muted = { color: "#9ca3af" } as const;
-
-  const card = {
-    border: "1px solid #2a2a2a",
-    borderRadius: 16,
-    background: "rgba(0,0,0,0.35)",
-    padding: 20,
-  } as const;
-
-  const label = { display: "block", fontSize: 14, marginBottom: 6 } as const;
-
-  const input = {
-    width: "100%",
-    padding: "12px 12px",
-    borderRadius: 12,
-    border: "1px solid #2a2a2a",
-    background: "black",
-    color: "white",
-    outline: "none",
-  } as const;
-
-  const textarea = { ...input, minHeight: 110, resize: "vertical" } as const;
-
-  const button = {
-    display: "inline-block",
-    padding: "12px 16px",
-    borderRadius: 12,
-    border: "1px solid #2a2a2a",
-    background: "white",
-    color: "black",
-    fontWeight: 700,
-    cursor: "pointer",
-  } as const;
-
-  const grid = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-    gap: 14,
-    marginTop: 14,
-  } as const;
-
-  const helper = { fontSize: 13, color: "#9ca3af", marginTop: 6 } as const;
+  const canSubmit =
+    form.fullName.trim() &&
+    form.email.trim() &&
+    form.school.trim() &&
+    form.program.trim() &&
+    form.track.trim() &&
+    form.hours.trim() &&
+    form.availability.trim() &&
+    form.goals.trim();
 
   return (
-    <main style={page}>
-      <h1 style={{ fontSize: 44, lineHeight: 1.1, margin: 0 }}>
-        Preceptorship Inquiry
-      </h1>
-      <p style={{ ...muted, marginTop: 10, maxWidth: 820 }}>
-        For MSN/DNP Nursing Informatics students seeking a structured preceptorship experience.
-        Complete the form below and it will open an email pre-filled to{" "}
-        <strong>info@nursebridgeconsulting.com</strong>.
-      </p>
-
-      <div style={{ ...card, marginTop: 22 }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 16 }}>Contact</div>
-            <div style={muted}>Email: info@nursebridgeconsulting.com</div>
-          </div>
-          {submitted ? (
-            <div
+    <main
+      style={{
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: COLORS.bg,
+        color: COLORS.text,
+        minHeight: "100vh",
+      }}
+    >
+      {/* Top nav */}
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 20,
+          backgroundColor: "rgba(247, 250, 249, 0.92)",
+          backdropFilter: "blur(8px)",
+          borderBottom: `1px solid ${COLORS.border}`,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            padding: "14px 18px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+          }}
+        >
+          <Link
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              textDecoration: "none",
+              color: COLORS.text,
+            }}
+          >
+            <Image
+              src="/logo.jpeg"
+              alt="NurseBridge Consulting LLC"
+              width={190}
+              height={44}
               style={{
-                marginLeft: "auto",
-                padding: "10px 12px",
-                borderRadius: 12,
-                border: "1px solid #2a2a2a",
-                background: "rgba(34,197,94,0.12)",
-                color: "white",
-                fontSize: 13,
+                height: 44,
+                width: "auto",
+                borderRadius: 8,
+                background: "white",
               }}
+              priority
+            />
+            <div style={{ lineHeight: 1.1 }}>
+              <div style={{ fontWeight: 800 }}>NurseBridge Consulting LLC</div>
+              <div style={{ fontSize: 12, color: COLORS.muted }}>
+                Clinical Informatics • EHR Optimization • Nursing Preceptorship
+              </div>
+            </div>
+          </Link>
+
+          <nav style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+            <Link
+              href="/#services"
+              style={{ textDecoration: "none", color: COLORS.muted, fontSize: 14, fontWeight: 700 }}
             >
-              Draft email opened. If it didn’t open, scroll down and click “Email NurseBridge”.
-            </div>
-          ) : null}
+              Services
+            </Link>
+            <Link
+              href="/#about"
+              style={{ textDecoration: "none", color: COLORS.muted, fontSize: 14, fontWeight: 700 }}
+            >
+              About
+            </Link>
+            <Link
+              href="/#contact"
+              style={{ textDecoration: "none", color: COLORS.muted, fontSize: 14, fontWeight: 700 }}
+            >
+              Contact
+            </Link>
+          </nav>
         </div>
+      </header>
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 18 }}>
-          <div style={grid}>
-            <div>
-              <label style={label} htmlFor="fullName">
-                Full name <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
+      {/* Page body */}
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 18px 40px" }}>
+        {/* Hero */}
+        <section
+          style={{
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 18,
+            background: COLORS.soft,
+            padding: "22px 22px 18px",
+          }}
+        >
+          <div
+            style={{
+              display: "inline-flex",
+              gap: 8,
+              alignItems: "center",
+              padding: "6px 10px",
+              borderRadius: 999,
+              border: `1px solid ${COLORS.border}`,
+              backgroundColor: "#ffffff",
+              color: COLORS.teal,
+              fontWeight: 800,
+              fontSize: 12,
+              marginBottom: 12,
+            }}
+          >
+            Preceptorship • MSN/DNP Nursing Informatics
+          </div>
+
+          <h1 style={{ fontSize: 40, margin: "0 0 10px 0", lineHeight: 1.05 }}>
+            Preceptorship Inquiry
+          </h1>
+
+          <p style={{ margin: 0, color: COLORS.muted, lineHeight: 1.6, maxWidth: 900 }}>
+            Complete this short intake form. When you submit, it will open a pre-filled email to{" "}
+            <strong>info@nursebridgeconsulting.com</strong> so we can respond with next steps.
+          </p>
+        </section>
+
+        {/* Form card */}
+        <section
+          style={{
+            marginTop: 18,
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 18,
+            background: COLORS.card,
+            padding: 22,
+          }}
+        >
+          <div style={{ fontWeight: 900, marginBottom: 6, color: COLORS.teal }}>Contact</div>
+          <div style={{ color: COLORS.muted, marginBottom: 18 }}>
+            Email: <strong>info@nursebridgeconsulting.com</strong>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: 14,
+            }}
+          >
+            <Field label="Full name *">
               <input
-                id="fullName"
-                name="fullName"
-                required
-                style={input}
+                value={form.fullName}
+                onChange={update("fullName")}
                 placeholder="e.g., Jane Doe"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="email">
-                Email <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
+            <Field label="Email *">
               <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                style={input}
+                value={form.email}
+                onChange={update("email")}
                 placeholder="e.g., janedoe@email.com"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="phone">
-                Phone
-              </label>
+            <Field label="Phone">
               <input
-                id="phone"
-                name="phone"
-                style={input}
+                value={form.phone}
+                onChange={update("phone")}
                 placeholder="e.g., (555) 123-4567"
+                style={inputStyle(COLORS)}
               />
-              <div style={helper}>Optional, but helpful for scheduling.</div>
-            </div>
+              <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 6 }}>
+                Optional, but helpful for scheduling.
+              </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="school">
-                School <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
+            <Field label="School *">
               <input
-                id="school"
-                name="school"
-                required
-                style={input}
+                value={form.school}
+                onChange={update("school")}
                 placeholder="e.g., Walden University"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="program">
-                Program <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
-              <select id="program" name="program" required style={input} defaultValue="">
-                <option value="" disabled>
-                  Select…
-                </option>
+            <Field label="Program *">
+              <select value={form.program} onChange={update("program")} style={inputStyle(COLORS)}>
+                <option value="">Select…</option>
                 <option value="MSN">MSN</option>
                 <option value="DNP">DNP</option>
                 <option value="Other">Other</option>
               </select>
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="track">
-                Track/Focus <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
+            <Field label="Track/Focus *">
               <input
-                id="track"
-                name="track"
-                required
-                style={input}
+                value={form.track}
+                onChange={update("track")}
                 placeholder="e.g., Nursing Informatics"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="startDate">
-                Target start date
-              </label>
-              <input id="startDate" name="startDate" type="date" style={input} />
-            </div>
+            <Field label="Target start date">
+              <input value={form.startDate} onChange={update("startDate")} placeholder="mm/dd/yyyy" style={inputStyle(COLORS)} />
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="hours">
-                Hours needed <span style={{ color: "#fca5a5" }}>*</span>
-              </label>
+            <Field label="Hours needed *">
               <input
-                id="hours"
-                name="hours"
-                required
-                style={input}
+                value={form.hours}
+                onChange={update("hours")}
                 placeholder="e.g., 120 hours"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="timezone">
-                Time zone
-              </label>
+            <Field label="Time zone">
               <input
-                id="timezone"
-                name="timezone"
-                style={input}
+                value={form.timeZone}
+                onChange={update("timeZone")}
                 placeholder="e.g., Central (US)"
+                style={inputStyle(COLORS)}
               />
-            </div>
+            </Field>
 
-            <div>
-              <label style={label} htmlFor="preferredContact">
-                Preferred contact
-              </label>
-              <select
-                id="preferredContact"
-                name="preferredContact"
-                style={input}
-                defaultValue="Email"
-              >
-                <option value="Email">Email</option>
-                <option value="Phone">Phone</option>
-                <option value="Text">Text</option>
+            <Field label="Preferred contact">
+              <select value={form.preferred} onChange={update("preferred")} style={inputStyle(COLORS)}>
+                <option>Email</option>
+                <option>Phone</option>
+                <option>Either</option>
               </select>
-            </div>
+            </Field>
           </div>
 
           <div style={{ marginTop: 14 }}>
-            <label style={label} htmlFor="availability">
-              Availability <span style={{ color: "#fca5a5" }}>*</span>
-            </label>
-            <input
-              id="availability"
-              name="availability"
-              required
-              style={input}
-              placeholder="e.g., Weeknights after 6pm; Saturdays 10am–2pm"
-            />
+            <Field label="Availability *">
+              <input
+                value={form.availability}
+                onChange={update("availability")}
+                placeholder="e.g., Weeknights after 6pm; Saturdays 10am–2pm"
+                style={inputStyle(COLORS)}
+              />
+            </Field>
           </div>
 
           <div style={{ marginTop: 14 }}>
-            <label style={label} htmlFor="goals">
-              Goals / what you want from the preceptorship <span style={{ color: "#fca5a5" }}>*</span>
-            </label>
-            <textarea
-              id="goals"
-              name="goals"
-              required
-              style={textarea}
-              placeholder="Briefly describe your objectives, course requirements, and what you hope to learn (e.g., Epic workflow optimization, documentation standards, project work, career transition)."
-            />
+            <Field label="Goals / what you want from the preceptorship *">
+              <textarea
+                value={form.goals}
+                onChange={update("goals")}
+                placeholder="Briefly describe your objectives, course requirements, and what you hope to learn (e.g., Epic workflow optimization, documentation standards, project work, career transition)."
+                style={{ ...inputStyle(COLORS), minHeight: 130, resize: "vertical" }}
+              />
+            </Field>
           </div>
 
-          <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <button type="submit" style={button}>
-              Email NurseBridge
-            </button>
+          {/* Actions */}
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
             <a
-              href="mailto:info@nursebridgeconsulting.com"
+              href={mailtoHref}
               style={{
-                ...button,
-                background: "transparent",
+                display: "inline-block",
+                padding: "12px 16px",
+                borderRadius: 12,
+                backgroundColor: canSubmit ? COLORS.teal : "#94a3b8",
                 color: "white",
+                fontWeight: 900,
+                textDecoration: "none",
+                border: `1px solid ${COLORS.border}`,
+                pointerEvents: canSubmit ? "auto" : "none",
+              }}
+            >
+              Email NurseBridge
+            </a>
+
+            <a
+              href={mailtoHref}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: "inline-block",
+                padding: "12px 16px",
+                borderRadius: 12,
+                backgroundColor: "white",
+                color: COLORS.teal,
+                fontWeight: 900,
+                textDecoration: "none",
+                border: `1px solid ${COLORS.border}`,
               }}
             >
               Open Email App
             </a>
-          </div>
 
-          <div style={{ ...helper, marginTop: 10 }}>
-            Note: This form does not store your information on the website yet—it simply drafts an email for you to send.
+            {!canSubmit ? (
+              <div style={{ alignSelf: "center", color: COLORS.muted, fontSize: 13 }}>
+                Please complete the required fields (*) to enable the email button.
+              </div>
+            ) : null}
           </div>
-        </form>
+        </section>
+
+        <footer style={{ marginTop: 18, color: COLORS.muted, fontSize: 13 }}>
+          © 2026 NurseBridge Consulting LLC
+        </footer>
       </div>
     </main>
   );
+}
+
+function Field({ label, children }: { label: string; children: any }) {
+  return (
+    <label style={{ display: "block" }}>
+      <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 8 }}>{label}</div>
+      {children}
+    </label>
+  );
+}
+
+function inputStyle(COLORS: any) {
+  return {
+    width: "100%",
+    padding: "12px 12px",
+    borderRadius: 12,
+    border: `1px solid ${COLORS.border}`,
+    backgroundColor: "#ffffff",
+    color: COLORS.text,
+    outline: "none",
+    fontSize: 14,
+  } as const;
 }
