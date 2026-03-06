@@ -123,7 +123,7 @@ export default function Home() {
             NurseBridge Consulting • Texas-based • Remote-friendly
           </div>
 
-          <h1 style={{ fontSize: 48, margin: "0 0 10px 0", lineHeight: 1.05 }}>
+          <h1 style={{ fontSize: 40, margin: "0 0 10px 0", lineHeight: 1.1 }}>
             Clinical Informatics support that improves workflow—and builds careers.
           </h1>
 
