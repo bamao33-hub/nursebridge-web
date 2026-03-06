@@ -97,14 +97,119 @@ export default function Home() {
       {/* Page Container */}
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 20px 46px" }}>
         {/* Hero */}
-        <section
+       <section
+  style={{
+    border: `1px solid ${BORDER}`,
+    borderRadius: 18,
+    padding: "28px 26px",
+    background: SOFT,
+  }}
+>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1.4fr 1fr",
+      gap: "28px",
+      alignItems: "center",
+    }}
+  >
+
+    {/* LEFT SIDE */}
+    <div>
+
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "6px 10px",
+          borderRadius: 999,
+          backgroundColor: "rgba(15,118,110,0.10)",
+          color: TEAL_DARK,
+          fontSize: 12,
+          fontWeight: 700,
+          border: `1px solid rgba(15,118,110,0.18)`,
+          marginBottom: 14,
+        }}
+      >
+        NurseBridge Consulting • Texas-based • Remote-friendly
+      </div>
+
+      <h1 style={{ fontSize: 42, margin: "0 0 12px 0", lineHeight: 1.1 }}>
+        Clinical Informatics support that improves workflow—and builds careers.
+      </h1>
+
+      <p style={{ fontSize: 17, lineHeight: 1.7, color: MUTED, margin: 0 }}>
+        Founded by <strong>Dr. Bernadette Amao, DNP</strong>, NurseBridge Consulting helps clinicians and
+        healthcare organizations improve workflow efficiency, optimize Electronic Health Record systems,
+        and mentor nurses transitioning into clinical informatics.
+      </p>
+
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "18px" }}>
+        <Link
+          href="/preceptorship"
           style={{
-            border: `1px solid ${BORDER}`,
-            borderRadius: 18,
-            padding: "26px 24px",
-            background: SOFT,
+            display: "inline-block",
+            padding: "12px 16px",
+            borderRadius: "12px",
+            backgroundColor: TEAL,
+            color: "white",
+            fontWeight: 800,
+            textDecoration: "none",
+            border: `1px solid ${TEAL_DARK}`,
           }}
         >
+          Start Preceptorship Inquiry
+        </Link>
+
+        <a
+          href="#services"
+          style={{
+            display: "inline-block",
+            padding: "12px 16px",
+            borderRadius: "12px",
+            backgroundColor: "white",
+            color: TEXT,
+            fontWeight: 700,
+            textDecoration: "none",
+            border: `1px solid ${BORDER}`,
+          }}
+        >
+          Explore Services
+        </a>
+      </div>
+
+      <div style={{ marginTop: "14px", color: MUTED, fontSize: "13px" }}>
+        Typical requests: documentation efficiency, workflow redesign, build support, training, mentorship, and precepting.
+      </div>
+
+    </div>
+
+    {/* RIGHT SIDE */}
+    <div
+      style={{
+        border: `1px solid ${BORDER}`,
+        borderRadius: "14px",
+        padding: "18px",
+        background: "white",
+      }}
+    >
+      <div style={{ fontWeight: 800, marginBottom: 10 }}>
+        Why clinicians choose NurseBridge
+      </div>
+
+      <ul style={{ paddingLeft: 18, color: MUTED, lineHeight: 1.7, margin: 0 }}>
+        <li>DNP-prepared clinical informatics specialist</li>
+        <li>Epic-certified with 12+ years experience</li>
+        <li>Real hospital workflow optimization</li>
+        <li>Mentorship for nurses transitioning into informatics</li>
+        <li>Structured MSN/DNP preceptorship guidance</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+        
           <div
             style={{
               display: "inline-flex",
