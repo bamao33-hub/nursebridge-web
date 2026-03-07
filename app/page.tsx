@@ -205,6 +205,81 @@ export default function Home() {
     </div>
   </div>
 </section>
+        {/* Who We Serve */}
+<section style={{ paddingTop: 18, paddingBottom: 8 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+        Who we serve
+      </div>
+      <h2 style={{ margin: 0, fontSize: 28 }}>Built for clinicians, students, and healthcare teams</h2>
+      <p style={{ marginTop: 8, color: MUTED, lineHeight: 1.7, maxWidth: 850 }}>
+        NurseBridge Consulting supports healthcare professionals and organizations that want
+        smarter workflows, stronger documentation, and a clearer path into clinical informatics.
+      </p>
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: 16,
+      }}
+    >
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ marginTop: 0, marginBottom: 8 }}>Bedside clinicians</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          For nurses and clinicians seeking better documentation workflows, stronger efficiency,
+          and guidance on informatics-aligned practice.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ marginTop: 0, marginBottom: 8 }}>MSN/DNP informatics students</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          For graduate students seeking structured nursing informatics preceptorship,
+          real-world mentorship, and meaningful project-based learning.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ marginTop: 0, marginBottom: 8 }}>Healthcare organizations</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          For teams looking to improve EHR adoption, optimize workflows, and support
+          documentation practices that align with real clinical work.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
         {/* Services */}
         <section
           id="services"
