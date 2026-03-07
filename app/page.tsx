@@ -658,6 +658,19 @@ export default function Home() {
         <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
           Self-paced learning resources designed to help healthcare professionals pivot and grow.
         </p>
+<a
+  href="https://www.udemy.com/course/become-a-successful-ehr-consultant/?referralCode=FB961F9293A8FCC6FA7E"
+  target="_blank"
+  style={{
+    display: "inline-block",
+    marginTop: 10,
+    fontWeight: 700,
+    color: TEAL,
+    textDecoration: "none"
+  }}
+>
+  View Udemy Course →
+</a>
       </div>
 
       <div
