@@ -632,8 +632,6 @@ export default function Home() {
           </div>
         </section>
 
-  </section>
-
 <SectionDivider />
 
 {/* About the Founder */}
