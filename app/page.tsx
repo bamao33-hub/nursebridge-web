@@ -273,8 +273,6 @@ export default function Home() {
 <SectionDivider />
 
 {/* Who We Serve */}
-<section style={{ paddingTop: 18
-        {/* Who We Serve */}
 <section style={{ paddingTop: 18, paddingBottom: 8 }}>
   <div
     style={{
