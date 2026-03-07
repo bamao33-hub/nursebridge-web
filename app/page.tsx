@@ -150,6 +150,23 @@ export default function Home() {
                 healthcare organizations improve workflow efficiency, optimize Electronic Health Record systems,
                 and mentor nurses transitioning into clinical informatics.
               </p>
+              <div
+  style={{
+    marginTop: 14,
+    display: "inline-flex",
+    gap: 10,
+    flexWrap: "wrap",
+    fontSize: 13,
+    color: MUTED,
+    fontWeight: 700,
+  }}
+>
+  <span>Books</span>
+  <span>•</span>
+  <span>Courses</span>
+  <span>•</span>
+  <span>Consulting</span>
+</div>
 
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "18px" }}>
                 <Link
