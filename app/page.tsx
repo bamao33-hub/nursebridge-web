@@ -525,7 +525,90 @@ export default function Home() {
     </div>
   </div>
 </section>
-        {/* Simulation */}
+  <SectionDivider />
+
+{/* How the Preceptorship Works */}
+<section style={{ paddingTop: 18, paddingBottom: 8 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 700, fontSize: 13 }}>
+      Preceptorship Process
+    </div>
+
+    <h2 style={{ margin: "6px 0 10px 0" }}>
+      How the Informatics Preceptorship Works
+    </h2>
+
+    <p style={{ color: MUTED, marginBottom: 18 }}>
+      A structured mentorship designed for MSN/DNP students completing
+      clinical informatics practicum hours.
+    </p>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 16,
+      }}
+    >
+      {[
+        {
+          step: "1. Inquiry",
+          desc: "Submit the preceptorship inquiry form with program details and required practicum hours.",
+        },
+        {
+          step: "2. Alignment Call",
+          desc: "We review your program requirements, goals, and available project opportunities.",
+        },
+        {
+          step: "3. Structured Practicum",
+          desc: "Participate in guided informatics projects, workflow analysis, and mentorship sessions.",
+        },
+        {
+          step: "4. Evaluation & Completion",
+          desc: "Receive feedback, documentation support, and final practicum verification.",
+        },
+      ].map((s) => (
+        <div
+          key={s.step}
+          style={{
+            border: `1px solid ${BORDER}`,
+            borderRadius: 12,
+            padding: 14,
+          }}
+        >
+          <h3 style={{ margin: "0 0 6px 0" }}>{s.step}</h3>
+          <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>{s.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <div style={{ marginTop: 18 }}>
+      <Link
+        href="/preceptorship"
+        style={{
+          display: "inline-block",
+          padding: "12px 16px",
+          borderRadius: 12,
+          backgroundColor: TEAL,
+          color: "white",
+          fontWeight: 700,
+          textDecoration: "none",
+          border: `1px solid ${TEAL_DARK}`,
+        }}
+      >
+        Apply for Preceptorship
+      </Link>
+    </div>
+  </div>
+</section>      
+  {/* Simulation */}
         <section style={{ paddingTop: 18, paddingBottom: 12 }}>
           <div
             style={{
