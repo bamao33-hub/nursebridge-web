@@ -631,6 +631,19 @@ export default function Home() {
         <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
           Practical books on EHR efficiency, informatics, and career growth for clinicians.
         </p>
+<a
+  href="https://www.amazon.com/author/bernadetteamao"
+  target="_blank"
+  style={{
+    display: "inline-block",
+    marginTop: 10,
+    fontWeight: 700,
+    color: TEAL,
+    textDecoration: "none"
+  }}
+>
+  View Books on Amazon →
+</a>
       </div>
 
       <div
