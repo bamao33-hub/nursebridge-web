@@ -126,7 +126,7 @@ export default function PreceptorshipPage() {
             }}
           >
             <Image
-              src="/logo.jpeg"
+              src="/logo-icon.jpeg"
               alt="NurseBridge Consulting LLC"
               width={190}
               height={44}
