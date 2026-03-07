@@ -206,6 +206,22 @@ export default function PreceptorshipPage() {
             Complete this short intake form. When you submit, it will open a pre-filled email to{" "}
             <strong>info@nursebridgeconsulting.com</strong> so we can respond with next steps.
           </p>
+          <div
+  style={{
+    marginTop: 10,
+    display: "inline-flex",
+    gap: 8,
+    padding: "6px 10px",
+    borderRadius: 999,
+    backgroundColor: "rgba(15,118,110,0.10)",
+    color: COLORS.teal,
+    fontSize: 12,
+    fontWeight: 700,
+    border: `1px solid ${COLORS.border}`,
+  }}
+>
+  Graduate practicum inquiries • MSN/DNP nursing informatics
+</div>
         </section>
 
         {/* Form card */}
