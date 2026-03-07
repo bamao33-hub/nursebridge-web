@@ -216,6 +216,61 @@ export default function Home() {
 </section>
        </section>
 
+      {/* Proof Band */}
+<section style={{ paddingTop: 18, paddingBottom: 8 }}>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+      gap: 16,
+    }}
+  >
+    <div
+      style={{
+        border: `1px solid ${BORDER}`,
+        borderRadius: 16,
+        padding: 18,
+        backgroundColor: "white",
+      }}
+    >
+      <div style={{ fontSize: 28, fontWeight: 800, color: TEAL, marginBottom: 6 }}>13+ Years</div>
+      <div style={{ fontWeight: 700, marginBottom: 6 }}>Clinical Informatics Experience</div>
+      <div style={{ color: MUTED, lineHeight: 1.6 }}>
+        Real-world hospital systems support, workflow optimization, and documentation improvement.
+      </div>
+    </div>
+
+    <div
+      style={{
+        border: `1px solid ${BORDER}`,
+        borderRadius: 16,
+        padding: 18,
+        backgroundColor: "white",
+      }}
+    >
+      <div style={{ fontSize: 28, fontWeight: 800, color: TEAL, marginBottom: 6 }}>Epic-Certified</div>
+      <div style={{ fontWeight: 700, marginBottom: 6 }}>Practical EHR Expertise</div>
+      <div style={{ color: MUTED, lineHeight: 1.6 }}>
+        Support grounded in actual clinical workflow, documentation standards, and informatics practice.
+      </div>
+    </div>
+
+    <div
+      style={{
+        border: `1px solid ${BORDER}`,
+        borderRadius: 16,
+        padding: 18,
+        backgroundColor: "white",
+      }}
+    >
+      <div style={{ fontSize: 28, fontWeight: 800, color: TEAL, marginBottom: 6 }}>MSN / DNP</div>
+      <div style={{ fontWeight: 700, marginBottom: 6 }}>Preceptorship Support</div>
+      <div style={{ color: MUTED, lineHeight: 1.6 }}>
+        Structured guidance for graduate students seeking meaningful nursing informatics learning experiences.
+      </div>
+    </div>
+  </div>
+</section>
 <SectionDivider />
 
 {/* Who We Serve */}
