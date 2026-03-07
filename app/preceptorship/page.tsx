@@ -389,6 +389,62 @@ export default function PreceptorshipPage() {
           © 2026 NurseBridge Consulting LLC
         </footer>
       </div>
+      <section style={{ marginTop: 24 }}>
+  <div
+    style={{
+      border: `1px solid ${COLORS.border}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "#ffffff",
+    }}
+  >
+    <div style={{ color: COLORS.teal, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Preceptorship FAQ
+    </div>
+
+    <h2 style={{ margin: "0 0 14px 0" }}>
+      Common questions from students
+    </h2>
+
+    <div style={{ display: "grid", gap: 14 }}>
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>
+          Is the preceptorship suitable for MSN/DNP informatics students?
+        </div>
+        <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
+          Yes. The experience is designed for graduate-level nursing informatics students seeking structured practicum exposure.
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>
+          Is the experience remote?
+        </div>
+        <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
+          The structure is designed to support remote-friendly learning depending on program requirements.
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>
+          What types of activities are included?
+        </div>
+        <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
+          Students may participate in workflow analysis, documentation improvement discussions, and guided informatics mentorship.
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontWeight: 700, marginBottom: 4 }}>
+          What happens after I submit the inquiry form?
+        </div>
+        <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
+          Submissions are reviewed and students are contacted regarding alignment, expectations, and next steps.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
     </main>
   );
 }
