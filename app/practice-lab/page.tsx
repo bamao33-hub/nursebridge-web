@@ -131,7 +131,7 @@ export default function PracticeLabPage() {
                 border: `1px solid ${COLORS.tealDark}`,
               }}
             >
-              Request Early Access
+              Email to Request Early Access
             </a>
 
             <Link
@@ -150,6 +150,15 @@ export default function PracticeLabPage() {
               Explore Preceptorship
             </Link>
           </div>
+          <div style={{ marginTop: 12, fontSize: 13, color: COLORS.muted }}>
+  Prefer email directly? Contact{" "}
+  <a
+    href="mailto:info@nursebridgeconsulting.com?subject=Practice%20Lab%20Interest"
+    style={{ color: COLORS.teal, fontWeight: 700, textDecoration: "none" }}
+  >
+    info@nursebridgeconsulting.com
+  </a>
+</div>
         </section>
 
         <section style={{ paddingTop: 26, paddingBottom: 10 }}>
