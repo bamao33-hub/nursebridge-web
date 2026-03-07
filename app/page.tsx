@@ -214,7 +214,6 @@ export default function Home() {
     </div>
   </div>
 </section>
-       </section>
 
       {/* Proof Band */}
 <section style={{ paddingTop: 18, paddingBottom: 8 }}>
