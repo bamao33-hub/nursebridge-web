@@ -96,8 +96,8 @@ export default function Home() {
 
       {/* Page Container */}
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 20px 46px" }}>
-        {/* Hero */}
-       <section
+       {/* Hero */}
+<section
   style={{
     border: `1px solid ${BORDER}`,
     borderRadius: 18,
@@ -113,10 +113,8 @@ export default function Home() {
       alignItems: "center",
     }}
   >
-
     {/* LEFT SIDE */}
     <div>
-
       <div
         style={{
           display: "inline-flex",
@@ -182,7 +180,6 @@ export default function Home() {
       <div style={{ marginTop: "14px", color: MUTED, fontSize: "13px" }}>
         Typical requests: documentation efficiency, workflow redesign, build support, training, mentorship, and precepting.
       </div>
-
     </div>
 
     {/* RIGHT SIDE */}
@@ -206,78 +203,8 @@ export default function Home() {
         <li>Structured MSN/DNP preceptorship guidance</li>
       </ul>
     </div>
-
   </div>
 </section>
-        
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 10px",
-              borderRadius: 999,
-              backgroundColor: "rgba(15,118,110,0.10)",
-              color: TEAL_DARK,
-              fontSize: 12,
-              fontWeight: 700,
-              border: `1px solid rgba(15,118,110,0.18)`,
-              marginBottom: 14,
-            }}
-          >
-            NurseBridge Consulting • Texas-based • Remote-friendly
-          </div>
-
-          <h1 style={{ fontSize: 40, margin: "0 0 10px 0", lineHeight: 1.1 }}>
-            Clinical Informatics support that improves workflow—and builds careers.
-          </h1>
-
-          <p style={{ fontSize: 16, lineHeight: 1.7, color: MUTED, margin: 0, maxWidth: 900 }}>
-            Founded by <strong>Dr. Bernadette Amao, DNP</strong>, NurseBridge Consulting helps clinicians and healthcare
-            organizations improve workflow efficiency, optimize Electronic Health Record systems, and mentor nurses
-            transitioning into clinical informatics.
-          </p>
-
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-            <Link
-              href="/preceptorship"
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: TEAL,
-                color: "white",
-                fontWeight: 800,
-                textDecoration: "none",
-                border: `1px solid ${TEAL_DARK}`,
-              }}
-            >
-              Start Preceptorship Inquiry
-            </Link>
-
-            <a
-              href="#services"
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: "white",
-                color: TEXT,
-                fontWeight: 800,
-                textDecoration: "none",
-                border: `1px solid ${BORDER}`,
-              }}
-            >
-              Explore Services
-            </a>
-          </div>
-
-          <div style={{ marginTop: 12, color: MUTED, fontSize: 13 }}>
-            Typical requests: documentation efficiency, workflow redesign, build support, training, mentorship, and
-            precepting.
-          </div>
-        </section>
-
         {/* Services */}
         <section
           id="services"
