@@ -395,6 +395,12 @@ export default function Home() {
           </div>
         </section>
 
+  </section>
+
+<SectionDivider />
+
+{/* About the Founder */}
+<section>
         {/* About */}
         <section id="about" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
           <h2 style={{ margin: "10px 0 10px 0" }}>About the Founder</h2>
