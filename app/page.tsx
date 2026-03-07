@@ -206,7 +206,7 @@ export default function Home() {
 
       <ul style={{ paddingLeft: 18, color: MUTED, lineHeight: 1.7, margin: 0 }}>
         <li>DNP-prepared clinical informatics specialist</li>
-        <li>Epic-certified with 12+ years experience</li>
+        <li>Epic-certified with 13+ years experience</li>
         <li>Real hospital workflow optimization</li>
         <li>Mentorship for nurses transitioning into informatics</li>
         <li>Structured MSN/DNP preceptorship guidance</li>
@@ -470,7 +470,7 @@ export default function Home() {
           >
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: 0 }}>
               Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified Clinical Informatics
-              analyst with more than 12 years of experience supporting hospital systems, clinicians, and digital health initiatives.
+              analyst with more than 13 years of experience supporting hospital systems, clinicians, and digital health initiatives.
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: "10px 0 0 0" }}>
               Her work focuses on bridging the gap between bedside clinicians and healthcare technology while mentoring the next
