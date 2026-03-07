@@ -7,7 +7,16 @@ const TEXT = "#0f172a";
 const MUTED = "#475569";
 const BORDER = "#e2e8f0";
 const SOFT = "#f0fdfa";
-
+const SectionDivider = () => (
+  <div
+    style={{
+      height: 1,
+      background: BORDER,
+      margin: "42px 0",
+      opacity: 0.6,
+    }}
+  />
+);
 export default function Home() {
   return (
     <main
@@ -205,6 +214,12 @@ export default function Home() {
     </div>
   </div>
 </section>
+       </section>
+
+<SectionDivider />
+
+{/* Who We Serve */}
+<section style={{ paddingTop: 18
         {/* Who We Serve */}
 <section style={{ paddingTop: 18, paddingBottom: 8 }}>
   <div
