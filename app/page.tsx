@@ -295,7 +295,12 @@ export default function Home() {
     </div>
   </div>
 </section>
-        {/* Services */}
+      </section>
+
+<SectionDivider />
+
+{/* Services */}  
+      {/* Services */}
         <section
           id="services"
           style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}
