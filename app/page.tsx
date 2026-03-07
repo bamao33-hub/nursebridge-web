@@ -704,7 +704,7 @@ export default function Home() {
         <footer style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, marginTop: 20, color: MUTED, fontSize: 13 }}>
           © 2026 NurseBridge Consulting LLC
         </footer>
-
+      </div>
     </main>
   );
 }
