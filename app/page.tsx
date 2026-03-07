@@ -422,6 +422,109 @@ export default function Home() {
           </div>
         </section>
 
+  {/* How the Preceptorship Works */}
+<section style={{ paddingTop: 18, paddingBottom: 8 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 24,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+        How the Preceptorship Works
+      </div>
+
+      <h2 style={{ margin: 0, fontSize: 28 }}>
+        A structured pathway for MSN/DNP informatics students
+      </h2>
+
+      <p style={{ marginTop: 8, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+        NurseBridge Consulting provides a guided learning experience designed to
+        align with graduate program requirements while exposing students to real
+        clinical informatics workflows and decision-making.
+      </p>
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: 16,
+      }}
+    >
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <div style={{ fontSize: 24, fontWeight: 800, color: TEAL, marginBottom: 6 }}>
+          1
+        </div>
+
+        <div style={{ fontWeight: 700, marginBottom: 6 }}>
+          Submit your inquiry
+        </div>
+
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Complete the preceptorship inquiry form with your program details,
+          required hours, timeline, and informatics focus area.
+        </div>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <div style={{ fontSize: 24, fontWeight: 800, color: TEAL, marginBottom: 6 }}>
+          2
+        </div>
+
+        <div style={{ fontWeight: 700, marginBottom: 6 }}>
+          Alignment & planning
+        </div>
+
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          We review your program requirements and align a structured learning
+          plan that includes workflow analysis, documentation optimization,
+          and informatics project exposure.
+        </div>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <div style={{ fontSize: 24, fontWeight: 800, color: TEAL, marginBottom: 6 }}>
+          3
+        </div>
+
+        <div style={{ fontWeight: 700, marginBottom: 6 }}>
+          Begin your preceptorship
+        </div>
+
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Participate in guided informatics learning experiences including
+          workflow review, documentation improvement strategies, and practical
+          insights into clinical systems.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
         {/* Simulation */}
         <section style={{ paddingTop: 18, paddingBottom: 12 }}>
           <div
