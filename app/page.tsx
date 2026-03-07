@@ -586,6 +586,101 @@ export default function Home() {
           </div>
         </section>
 
+        <SectionDivider />
+
+{/* Resources & Learning */}
+<section style={{ paddingTop: 18, paddingBottom: 10 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Resources & Learning
+    </div>
+
+    <h2 style={{ margin: "0 0 10px 0" }}>
+      Explore books, training, and content by Dr. Bernadette
+    </h2>
+
+    <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
+      In addition to consulting and preceptorship, NurseBridge offers practical resources
+      for clinicians exploring informatics, EHR efficiency, and professional growth.
+    </p>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+        gap: 16,
+        marginTop: 12,
+      }}
+    >
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>Books</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Practical books on EHR efficiency, informatics, and career growth for clinicians.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>Courses</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Self-paced learning resources designed to help healthcare professionals pivot and grow.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>YouTube & Teaching Content</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Educational and reflective content that supports professional development and personal growth.
+        </p>
+      </div>
+    </div>
+
+    <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
+      <a
+        href="#contact"
+        style={{
+          display: "inline-block",
+          padding: "10px 14px",
+          borderRadius: 12,
+          backgroundColor: TEAL,
+          color: "white",
+          fontWeight: 800,
+          textDecoration: "none",
+          border: `1px solid ${TEAL_DARK}`,
+        }}
+      >
+        Ask About Resources
+      </a>
+    </div>
+  </div>
+</section>
         <footer style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, marginTop: 20, color: MUTED, fontSize: 13 }}>
           © 2026 NurseBridge Consulting LLC
         </footer>
