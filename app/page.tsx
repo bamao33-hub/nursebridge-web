@@ -541,7 +541,7 @@ export default function Home() {
       How the Informatics Preceptorship Works
     </h2>
 
-    <p style={{ color: MUTED, marginBottom: 18 }}>
+    <p style={{ color: MUTED, marginBottom: 18, lineHeight: 1.7 }}>
       A structured mentorship designed for MSN/DNP students completing
       clinical informatics practicum hours.
     </p>
@@ -603,7 +603,9 @@ export default function Home() {
       </Link>
     </div>
   </div>
-</section>      
+</section>
+
+<SectionDivider />
   {/* Simulation */}
         <section style={{ paddingTop: 18, paddingBottom: 12 }}>
           <div
