@@ -384,12 +384,7 @@ export default function PreceptorshipPage() {
             ) : null}
           </div>
         </section>
-
-        <footer style={{ marginTop: 18, color: COLORS.muted, fontSize: 13 }}>
-          © 2026 NurseBridge Consulting LLC
-        </footer>
-      </div>
-      <section style={{ marginTop: 24 }}>
+         <section style={{ marginTop: 24 }}>
   <div
     style={{
       border: `1px solid ${COLORS.border}`,
@@ -445,6 +440,12 @@ export default function PreceptorshipPage() {
     </div>
   </div>
 </section>
+
+        <footer style={{ marginTop: 18, color: COLORS.muted, fontSize: 13 }}>
+          © 2026 NurseBridge Consulting LLC
+        </footer>
+      </div>
+     
     </main>
   );
 }
