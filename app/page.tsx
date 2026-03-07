@@ -62,7 +62,7 @@ export default function Home() {
             }}
           >
             <img
-              src="/logo-icon.png"
+              src="/logo-icon.jpeg"
               alt="NurseBridge Consulting"
               style={{ height: 44, width: "auto", display: "block" }}
             />
