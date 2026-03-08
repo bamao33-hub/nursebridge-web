@@ -13,6 +13,7 @@ type TabKey =
   | "MAR";
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
+type CaseKey = "pneumonia" | "chf";
 
 type DocState = {
   respRate: string;
@@ -47,6 +48,36 @@ type MarItem = {
   note: string;
 };
 
+type LabItem = {
+  lab: string;
+  result: string;
+  reference: string;
+  status: string;
+};
+
+type CaseConfig = {
+  key: CaseKey;
+  label: string;
+  patientName: string;
+  dob: string;
+  mrn: string;
+  admitDx: string;
+  room: string;
+  scenario: string;
+  learningGoals: string[];
+  summary: string;
+  summaryPrompt: string;
+  noteTitle: string;
+  noteBody: string;
+  notePrompt: string;
+  labs: LabItem[];
+  labPrompt: string;
+  orders: string[];
+  orderPrompt: string;
+  mar: MarItem[];
+  summaryCards: { label: string; value: string }[];
+};
+
 const initialDoc: DocState = {
   respRate: "",
   oxygenDevice: "",
@@ -71,47 +102,188 @@ const initialFlow: FlowState = {
   activityTolerance: "",
 };
 
-const initialMar: MarItem[] = [
-  {
-    med: "Ceftriaxone 1g",
-    route: "IV",
-    schedule: "q24h",
-    due: "09:00",
-    status: "Due",
-    note: "",
+const CASES: Record<CaseKey, CaseConfig> = {
+  pneumonia: {
+    key: "pneumonia",
+    label: "Case 1 • Pneumonia",
+    patientName: "Maria Gonzalez",
+    dob: "04/12/1972",
+    mrn: "847221",
+    admitDx: "Pneumonia",
+    room: "412B",
+    scenario:
+      "Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, flowsheet completion, and medication administration follow-up.",
+    learningGoals: [
+      "Document key respiratory elements",
+      "Identify missing structured data",
+      "Connect charting to workflow quality",
+      "Practice flowsheet completion",
+      "Review MAR follow-up logic",
+    ],
+    summary:
+      "Patient admitted with community-acquired pneumonia. Oxygen saturation was initially 88% on room air. Currently receiving IV antibiotics and oxygen therapy. Intermittent cough, diminished breath sounds at bases, and fatigue with exertion noted.",
+    summaryPrompt:
+      "What documentation fields should be completed to support oxygen therapy management, respiratory reassessment, and patient education?",
+    noteTitle: "Nursing Progress Note",
+    noteBody:
+      "Patient alert and oriented x3. Mild shortness of breath with exertion. Receiving 2L oxygen via nasal cannula. Tolerating antibiotics without adverse reaction. Encouraged cough, deep breathing, and incentive spirometer use.",
+    notePrompt:
+      "Strengthen the note by adding measurable respiratory assessment data, response to oxygen therapy, and patient teaching outcomes.",
+    labs: [
+      { lab: "WBC", result: "14.2", reference: "4.0–11.0", status: "High" },
+      { lab: "Hgb", result: "11.8", reference: "12.0–16.0", status: "Low" },
+      { lab: "Sodium", result: "136", reference: "135–145", status: "Normal" },
+      { lab: "Lactate", result: "2.1", reference: "0.5–2.0", status: "Slightly High" },
+    ],
+    labPrompt:
+      "Which lab values may matter most for pneumonia monitoring, and how could they affect clinical workflow or escalation decisions?",
+    orders: [
+      "Oxygen via nasal cannula at 2L/min",
+      "Ceftriaxone 1g IV every 24 hours",
+      "Azithromycin 500mg PO daily",
+      "Incentive spirometry every 2 hours while awake",
+    ],
+    orderPrompt:
+      "Which orders require nursing follow-through documentation, and where would you expect that documentation to appear in the chart?",
+    mar: [
+      {
+        med: "Ceftriaxone 1g",
+        route: "IV",
+        schedule: "q24h",
+        due: "09:00",
+        status: "Due",
+        note: "",
+      },
+      {
+        med: "Azithromycin 500mg",
+        route: "PO",
+        schedule: "Daily",
+        due: "09:00",
+        status: "Given",
+        note: "Given with water",
+      },
+      {
+        med: "Acetaminophen 650mg",
+        route: "PO",
+        schedule: "PRN",
+        due: "12:00",
+        status: "Late",
+        note: "",
+      },
+      {
+        med: "Albuterol Neb",
+        route: "Neb",
+        schedule: "q6h",
+        due: "14:00",
+        status: "Held",
+        note: "Patient resting; reassess respiratory status",
+      },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "J. Thompson, RN" },
+      { label: "Attending", value: "R. Patel, MD" },
+      { label: "Allergies", value: "NKDA" },
+      { label: "Isolation", value: "None" },
+      { label: "Current O₂", value: "2L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
   },
-  {
-    med: "Azithromycin 500mg",
-    route: "PO",
-    schedule: "Daily",
-    due: "09:00",
-    status: "Given",
-    note: "Given with water",
+  chf: {
+    key: "chf",
+    label: "Case 2 • CHF Exacerbation",
+    patientName: "James Carter",
+    dob: "11/03/1958",
+    mrn: "552904",
+    admitDx: "CHF Exacerbation",
+    room: "518A",
+    scenario:
+      "Heart failure exacerbation with fluid overload, edema monitoring, oxygen support, diuretic administration, intake/output tracking, and escalation workflow.",
+    learningGoals: [
+      "Document fluid overload indicators",
+      "Track structured CHF assessment data",
+      "Review medication administration follow-up",
+      "Connect charting to escalation logic",
+      "Practice workflow-based decision support",
+    ],
+    summary:
+      "Patient admitted with acute on chronic CHF exacerbation. Reports shortness of breath, orthopnea, and bilateral lower-extremity edema. Receiving oxygen and IV diuretics. Weight gain and reduced activity tolerance noted.",
+    summaryPrompt:
+      "Which structured fields are most important for documenting fluid overload, oxygen status, and response to diuretic therapy?",
+    noteTitle: "Cardiopulmonary Nursing Note",
+    noteBody:
+      "Patient reports dyspnea with minimal exertion and difficulty lying flat. Bilateral ankle edema present. Oxygen in use via nasal cannula. Diuretic therapy ongoing. Reinforced low-sodium diet and fluid restriction teaching.",
+    notePrompt:
+      "Strengthen the note by adding measurable edema, respiratory status, and response-to-treatment details.",
+    labs: [
+      { lab: "BNP", result: "1280", reference: "<100", status: "High" },
+      { lab: "Potassium", result: "3.4", reference: "3.5–5.1", status: "Low" },
+      { lab: "Creatinine", result: "1.4", reference: "0.6–1.2", status: "Slightly High" },
+      { lab: "Sodium", result: "132", reference: "135–145", status: "Low" },
+    ],
+    labPrompt:
+      "Which lab values may affect diuretic management, fluid balance, and escalation decisions in CHF?",
+    orders: [
+      "Furosemide 40mg IV twice daily",
+      "Oxygen via nasal cannula at 2L/min",
+      "Daily weights",
+      "Strict intake and output",
+    ],
+    orderPrompt:
+      "Which CHF-related orders require consistent nursing documentation and trending for safe care?",
+    mar: [
+      {
+        med: "Furosemide 40mg",
+        route: "IV",
+        schedule: "BID",
+        due: "08:00",
+        status: "Due",
+        note: "",
+      },
+      {
+        med: "Potassium Chloride 20 mEq",
+        route: "PO",
+        schedule: "Daily",
+        due: "09:00",
+        status: "Given",
+        note: "Given with breakfast",
+      },
+      {
+        med: "Metoprolol 25mg",
+        route: "PO",
+        schedule: "BID",
+        due: "09:00",
+        status: "Held",
+        note: "",
+      },
+      {
+        med: "Enoxaparin 40mg",
+        route: "SubQ",
+        schedule: "Daily",
+        due: "10:00",
+        status: "Given",
+        note: "Administered to abdomen",
+      },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "L. Harris, RN" },
+      { label: "Attending", value: "D. Nguyen, MD" },
+      { label: "Allergies", value: "ACE inhibitors" },
+      { label: "Diet", value: "Low sodium" },
+      { label: "Current O₂", value: "2L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
   },
-  {
-    med: "Acetaminophen 650mg",
-    route: "PO",
-    schedule: "PRN",
-    due: "12:00",
-    status: "Late",
-    note: "",
-  },
-  {
-    med: "Albuterol Neb",
-    route: "Neb",
-    schedule: "q6h",
-    due: "14:00",
-    status: "Held",
-    note: "Patient resting; reassess respiratory status",
-  },
-];
+};
 
 export default function ChartSimulation() {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
+  const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
-  const [mar, setMar] = useState<MarItem[]>(initialMar);
+  const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar);
   const [submitted, setSubmitted] = useState(false);
+
+  const currentCase = CASES[caseKey];
 
   const COLORS = {
     teal: "#0f766e",
@@ -250,7 +422,16 @@ export default function ChartSimulation() {
   const resetCase = () => {
     setDoc(initialDoc);
     setFlow(initialFlow);
-    setMar(initialMar);
+    setMar(CASES[caseKey].mar.map((m) => ({ ...m })));
+    setSubmitted(false);
+    setActiveTab("Summary");
+  };
+
+  const switchCase = (nextCase: CaseKey) => {
+    setCaseKey(nextCase);
+    setDoc(initialDoc);
+    setFlow(initialFlow);
+    setMar(CASES[nextCase].mar.map((m) => ({ ...m })));
     setSubmitted(false);
     setActiveTab("Summary");
   };
@@ -319,9 +500,10 @@ export default function ChartSimulation() {
             }}
           >
             <div>
-              <div style={{ fontWeight: 800, fontSize: 18 }}>Maria Gonzalez</div>
+              <div style={{ fontWeight: 800, fontSize: 18 }}>{currentCase.patientName}</div>
               <div style={{ fontSize: 13, color: COLORS.muted }}>
-                DOB: 04/12/1972 • MRN: 847221 • Admit Dx: Pneumonia • Room: 412B
+                DOB: {currentCase.dob} • MRN: {currentCase.mrn} • Admit Dx: {currentCase.admitDx} • Room:{" "}
+                {currentCase.room}
               </div>
             </div>
 
@@ -399,40 +581,55 @@ export default function ChartSimulation() {
           <div
             style={{
               display: "flex",
-              gap: 10,
+              justifyContent: "space-between",
+              gap: 12,
               flexWrap: "wrap",
               marginBottom: 18,
               borderBottom: `1px solid ${COLORS.border}`,
               paddingBottom: 12,
             }}
           >
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 10,
-                  border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
-                  background: activeTab === tab ? COLORS.teal : "#fff",
-                  color: activeTab === tab ? "#fff" : COLORS.text,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                {tab}
-              </button>
-            ))}
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: 10,
+                    border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
+                    background: activeTab === tab ? COLORS.teal : "#fff",
+                    color: activeTab === tab ? "#fff" : COLORS.text,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <select
+              value={caseKey}
+              onChange={(e) => switchCase(e.target.value as CaseKey)}
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: `1px solid ${COLORS.border}`,
+                background: "#fff",
+                color: COLORS.text,
+                fontWeight: 700,
+              }}
+            >
+              <option value="pneumonia">{CASES.pneumonia.label}</option>
+              <option value="chf">{CASES.chf.label}</option>
+            </select>
           </div>
 
           {activeTab === "Summary" && (
             <div>
               <h2 style={{ marginTop: 0 }}>Patient Summary</h2>
-              <p style={{ color: COLORS.muted, lineHeight: 1.7 }}>
-                Patient admitted with community-acquired pneumonia. Oxygen saturation was initially
-                88% on room air. Currently receiving IV antibiotics and oxygen therapy. Intermittent
-                cough, diminished breath sounds at bases, and fatigue with exertion noted.
-              </p>
+              <p style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.summary}</p>
 
               <div
                 style={{
@@ -442,18 +639,17 @@ export default function ChartSimulation() {
                   marginTop: 16,
                 }}
               >
-                <InfoCard label="Primary Nurse" value="J. Thompson, RN" colors={COLORS} />
-                <InfoCard label="Attending" value="R. Patel, MD" colors={COLORS} />
-                <InfoCard label="Allergies" value="NKDA" colors={COLORS} />
-                <InfoCard label="Isolation" value="None" colors={COLORS} />
-                <InfoCard label="Current O₂" value="2L NC" colors={COLORS} />
-                <InfoCard label="Code Status" value="Full Code" colors={COLORS} />
+                {currentCase.summaryCards.map((card) => (
+                  <InfoCard
+                    key={card.label}
+                    label={card.label}
+                    value={card.value}
+                    colors={COLORS}
+                  />
+                ))}
               </div>
 
-              <ExerciseBox colors={COLORS}>
-                Review the patient summary. What documentation fields should be completed to support
-                oxygen therapy management, respiratory reassessment, and patient education?
-              </ExerciseBox>
+              <ExerciseBox colors={COLORS}>{currentCase.summaryPrompt}</ExerciseBox>
             </div>
           )}
 
@@ -469,12 +665,8 @@ export default function ChartSimulation() {
                   background: COLORS.soft,
                 }}
               >
-                <div style={{ fontWeight: 700, marginBottom: 6 }}>Nursing Progress Note</div>
-                <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
-                  Patient alert and oriented x3. Mild shortness of breath with exertion. Receiving
-                  2L oxygen via nasal cannula. Tolerating antibiotics without adverse reaction.
-                  Encouraged cough, deep breathing, and incentive spirometer use.
-                </div>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>{currentCase.noteTitle}</div>
+                <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.noteBody}</div>
               </div>
 
               <div
@@ -487,10 +679,7 @@ export default function ChartSimulation() {
                 }}
               >
                 <div style={{ fontWeight: 700, marginBottom: 8 }}>Documentation coaching prompt</div>
-                <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>
-                  Strengthen the note by adding measurable respiratory assessment data, response to
-                  oxygen therapy, and patient teaching outcomes.
-                </div>
+                <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.notePrompt}</div>
               </div>
 
               <ExerciseBox colors={COLORS}>
@@ -591,21 +780,21 @@ export default function ChartSimulation() {
                 <ChecklistRow
                   checked={doc.education}
                   onChange={() => setDoc({ ...doc, education: !doc.education })}
-                  label="Education provided about pneumonia care and oxygen therapy"
+                  label="Education provided about disease process and therapy"
                 />
                 <ChecklistRow
                   checked={doc.coughDeepBreathing}
                   onChange={() =>
                     setDoc({ ...doc, coughDeepBreathing: !doc.coughDeepBreathing })
                   }
-                  label="Cough and deep breathing encouraged"
+                  label="Breathing / self-management interventions reinforced"
                 />
                 <ChecklistRow
                   checked={doc.incentiveSpirometry}
                   onChange={() =>
                     setDoc({ ...doc, incentiveSpirometry: !doc.incentiveSpirometry })
                   }
-                  label="Incentive spirometry reviewed / reinforced"
+                  label="Therapeutic technique / equipment use reviewed"
                 />
                 <ChecklistRow
                   checked={doc.escalationNoted}
@@ -626,7 +815,7 @@ export default function ChartSimulation() {
                       minHeight: 110,
                       resize: "vertical",
                     }}
-                    placeholder="Document the respiratory reassessment, oxygen therapy status, patient response, and teaching."
+                    placeholder="Document reassessment findings, therapy status, patient response, and teaching."
                   />
                 </Field>
               </div>
@@ -800,8 +989,8 @@ export default function ChartSimulation() {
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Informatics review: Which flowsheet rows are most important for trending pneumonia
-                status, and how could missing structured entries affect quality reporting or team communication?
+                Informatics review: Which flowsheet rows are most important for trending status,
+                and how could missing structured entries affect quality reporting or team communication?
               </ExerciseBox>
             </div>
           )}
@@ -826,37 +1015,18 @@ export default function ChartSimulation() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td style={tdStyle}>WBC</td>
-                    <td style={tdStyle}>14.2</td>
-                    <td style={tdStyle}>4.0–11.0</td>
-                    <td style={tdStyle}>High</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}>Hgb</td>
-                    <td style={tdStyle}>11.8</td>
-                    <td style={tdStyle}>12.0–16.0</td>
-                    <td style={tdStyle}>Low</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}>Sodium</td>
-                    <td style={tdStyle}>136</td>
-                    <td style={tdStyle}>135–145</td>
-                    <td style={tdStyle}>Normal</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}>Lactate</td>
-                    <td style={tdStyle}>2.1</td>
-                    <td style={tdStyle}>0.5–2.0</td>
-                    <td style={tdStyle}>Slightly High</td>
-                  </tr>
+                  {currentCase.labs.map((row) => (
+                    <tr key={row.lab}>
+                      <td style={tdStyle}>{row.lab}</td>
+                      <td style={tdStyle}>{row.result}</td>
+                      <td style={tdStyle}>{row.reference}</td>
+                      <td style={tdStyle}>{row.status}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
 
-              <ExerciseBox colors={COLORS}>
-                Which lab values may matter most for pneumonia monitoring, and how could they
-                affect clinical workflow or escalation decisions?
-              </ExerciseBox>
+              <ExerciseBox colors={COLORS}>{currentCase.labPrompt}</ExerciseBox>
             </div>
           )}
 
@@ -865,16 +1035,12 @@ export default function ChartSimulation() {
               <h2 style={{ marginTop: 0 }}>Active Orders</h2>
 
               <div style={{ display: "grid", gap: 10 }}>
-                <OrderRow text="Oxygen via nasal cannula at 2L/min" colors={COLORS} />
-                <OrderRow text="Ceftriaxone 1g IV every 24 hours" colors={COLORS} />
-                <OrderRow text="Azithromycin 500mg PO daily" colors={COLORS} />
-                <OrderRow text="Incentive spirometry every 2 hours while awake" colors={COLORS} />
+                {currentCase.orders.map((order) => (
+                  <OrderRow key={order} text={order} colors={COLORS} />
+                ))}
               </div>
 
-              <ExerciseBox colors={COLORS}>
-                Which orders require nursing follow-through documentation, and where would you
-                expect that documentation to appear in the chart?
-              </ExerciseBox>
+              <ExerciseBox colors={COLORS}>{currentCase.orderPrompt}</ExerciseBox>
             </div>
           )}
 
@@ -969,8 +1135,8 @@ export default function ChartSimulation() {
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Informatics review: Which medication administration gaps could affect compliance,
-                handoff communication, or medication safety?
+                Which medication administration gaps could affect compliance, handoff communication,
+                or medication safety?
               </ExerciseBox>
             </div>
           )}
@@ -998,9 +1164,12 @@ export default function ChartSimulation() {
               paddingTop: 12,
             }}
           >
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Current scenario</div>
+            <div style={{ fontWeight: 700, marginBottom: 6 }}>Current case</div>
+            <div style={{ color: COLORS.text, fontWeight: 700, marginBottom: 6 }}>
+              {currentCase.label}
+            </div>
             <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6 }}>
-              Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, flowsheet completion, and medication administration follow-up.
+              {currentCase.scenario}
             </div>
           </div>
 
@@ -1013,11 +1182,9 @@ export default function ChartSimulation() {
           >
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Learning goals</div>
             <ul style={{ paddingLeft: 18, margin: 0, color: COLORS.muted, lineHeight: 1.7 }}>
-              <li>Document key respiratory elements</li>
-              <li>Identify missing structured data</li>
-              <li>Connect charting to workflow quality</li>
-              <li>Practice flowsheet completion</li>
-              <li>Review MAR follow-up logic</li>
+              {currentCase.learningGoals.map((goal) => (
+                <li key={goal}>{goal}</li>
+              ))}
             </ul>
           </div>
 
