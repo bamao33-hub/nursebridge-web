@@ -9,7 +9,10 @@ type TabKey =
   | "Documentation"
   | "Flowsheet"
   | "Labs"
-  | "Orders";
+  | "Orders"
+  | "MAR";
+
+type MarStatus = "Due" | "Given" | "Held" | "Late";
 
 export default function ChartSimulation() {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
@@ -37,6 +40,41 @@ export default function ChartSimulation() {
     activityTolerance: "",
   });
 
+  const [mar, setMar] = useState([
+    {
+      med: "Ceftriaxone 1g",
+      route: "IV",
+      schedule: "q24h",
+      due: "09:00",
+      status: "Due" as MarStatus,
+      note: "",
+    },
+    {
+      med: "Azithromycin 500mg",
+      route: "PO",
+      schedule: "Daily",
+      due: "09:00",
+      status: "Given" as MarStatus,
+      note: "Given with water",
+    },
+    {
+      med: "Acetaminophen 650mg",
+      route: "PO",
+      schedule: "PRN",
+      due: "12:00",
+      status: "Late" as MarStatus,
+      note: "",
+    },
+    {
+      med: "Albuterol Neb",
+      route: "Neb",
+      schedule: "q6h",
+      due: "14:00",
+      status: "Held" as MarStatus,
+      note: "Patient resting; reassess respiratory status",
+    },
+  ]);
+
   const COLORS = {
     teal: "#0f766e",
     tealDark: "#0b5f58",
@@ -52,6 +90,9 @@ export default function ChartSimulation() {
     okBg: "#ecfdf5",
     okBorder: "#86efac",
     okText: "#166534",
+    lateBg: "#fef2f2",
+    lateBorder: "#fca5a5",
+    lateText: "#991b1b",
   };
 
   const tabs: TabKey[] = [
@@ -61,6 +102,7 @@ export default function ChartSimulation() {
     "Flowsheet",
     "Labs",
     "Orders",
+    "MAR",
   ];
 
   const missingDocItems = useMemo(() => {
@@ -85,12 +127,29 @@ export default function ChartSimulation() {
     return items;
   }, [flow]);
 
-  const completionPct = Math.round(
-    ((14 -
-      Math.min(missingDocItems.length, 6) -
-      Math.min(missingFlowItems.length, 6)) /
-      14) *
-      100
+  const marGaps = useMemo(() => {
+    const items: string[] = [];
+    mar.forEach((m) => {
+      if ((m.status === "Held" || m.status === "Late") && !m.note.trim()) {
+        items.push(`${m.med} missing follow-up note`);
+      }
+      if (m.status === "Due") {
+        items.push(`${m.med} still due`);
+      }
+    });
+    return items;
+  }, [mar]);
+
+  const completionPct = Math.max(
+    0,
+    Math.round(
+      ((18 -
+        Math.min(missingDocItems.length, 6) -
+        Math.min(missingFlowItems.length, 6) -
+        Math.min(marGaps.length, 6)) /
+        18) *
+        100
+    )
   );
 
   return (
@@ -715,6 +774,103 @@ export default function ChartSimulation() {
               </ExerciseBox>
             </div>
           )}
+
+          {activeTab === "MAR" && (
+            <div>
+              <h2 style={{ marginTop: 0 }}>Medication Administration Record (MAR)</h2>
+
+              <AlertBox
+                title={marGaps.length ? "MAR review needed" : "MAR looks complete"}
+                text={
+                  marGaps.length
+                    ? `Items needing follow-up: ${marGaps.join(", ")}.`
+                    : "Medication statuses and follow-up notes appear complete."
+                }
+                ok={!marGaps.length}
+                colors={COLORS}
+              />
+
+              <div
+                style={{
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  marginTop: 16,
+                }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr",
+                    background: COLORS.soft,
+                    fontWeight: 700,
+                  }}
+                >
+                  <div style={marHeadStyle}>Medication</div>
+                  <div style={marHeadStyle}>Route</div>
+                  <div style={marHeadStyle}>Schedule</div>
+                  <div style={marHeadStyle}>Due</div>
+                  <div style={marHeadStyle}>Status</div>
+                  <div style={marHeadStyle}>Follow-up note</div>
+                </div>
+
+                {mar.map((m, idx) => (
+                  <div
+                    key={m.med}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr",
+                      borderTop: `1px solid ${COLORS.border}`,
+                      background:
+                        m.status === "Late"
+                          ? COLORS.lateBg
+                          : m.status === "Held"
+                          ? COLORS.warnBg
+                          : "#fff",
+                    }}
+                  >
+                    <div style={marCellStyle}>{m.med}</div>
+                    <div style={marCellStyle}>{m.route}</div>
+                    <div style={marCellStyle}>{m.schedule}</div>
+                    <div style={marCellStyle}>{m.due}</div>
+                    <div style={marCellStyle}>
+                      <select
+                        value={m.status}
+                        onChange={(e) => {
+                          const next = [...mar];
+                          next[idx].status = e.target.value as MarStatus;
+                          setMar(next);
+                        }}
+                        style={miniInputStyle(COLORS)}
+                      >
+                        <option value="Due">Due</option>
+                        <option value="Given">Given</option>
+                        <option value="Held">Held</option>
+                        <option value="Late">Late</option>
+                      </select>
+                    </div>
+                    <div style={marCellStyle}>
+                      <input
+                        value={m.note}
+                        onChange={(e) => {
+                          const next = [...mar];
+                          next[idx].note = e.target.value;
+                          setMar(next);
+                        }}
+                        style={miniInputStyle(COLORS)}
+                        placeholder="Add note if held / late"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <ExerciseBox colors={COLORS}>
+                Informatics review: Which medication administration gaps could affect compliance,
+                handoff communication, or medication safety?
+              </ExerciseBox>
+            </div>
+          )}
         </div>
 
         <div
@@ -741,7 +897,7 @@ export default function ChartSimulation() {
           >
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Current scenario</div>
             <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6 }}>
-              Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, and flowsheet completion.
+              Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, flowsheet completion, and medication administration follow-up.
             </div>
           </div>
 
@@ -758,6 +914,7 @@ export default function ChartSimulation() {
               <li>Identify missing structured data</li>
               <li>Connect charting to workflow quality</li>
               <li>Practice flowsheet completion</li>
+              <li>Review MAR follow-up logic</li>
             </ul>
           </div>
 
@@ -1019,6 +1176,16 @@ const flowHeadStyle: React.CSSProperties = {
 };
 
 const flowCellStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRight: "1px solid #e5ecea",
+};
+
+const marHeadStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRight: "1px solid #dbe7e5",
+};
+
+const marCellStyle: React.CSSProperties = {
   padding: "10px 12px",
   borderRight: "1px solid #e5ecea",
 };
