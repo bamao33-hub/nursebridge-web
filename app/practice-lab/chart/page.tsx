@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-type TabKey = "Summary" | "Notes" | "Documentation" | "Labs" | "Orders";
+type TabKey =
+  | "Summary"
+  | "Notes"
+  | "Documentation"
+  | "Flowsheet"
+  | "Labs"
+  | "Orders";
 
 export default function ChartSimulation() {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
@@ -18,6 +24,17 @@ export default function ChartSimulation() {
     incentiveSpirometry: false,
     escalationNoted: false,
     narrative: "",
+  });
+
+  const [flow, setFlow] = useState({
+    temp: "",
+    pulse: "",
+    bp: "",
+    spo2: "",
+    pain: "",
+    lungSounds: "",
+    cough: "",
+    activityTolerance: "",
   });
 
   const COLORS = {
@@ -37,9 +54,16 @@ export default function ChartSimulation() {
     okText: "#166534",
   };
 
-  const tabs: TabKey[] = ["Summary", "Notes", "Documentation", "Labs", "Orders"];
+  const tabs: TabKey[] = [
+    "Summary",
+    "Notes",
+    "Documentation",
+    "Flowsheet",
+    "Labs",
+    "Orders",
+  ];
 
-  const missingItems = useMemo(() => {
+  const missingDocItems = useMemo(() => {
     const items: string[] = [];
     if (!doc.respRate) items.push("Respiratory rate");
     if (!doc.oxygenDevice) items.push("Oxygen device");
@@ -50,7 +74,24 @@ export default function ChartSimulation() {
     return items;
   }, [doc]);
 
-  const completionPct = Math.round(((6 - Math.min(missingItems.length, 6)) / 6) * 100);
+  const missingFlowItems = useMemo(() => {
+    const items: string[] = [];
+    if (!flow.temp) items.push("Temperature");
+    if (!flow.pulse) items.push("Pulse");
+    if (!flow.bp) items.push("Blood pressure");
+    if (!flow.spo2) items.push("SpO₂");
+    if (!flow.pain) items.push("Pain");
+    if (!flow.lungSounds) items.push("Lung sounds");
+    return items;
+  }, [flow]);
+
+  const completionPct = Math.round(
+    ((14 -
+      Math.min(missingDocItems.length, 6) -
+      Math.min(missingFlowItems.length, 6)) /
+      14) *
+      100
+  );
 
   return (
     <main
@@ -301,28 +342,20 @@ export default function ChartSimulation() {
             <div>
               <h2 style={{ marginTop: 0 }}>Documentation Workspace</h2>
 
-              <div
-                style={{
-                  border: `1px solid ${missingItems.length ? COLORS.warnBorder : COLORS.okBorder}`,
-                  backgroundColor: missingItems.length ? COLORS.warnBg : COLORS.okBg,
-                  color: missingItems.length ? COLORS.warnText : COLORS.okText,
-                  borderRadius: 10,
-                  padding: 12,
-                  marginBottom: 16,
-                }}
-              >
-                <div style={{ fontWeight: 800, marginBottom: 4 }}>
-                  {missingItems.length
+              <AlertBox
+                title={
+                  missingDocItems.length
                     ? "Incomplete documentation alert"
-                    : "Documentation status looks complete"}
-                </div>
-                <div style={{ lineHeight: 1.6 }}>
-                  Completion: {completionPct}%.
-                  {missingItems.length
-                    ? ` Missing items: ${missingItems.join(", ")}.`
-                    : " Key respiratory fields and education elements are documented."}
-                </div>
-              </div>
+                    : "Documentation status looks complete"
+                }
+                text={
+                  missingDocItems.length
+                    ? `Missing items: ${missingDocItems.join(", ")}.`
+                    : "Key respiratory fields and education elements are documented."
+                }
+                ok={!missingDocItems.length}
+                colors={COLORS}
+              />
 
               <div
                 style={{
@@ -443,6 +476,174 @@ export default function ChartSimulation() {
             </div>
           )}
 
+          {activeTab === "Flowsheet" && (
+            <div>
+              <h2 style={{ marginTop: 0 }}>Flowsheet</h2>
+
+              <AlertBox
+                title={
+                  missingFlowItems.length
+                    ? "Flowsheet documentation needs completion"
+                    : "Flowsheet entries look complete"
+                }
+                text={
+                  missingFlowItems.length
+                    ? `Missing items: ${missingFlowItems.join(", ")}.`
+                    : "Key vital signs and assessment items are documented."
+                }
+                ok={!missingFlowItems.length}
+                colors={COLORS}
+              />
+
+              <div
+                style={{
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  marginTop: 16,
+                }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "220px 1fr 1fr",
+                    background: COLORS.soft,
+                    fontWeight: 700,
+                  }}
+                >
+                  <div style={flowHeadStyle}>Row</div>
+                  <div style={flowHeadStyle}>Current Entry</div>
+                  <div style={flowHeadStyle}>Document</div>
+                </div>
+
+                <FlowRow
+                  label="Temperature"
+                  value={flow.temp}
+                  input={
+                    <input
+                      value={flow.temp}
+                      onChange={(e) => setFlow({ ...flow, temp: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                      placeholder="e.g., 38.1 °C"
+                    />
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Pulse"
+                  value={flow.pulse}
+                  input={
+                    <input
+                      value={flow.pulse}
+                      onChange={(e) => setFlow({ ...flow, pulse: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                      placeholder="e.g., 104"
+                    />
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Blood Pressure"
+                  value={flow.bp}
+                  input={
+                    <input
+                      value={flow.bp}
+                      onChange={(e) => setFlow({ ...flow, bp: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                      placeholder="e.g., 138/82"
+                    />
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="SpO₂"
+                  value={flow.spo2}
+                  input={
+                    <input
+                      value={flow.spo2}
+                      onChange={(e) => setFlow({ ...flow, spo2: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                      placeholder="e.g., 94%"
+                    />
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Pain"
+                  value={flow.pain}
+                  input={
+                    <input
+                      value={flow.pain}
+                      onChange={(e) => setFlow({ ...flow, pain: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                      placeholder="0–10"
+                    />
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Lung Sounds"
+                  value={flow.lungSounds}
+                  input={
+                    <select
+                      value={flow.lungSounds}
+                      onChange={(e) => setFlow({ ...flow, lungSounds: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                    >
+                      <option value="">Select...</option>
+                      <option value="Clear">Clear</option>
+                      <option value="Diminished">Diminished</option>
+                      <option value="Crackles">Crackles</option>
+                      <option value="Wheezes">Wheezes</option>
+                    </select>
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Cough"
+                  value={flow.cough}
+                  input={
+                    <select
+                      value={flow.cough}
+                      onChange={(e) => setFlow({ ...flow, cough: e.target.value })}
+                      style={miniInputStyle(COLORS)}
+                    >
+                      <option value="">Select...</option>
+                      <option value="None">None</option>
+                      <option value="Dry">Dry</option>
+                      <option value="Productive">Productive</option>
+                    </select>
+                  }
+                  colors={COLORS}
+                />
+                <FlowRow
+                  label="Activity Tolerance"
+                  value={flow.activityTolerance}
+                  input={
+                    <select
+                      value={flow.activityTolerance}
+                      onChange={(e) =>
+                        setFlow({ ...flow, activityTolerance: e.target.value })
+                      }
+                      style={miniInputStyle(COLORS)}
+                    >
+                      <option value="">Select...</option>
+                      <option value="Independent">Independent</option>
+                      <option value="Mild fatigue">Mild fatigue</option>
+                      <option value="Dyspnea with exertion">Dyspnea with exertion</option>
+                    </select>
+                  }
+                  colors={COLORS}
+                />
+              </div>
+
+              <ExerciseBox colors={COLORS}>
+                Informatics review: Which flowsheet rows are most important for trending pneumonia
+                status, and how could missing structured entries affect quality reporting or team communication?
+              </ExerciseBox>
+            </div>
+          )}
+
           {activeTab === "Labs" && (
             <div>
               <h2 style={{ marginTop: 0 }}>Recent Labs</h2>
@@ -540,8 +741,7 @@ export default function ChartSimulation() {
           >
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Current scenario</div>
             <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6 }}>
-              Community-acquired pneumonia with oxygen therapy, patient education needs, and
-              respiratory reassessment workflow.
+              Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, and flowsheet completion.
             </div>
           </div>
 
@@ -557,6 +757,7 @@ export default function ChartSimulation() {
               <li>Document key respiratory elements</li>
               <li>Identify missing structured data</li>
               <li>Connect charting to workflow quality</li>
+              <li>Practice flowsheet completion</li>
             </ul>
           </div>
 
@@ -567,7 +768,7 @@ export default function ChartSimulation() {
               paddingTop: 12,
             }}
           >
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Documentation completion</div>
+            <div style={{ fontWeight: 700, marginBottom: 6 }}>Overall completion</div>
             <div
               style={{
                 height: 10,
@@ -702,6 +903,73 @@ function Field({
   );
 }
 
+function AlertBox({
+  title,
+  text,
+  ok,
+  colors,
+}: {
+  title: string;
+  text: string;
+  ok: boolean;
+  colors: {
+    warnBg: string;
+    warnBorder: string;
+    warnText: string;
+    okBg: string;
+    okBorder: string;
+    okText: string;
+  };
+}) {
+  return (
+    <div
+      style={{
+        border: `1px solid ${ok ? colors.okBorder : colors.warnBorder}`,
+        backgroundColor: ok ? colors.okBg : colors.warnBg,
+        color: ok ? colors.okText : colors.warnText,
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 16,
+      }}
+    >
+      <div style={{ fontWeight: 800, marginBottom: 4 }}>{title}</div>
+      <div style={{ lineHeight: 1.6 }}>{text}</div>
+    </div>
+  );
+}
+
+function FlowRow({
+  label,
+  value,
+  input,
+  colors,
+}: {
+  label: string;
+  value: string;
+  input: React.ReactNode;
+  colors: { border: string; muted: string };
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "220px 1fr 1fr",
+        borderTop: `1px solid ${colors.border}`,
+      }}
+    >
+      <div style={flowCellStyle}>
+        <div style={{ fontWeight: 700 }}>{label}</div>
+      </div>
+      <div style={flowCellStyle}>
+        <span style={{ color: value ? "#0f172a" : colors.muted }}>
+          {value || "Not documented"}
+        </span>
+      </div>
+      <div style={flowCellStyle}>{input}</div>
+    </div>
+  );
+}
+
 function inputStyle(colors: {
   border: string;
   text: string;
@@ -718,6 +986,22 @@ function inputStyle(colors: {
   };
 }
 
+function miniInputStyle(colors: {
+  border: string;
+  text: string;
+}): React.CSSProperties {
+  return {
+    width: "100%",
+    padding: "10px 10px",
+    borderRadius: 10,
+    border: `1px solid ${colors.border}`,
+    backgroundColor: "#ffffff",
+    color: colors.text,
+    outline: "none",
+    fontSize: 13,
+  };
+}
+
 const thStyle: React.CSSProperties = {
   textAlign: "left",
   padding: "10px 12px",
@@ -727,4 +1011,14 @@ const thStyle: React.CSSProperties = {
 const tdStyle: React.CSSProperties = {
   padding: "10px 12px",
   borderBottom: "1px solid #e5ecea",
+};
+
+const flowHeadStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRight: "1px solid #dbe7e5",
+};
+
+const flowCellStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRight: "1px solid #e5ecea",
 };
