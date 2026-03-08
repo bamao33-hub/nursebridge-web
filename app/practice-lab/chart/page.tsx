@@ -14,66 +14,104 @@ type TabKey =
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
 
+type DocState = {
+  respRate: string;
+  oxygenDevice: string;
+  oxygenLiters: string;
+  spo2: string;
+  painScore: string;
+  education: boolean;
+  coughDeepBreathing: boolean;
+  incentiveSpirometry: boolean;
+  escalationNoted: boolean;
+  narrative: string;
+};
+
+type FlowState = {
+  temp: string;
+  pulse: string;
+  bp: string;
+  spo2: string;
+  pain: string;
+  lungSounds: string;
+  cough: string;
+  activityTolerance: string;
+};
+
+type MarItem = {
+  med: string;
+  route: string;
+  schedule: string;
+  due: string;
+  status: MarStatus;
+  note: string;
+};
+
+const initialDoc: DocState = {
+  respRate: "",
+  oxygenDevice: "",
+  oxygenLiters: "",
+  spo2: "",
+  painScore: "",
+  education: false,
+  coughDeepBreathing: false,
+  incentiveSpirometry: false,
+  escalationNoted: false,
+  narrative: "",
+};
+
+const initialFlow: FlowState = {
+  temp: "",
+  pulse: "",
+  bp: "",
+  spo2: "",
+  pain: "",
+  lungSounds: "",
+  cough: "",
+  activityTolerance: "",
+};
+
+const initialMar: MarItem[] = [
+  {
+    med: "Ceftriaxone 1g",
+    route: "IV",
+    schedule: "q24h",
+    due: "09:00",
+    status: "Due",
+    note: "",
+  },
+  {
+    med: "Azithromycin 500mg",
+    route: "PO",
+    schedule: "Daily",
+    due: "09:00",
+    status: "Given",
+    note: "Given with water",
+  },
+  {
+    med: "Acetaminophen 650mg",
+    route: "PO",
+    schedule: "PRN",
+    due: "12:00",
+    status: "Late",
+    note: "",
+  },
+  {
+    med: "Albuterol Neb",
+    route: "Neb",
+    schedule: "q6h",
+    due: "14:00",
+    status: "Held",
+    note: "Patient resting; reassess respiratory status",
+  },
+];
+
 export default function ChartSimulation() {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
-  const [doc, setDoc] = useState({
-    respRate: "",
-    oxygenDevice: "",
-    oxygenLiters: "",
-    spo2: "",
-    painScore: "",
-    education: false,
-    coughDeepBreathing: false,
-    incentiveSpirometry: false,
-    escalationNoted: false,
-    narrative: "",
-  });
-
-  const [flow, setFlow] = useState({
-    temp: "",
-    pulse: "",
-    bp: "",
-    spo2: "",
-    pain: "",
-    lungSounds: "",
-    cough: "",
-    activityTolerance: "",
-  });
-
-  const [mar, setMar] = useState([
-    {
-      med: "Ceftriaxone 1g",
-      route: "IV",
-      schedule: "q24h",
-      due: "09:00",
-      status: "Due" as MarStatus,
-      note: "",
-    },
-    {
-      med: "Azithromycin 500mg",
-      route: "PO",
-      schedule: "Daily",
-      due: "09:00",
-      status: "Given" as MarStatus,
-      note: "Given with water",
-    },
-    {
-      med: "Acetaminophen 650mg",
-      route: "PO",
-      schedule: "PRN",
-      due: "12:00",
-      status: "Late" as MarStatus,
-      note: "",
-    },
-    {
-      med: "Albuterol Neb",
-      route: "Neb",
-      schedule: "q6h",
-      due: "14:00",
-      status: "Held" as MarStatus,
-      note: "Patient resting; reassess respiratory status",
-    },
-  ]);
+  const [doc, setDoc] = useState<DocState>(initialDoc);
+  const [flow, setFlow] = useState<FlowState>(initialFlow);
+  const [mar, setMar] = useState<MarItem[]>(initialMar);
+  const [submitted, setSubmitted] = useState(false);
 
   const COLORS = {
     teal: "#0f766e",
@@ -93,6 +131,9 @@ export default function ChartSimulation() {
     lateBg: "#fef2f2",
     lateBorder: "#fca5a5",
     lateText: "#991b1b",
+    scoreBg: "#eff6ff",
+    scoreBorder: "#93c5fd",
+    scoreText: "#1d4ed8",
   };
 
   const tabs: TabKey[] = [
@@ -140,6 +181,60 @@ export default function ChartSimulation() {
     return items;
   }, [mar]);
 
+  const noteGaps = useMemo(() => {
+    const items: string[] = [];
+    if (!doc.narrative.trim()) items.push("Narrative note not completed");
+    if (doc.narrative.trim() && doc.narrative.trim().length < 60) {
+      items.push("Narrative note lacks detail");
+    }
+    if (!doc.escalationNoted) items.push("Escalation/provider notification not documented");
+    return items;
+  }, [doc]);
+
+  const scoreData = useMemo(() => {
+    let score = 100;
+
+    score -= missingDocItems.length * 6;
+    score -= missingFlowItems.length * 5;
+    score -= marGaps.length * 7;
+    score -= noteGaps.length * 4;
+
+    if (doc.education) score += 2;
+    if (doc.coughDeepBreathing) score += 1;
+    if (doc.incentiveSpirometry) score += 1;
+    if (doc.narrative.trim().length >= 100) score += 2;
+
+    score = Math.max(0, Math.min(100, score));
+
+    const strengths: string[] = [];
+    const improvements: string[] = [];
+
+    if (!missingDocItems.length) strengths.push("Key respiratory documentation fields are complete.");
+    if (!missingFlowItems.length) strengths.push("Flowsheet entries support trending and structured charting.");
+    if (!marGaps.length) strengths.push("MAR statuses and follow-up notes are aligned.");
+    if (doc.education) strengths.push("Patient education is documented.");
+    if (doc.narrative.trim().length >= 100) strengths.push("Narrative note includes helpful detail.");
+
+    if (missingDocItems.length) {
+      improvements.push(`Complete core documentation fields: ${missingDocItems.join(", ")}.`);
+    }
+    if (missingFlowItems.length) {
+      improvements.push(`Finish key flowsheet rows: ${missingFlowItems.join(", ")}.`);
+    }
+    if (marGaps.length) {
+      improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
+    }
+    if (noteGaps.length) {
+      improvements.push(`Strengthen note quality: ${noteGaps.join(", ")}.`);
+    }
+
+    let level = "Needs improvement";
+    if (score >= 90) level = "Strong";
+    else if (score >= 75) level = "Developing well";
+
+    return { score, strengths, improvements, level };
+  }, [doc, missingDocItems, missingFlowItems, marGaps, noteGaps]);
+
   const completionPct = Math.max(
     0,
     Math.round(
@@ -151,6 +246,14 @@ export default function ChartSimulation() {
         100
     )
   );
+
+  const resetCase = () => {
+    setDoc(initialDoc);
+    setFlow(initialFlow);
+    setMar(initialMar);
+    setSubmitted(false);
+    setActiveTab("Summary");
+  };
 
   return (
     <main
@@ -246,7 +349,7 @@ export default function ChartSimulation() {
           maxWidth: 1280,
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "220px 1fr 300px",
+          gridTemplateColumns: "220px 1fr 320px",
           gap: 16,
           padding: 20,
         }}
@@ -946,6 +1049,124 @@ export default function ChartSimulation() {
             <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 6 }}>
               {completionPct}% complete
             </div>
+          </div>
+
+          <div
+            style={{
+              marginTop: 14,
+              borderTop: `1px solid ${COLORS.border}`,
+              paddingTop: 12,
+            }}
+          >
+            <div style={{ fontWeight: 700, marginBottom: 6 }}>Score</div>
+            <div
+              style={{
+                border: `1px solid ${COLORS.scoreBorder}`,
+                background: COLORS.scoreBg,
+                color: COLORS.scoreText,
+                borderRadius: 10,
+                padding: 12,
+              }}
+            >
+              <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1 }}>
+                {scoreData.score}/100
+              </div>
+              <div style={{ fontSize: 13, marginTop: 6 }}>{scoreData.level}</div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginTop: 14,
+              borderTop: `1px solid ${COLORS.border}`,
+              paddingTop: 12,
+            }}
+          >
+            <div style={{ fontWeight: 700, marginBottom: 6 }}>Feedback</div>
+
+            <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.7 }}>
+              {scoreData.strengths.length ? (
+                <div style={{ marginBottom: 10 }}>
+                  <div style={{ fontWeight: 700, color: COLORS.text, marginBottom: 4 }}>
+                    Strengths
+                  </div>
+                  <ul style={{ paddingLeft: 18, margin: 0 }}>
+                    {scoreData.strengths.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              <div>
+                <div style={{ fontWeight: 700, color: COLORS.text, marginBottom: 4 }}>
+                  Improve next
+                </div>
+                <ul style={{ paddingLeft: 18, margin: 0 }}>
+                  {scoreData.improvements.length ? (
+                    scoreData.improvements.map((item) => <li key={item}>{item}</li>)
+                  ) : (
+                    <li>Scenario looks strong. Review the chart one more time before submission.</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginTop: 14,
+              borderTop: `1px solid ${COLORS.border}`,
+              paddingTop: 12,
+              display: "grid",
+              gap: 10,
+            }}
+          >
+            <button
+              onClick={() => setSubmitted(true)}
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: `1px solid ${COLORS.tealDark}`,
+                background: COLORS.teal,
+                color: "#fff",
+                fontWeight: 800,
+                cursor: "pointer",
+              }}
+            >
+              Submit Scenario
+            </button>
+
+            <button
+              onClick={resetCase}
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: `1px solid ${COLORS.border}`,
+                background: "#fff",
+                color: COLORS.text,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Reset Case
+            </button>
+
+            {submitted ? (
+              <div
+                style={{
+                  border: `1px solid ${COLORS.okBorder}`,
+                  background: COLORS.okBg,
+                  color: COLORS.okText,
+                  borderRadius: 10,
+                  padding: 10,
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                }}
+              >
+                Scenario submitted. Final score: <b>{scoreData.score}/100</b>.
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
