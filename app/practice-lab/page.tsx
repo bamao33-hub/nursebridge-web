@@ -1,241 +1,334 @@
 import Link from "next/link";
 
-export default function PracticeLabPage() {
-  const COLORS = {
-    teal: "#0f766e",
-    tealDark: "#0b5f58",
-    bg: "#f7faf9",
-    card: "#ffffff",
-    border: "#dbe7e5",
-    text: "#0f172a",
-    muted: "#475569",
-    soft: "#ecf7f5",
-  };
+const COLORS = {
+  teal: "#0f766e",
+  tealDark: "#0b5f58",
+  bg: "#f7faf9",
+  card: "#ffffff",
+  border: "#dbe7e5",
+  text: "#0f172a",
+  muted: "#475569",
+  soft: "#ecf7f5",
+};
 
+const CASES = [
+  {
+    title: "Case 1 • Pneumonia",
+    subtitle: "Respiratory reassessment and structured documentation",
+    patient: "Maria Gonzalez",
+    room: "412B",
+    focus: [
+      "Oxygen therapy documentation",
+      "Flowsheet completion",
+      "Antibiotic follow-up",
+      "Patient education",
+    ],
+    summary:
+      "Practice respiratory documentation, structured flowsheet charting, and follow-up workflow for a patient admitted with community-acquired pneumonia.",
+    badge: "Foundational",
+  },
+  {
+    title: "Case 2 • CHF Exacerbation",
+    subtitle: "Fluid balance, daily weights, and medication follow-up",
+    patient: "James Carter",
+    room: "518A",
+    focus: [
+      "I&O tracking",
+      "Daily weights",
+      "Edema assessment",
+      "Diuretic follow-up",
+    ],
+    summary:
+      "Practice fluid overload documentation, net balance review, daily weights, and medication workflow in a heart failure case.",
+    badge: "Intermediate",
+  },
+  {
+    title: "Case 3 • Sepsis / Infection Escalation",
+    subtitle: "Urgent reassessment and escalation workflow",
+    patient: "Angela Brooks",
+    room: "620C",
+    focus: [
+      "Abnormal vital sign recognition",
+      "Lactate/culture review",
+      "Antibiotic timing",
+      "Escalation documentation",
+    ],
+    summary:
+      "Practice urgent documentation, sepsis-related workflow thinking, and time-sensitive intervention review for a deteriorating patient.",
+    badge: "High Priority",
+  },
+];
+
+export default function PracticeLabPage() {
   return (
     <main
       style={{
         fontFamily:
           'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
         backgroundColor: COLORS.bg,
-        color: COLORS.text,
         minHeight: "100vh",
+        color: COLORS.text,
       }}
     >
-      <header
+      <div
         style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backgroundColor: "rgba(255,255,255,0.92)",
-          backdropFilter: "blur(8px)",
           borderBottom: `1px solid ${COLORS.border}`,
+          background: "#ffffff",
+          padding: "10px 20px",
         }}
       >
         <div
           style={{
-            maxWidth: 1100,
+            maxWidth: 1180,
             margin: "0 auto",
-            padding: "14px 20px",
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
-            gap: 16,
+            alignItems: "center",
+            gap: 12,
             flexWrap: "wrap",
           }}
         >
-          <Link
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              textDecoration: "none",
-              color: COLORS.text,
-            }}
-          >
-            <img
-              src="/logo-icon.jpeg"
-              alt="NurseBridge Consulting"
-              style={{ height: 44, width: "auto", display: "block" }}
-            />
-            <div style={{ lineHeight: 1.1 }}>
-              <div style={{ fontSize: 18, fontWeight: 800 }}>NurseBridge Consulting LLC</div>
-              <div style={{ fontSize: 13, color: COLORS.muted }}>
-                Clinical Informatics • EHR Optimization • Nursing Preceptorship
-              </div>
-            </div>
-          </Link>
+          <div style={{ fontWeight: 800, fontSize: 22 }}>NurseBridge Practice Lab</div>
 
-          <nav style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-            <Link href="/" style={{ color: COLORS.text, textDecoration: "none", fontSize: 14 }}>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <Link
+              href="/"
+              style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}
+            >
               Home
             </Link>
             <Link
               href="/preceptorship"
-              style={{ color: COLORS.text, textDecoration: "none", fontSize: 14 }}
+              style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}
             >
               Preceptorship
             </Link>
-          </nav>
+          </div>
         </div>
-      </header>
+      </div>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 20px 46px" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "28px 20px 40px" }}>
         <section
           style={{
             border: `1px solid ${COLORS.border}`,
-            borderRadius: 18,
-            padding: "26px 24px",
-            backgroundColor: COLORS.soft,
+            borderRadius: 20,
+            background: COLORS.soft,
+            padding: "28px 24px",
+            marginBottom: 22,
           }}
         >
           <div
             style={{
               display: "inline-flex",
-              gap: 8,
-              padding: "6px 10px",
+              padding: "6px 12px",
               borderRadius: 999,
-              backgroundColor: "#ffffff",
-              color: COLORS.teal,
-              fontSize: 12,
-              fontWeight: 700,
               border: `1px solid ${COLORS.border}`,
+              background: "#ffffff",
+              color: COLORS.tealDark,
+              fontSize: 12,
+              fontWeight: 800,
               marginBottom: 14,
             }}
           >
-            EHR Practice Lab • Coming Soon
+            Mini EHR Simulation • Clinical Informatics Learning
           </div>
 
-          <h1 style={{ fontSize: 40, margin: "0 0 10px 0", lineHeight: 1.08 }}>
-            A simulation space for informatics learning and EHR workflow practice
+          <h1
+            style={{
+              fontSize: 48,
+              lineHeight: 1.05,
+              margin: "0 0 12px",
+              maxWidth: 900,
+            }}
+          >
+            Practice documentation, workflow thinking, and chart review in a mini EHR environment.
           </h1>
 
-          <p style={{ margin: 0, color: COLORS.muted, lineHeight: 1.7, maxWidth: 860 }}>
-            The NurseBridge Practice Lab is being developed as a guided training environment where
-            students and clinicians can practice structured documentation workflows, review mock
-            patient charts, and strengthen real-world informatics thinking.
+          <p
+            style={{
+              margin: 0,
+              color: COLORS.muted,
+              fontSize: 22,
+              lineHeight: 1.6,
+              maxWidth: 980,
+            }}
+          >
+            Choose a training case below to work through structured documentation, flowsheets,
+            MAR review, scoring, feedback, and preceptor-ready summaries.
           </p>
 
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-            <a
-              href="mailto:info@nursebridgeconsulting.com?subject=Practice%20Lab%20Interest"
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: COLORS.teal,
-                color: "white",
-                fontWeight: 800,
-                textDecoration: "none",
-                border: `1px solid ${COLORS.tealDark}`,
-              }}
-            >
-              Email to Request Early Access
-            </a>
-
-            <Link
-              href="/preceptorship"
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: "white",
-                color: COLORS.text,
-                fontWeight: 700,
-                textDecoration: "none",
-                border: `1px solid ${COLORS.border}`,
-              }}
-            >
+            <Link href="/practice-lab/chart" style={primaryButtonStyle}>
+              Open Chart Simulator
+            </Link>
+            <Link href="/preceptorship" style={secondaryButtonStyle}>
               Explore Preceptorship
             </Link>
           </div>
-          <div style={{ marginTop: 12, fontSize: 13, color: COLORS.muted }}>
-  Prefer email directly? Contact{" "}
-  <a
-    href="mailto:info@nursebridgeconsulting.com?subject=Practice%20Lab%20Interest"
-    style={{ color: COLORS.teal, fontWeight: 700, textDecoration: "none" }}
-  >
-    info@nursebridgeconsulting.com
-  </a>
-</div>
         </section>
 
-        <section style={{ paddingTop: 26, paddingBottom: 10 }}>
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: 18,
+            marginBottom: 22,
+          }}
+        >
+          {CASES.map((item) => (
+            <div
+              key={item.title}
+              style={{
+                border: `1px solid ${COLORS.border}`,
+                borderRadius: 18,
+                background: COLORS.card,
+                padding: 20,
+              }}
+            >
+              <div
+                style={{
+                  display: "inline-flex",
+                  padding: "6px 10px",
+                  borderRadius: 999,
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.soft,
+                  color: COLORS.tealDark,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  marginBottom: 12,
+                }}
+              >
+                {item.badge}
+              </div>
+
+              <h2 style={{ margin: "0 0 6px", fontSize: 26 }}>{item.title}</h2>
+              <div style={{ color: COLORS.tealDark, fontWeight: 700, marginBottom: 10 }}>
+                {item.subtitle}
+              </div>
+              <div style={{ color: COLORS.muted, marginBottom: 14 }}>
+                Patient: <b style={{ color: COLORS.text }}>{item.patient}</b> • Room {item.room}
+              </div>
+
+              <p style={{ color: COLORS.muted, lineHeight: 1.7, marginTop: 0 }}>
+                {item.summary}
+              </p>
+
+              <div
+                style={{
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 12,
+                  padding: 14,
+                  background: COLORS.soft,
+                  marginTop: 12,
+                }}
+              >
+                <div style={{ fontWeight: 800, marginBottom: 8 }}>Key learning focus</div>
+                <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8, color: COLORS.muted }}>
+                  {item.focus.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{ marginTop: 16 }}>
+                <Link href="/practice-lab/chart" style={primaryButtonStyle}>
+                  Launch Case
+                </Link>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section
+          style={{
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 18,
+            background: "#ffffff",
+            padding: 22,
+          }}
+        >
+          <div style={{ color: COLORS.tealDark, fontWeight: 800, fontSize: 13, marginBottom: 8 }}>
+            Planned Expansion
+          </div>
+
+          <h2 style={{ margin: "0 0 10px", fontSize: 30 }}>
+            Next cases can expand toward common real-world comorbidity patterns.
+          </h2>
+
+          <p style={{ color: COLORS.muted, lineHeight: 1.8, marginTop: 0 }}>
+            A future diabetes case would fit very naturally here, especially a patient with
+            multiple interacting conditions such as heart failure, chronic kidney disease, or
+            infection. That would let students practice glucose trends, insulin timing, meal
+            coordination, and comorbidity-aware documentation.
+          </p>
+
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 16,
+              gap: 14,
+              marginTop: 14,
             }}
           >
-            {[
-              {
-                title: "Mock patient charts",
-                desc: "Practice navigating realistic training cases with sample patient data, notes, and workflows.",
-              },
-              {
-                title: "Documentation exercises",
-                desc: "Work through structured charting tasks designed to build EHR confidence and efficiency.",
-              },
-              {
-                title: "Informatics thinking",
-                desc: "Learn to identify workflow issues, documentation challenges, and opportunities for optimization.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 16,
-                  padding: 18,
-                  backgroundColor: COLORS.card,
-                }}
-              >
-                <h3 style={{ margin: "0 0 8px 0" }}>{item.title}</h3>
-                <p style={{ margin: 0, color: COLORS.muted, lineHeight: 1.6 }}>{item.desc}</p>
-              </div>
-            ))}
+            <MiniPlanCard
+              title="Future Case 4"
+              text="Diabetes + CHF or CKD with glucose trends, insulin timing, and meal coordination."
+            />
+            <MiniPlanCard
+              title="Future Feature"
+              text="Preceptor comments and evaluation notes attached to printable review summaries."
+            />
+            <MiniPlanCard
+              title="Future Workflow"
+              text="Case-specific checkpoints such as sepsis escalation timing or insulin safety prompts."
+            />
           </div>
         </section>
-
-        <section style={{ paddingTop: 8, paddingBottom: 10 }}>
-          <div
-            style={{
-              border: `1px solid ${COLORS.border}`,
-              borderRadius: 16,
-              padding: 20,
-              backgroundColor: COLORS.card,
-            }}
-          >
-            <div style={{ color: COLORS.teal, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-              Planned Features
-            </div>
-
-            <h2 style={{ margin: "0 0 12px 0" }}>What the first version may include</h2>
-
-            <ul style={{ margin: 0, paddingLeft: 18, color: COLORS.muted, lineHeight: 1.8 }}>
-              <li>Training patient header and chart overview</li>
-              <li>Mock documentation note screen</li>
-              <li>Flowsheet-style practice area</li>
-              <li>Case-based workflow review prompts</li>
-              <li>Student-friendly guided feedback</li>
-            </ul>
-          </div>
-        </section>
-
-        <footer
-          style={{
-            borderTop: `1px solid ${COLORS.border}`,
-            paddingTop: 16,
-            marginTop: 20,
-            color: COLORS.muted,
-            fontSize: 13,
-          }}
-        >
-          © 2026 NurseBridge Consulting LLC
-        </footer>
       </div>
     </main>
   );
 }
+
+function MiniPlanCard({
+  title,
+  text,
+}: {
+  title: string;
+  text: string;
+}) {
+  return (
+    <div
+      style={{
+        border: "1px solid #dbe7e5",
+        borderRadius: 14,
+        padding: 16,
+        background: "#f8fbfa",
+      }}
+    >
+      <div style={{ fontWeight: 800, marginBottom: 6 }}>{title}</div>
+      <div style={{ color: "#475569", lineHeight: 1.7 }}>{text}</div>
+    </div>
+  );
+}
+
+const primaryButtonStyle: React.CSSProperties = {
+  display: "inline-block",
+  padding: "12px 16px",
+  borderRadius: 12,
+  border: "1px solid #0b5f58",
+  background: "#0f766e",
+  color: "#ffffff",
+  fontWeight: 800,
+  textDecoration: "none",
+};
+
+const secondaryButtonStyle: React.CSSProperties = {
+  display: "inline-block",
+  padding: "12px 16px",
+  borderRadius: 12,
+  border: "1px solid #dbe7e5",
+  background: "#ffffff",
+  color: "#0f172a",
+  fontWeight: 700,
+  textDecoration: "none",
+};
