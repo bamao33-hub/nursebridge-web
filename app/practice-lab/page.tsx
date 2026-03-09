@@ -11,51 +11,43 @@ const COLORS = {
   soft: "#ecf7f5",
 };
 
-const CASES = [
+const PATIENTS = [
   {
-    title: "Case 1 • Pneumonia",
-    subtitle: "Respiratory reassessment and structured documentation",
+    caseKey: "pneumonia",
     patient: "Maria Gonzalez",
     room: "412B",
-    focus: [
-      "Oxygen therapy documentation",
-      "Flowsheet completion",
-      "Antibiotic follow-up",
-      "Patient education",
-    ],
-    summary:
-      "Practice respiratory documentation, structured flowsheet charting, and follow-up workflow for a patient admitted with community-acquired pneumonia.",
+    diagnosis: "Pneumonia",
+    status: "Stable",
     badge: "Foundational",
+    summary: "Respiratory reassessment, oxygen therapy documentation, and antibiotic follow-up.",
   },
   {
-    title: "Case 2 • CHF Exacerbation",
-    subtitle: "Fluid balance, daily weights, and medication follow-up",
+    caseKey: "chf",
     patient: "James Carter",
     room: "518A",
-    focus: [
-      "I&O tracking",
-      "Daily weights",
-      "Edema assessment",
-      "Diuretic follow-up",
-    ],
-    summary:
-      "Practice fluid overload documentation, net balance review, daily weights, and medication workflow in a heart failure case.",
+    diagnosis: "CHF Exacerbation",
+    status: "Needs trending",
     badge: "Intermediate",
+    summary: "Fluid balance, daily weights, edema review, and diuretic workflow.",
   },
   {
-    title: "Case 3 • Sepsis / Infection Escalation",
-    subtitle: "Urgent reassessment and escalation workflow",
+    caseKey: "sepsis",
     patient: "Angela Brooks",
     room: "620C",
-    focus: [
-      "Abnormal vital sign recognition",
-      "Lactate/culture review",
-      "Antibiotic timing",
-      "Escalation documentation",
-    ],
-    summary:
-      "Practice urgent documentation, sepsis-related workflow thinking, and time-sensitive intervention review for a deteriorating patient.",
-    badge: "High Priority",
+    diagnosis: "Sepsis secondary to UTI",
+    status: "High priority",
+    badge: "Urgent",
+    summary: "Escalation workflow, lactate review, culture timing, and antibiotic urgency.",
+  },
+  {
+    caseKey: "diabetes",
+    patient: "Future Case",
+    room: "TBD",
+    diagnosis: "Diabetes + Comorbidity",
+    status: "Planned",
+    badge: "Coming Soon",
+    summary: "Glucose trends, insulin timing, meal coordination, and multi-condition documentation.",
+    disabled: true,
   },
 ];
 
@@ -130,113 +122,32 @@ export default function PracticeLabPage() {
               marginBottom: 14,
             }}
           >
-            Mini EHR Simulation • Clinical Informatics Learning
+            Patient List • Mini EHR Workflow
           </div>
 
           <h1
             style={{
-              fontSize: 48,
+              fontSize: 44,
               lineHeight: 1.05,
               margin: "0 0 12px",
               maxWidth: 900,
             }}
           >
-            Practice documentation, workflow thinking, and chart review in a mini EHR environment.
+            Select a patient chart and launch directly into the correct training case.
           </h1>
 
           <p
             style={{
               margin: 0,
               color: COLORS.muted,
-              fontSize: 22,
+              fontSize: 20,
               lineHeight: 1.6,
-              maxWidth: 980,
+              maxWidth: 960,
             }}
           >
-            Choose a training case below to work through structured documentation, flowsheets,
-            MAR review, scoring, feedback, and preceptor-ready summaries.
+            This view is designed to feel more like a real patient list workflow. Choose a patient
+            below to open the corresponding chart simulation.
           </p>
-
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-            <Link href="/practice-lab/chart" style={primaryButtonStyle}>
-              Open Chart Simulator
-            </Link>
-            <Link href="/preceptorship" style={secondaryButtonStyle}>
-              Explore Preceptorship
-            </Link>
-          </div>
-        </section>
-
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 18,
-            marginBottom: 22,
-          }}
-        >
-          {CASES.map((item) => (
-            <div
-              key={item.title}
-              style={{
-                border: `1px solid ${COLORS.border}`,
-                borderRadius: 18,
-                background: COLORS.card,
-                padding: 20,
-              }}
-            >
-              <div
-                style={{
-                  display: "inline-flex",
-                  padding: "6px 10px",
-                  borderRadius: 999,
-                  border: `1px solid ${COLORS.border}`,
-                  background: COLORS.soft,
-                  color: COLORS.tealDark,
-                  fontSize: 12,
-                  fontWeight: 800,
-                  marginBottom: 12,
-                }}
-              >
-                {item.badge}
-              </div>
-
-              <h2 style={{ margin: "0 0 6px", fontSize: 26 }}>{item.title}</h2>
-              <div style={{ color: COLORS.tealDark, fontWeight: 700, marginBottom: 10 }}>
-                {item.subtitle}
-              </div>
-              <div style={{ color: COLORS.muted, marginBottom: 14 }}>
-                Patient: <b style={{ color: COLORS.text }}>{item.patient}</b> • Room {item.room}
-              </div>
-
-              <p style={{ color: COLORS.muted, lineHeight: 1.7, marginTop: 0 }}>
-                {item.summary}
-              </p>
-
-              <div
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 12,
-                  padding: 14,
-                  background: COLORS.soft,
-                  marginTop: 12,
-                }}
-              >
-                <div style={{ fontWeight: 800, marginBottom: 8 }}>Key learning focus</div>
-                <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8, color: COLORS.muted }}>
-                  {item.focus.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div style={{ marginTop: 16 }}>
-                <Link href="/practice-lab/chart" style={primaryButtonStyle}>
-                  Launch Case
-                </Link>
-              </div>
-            </div>
-          ))}
         </section>
 
         <section
@@ -244,91 +155,111 @@ export default function PracticeLabPage() {
             border: `1px solid ${COLORS.border}`,
             borderRadius: 18,
             background: "#ffffff",
-            padding: 22,
+            overflow: "hidden",
           }}
         >
-          <div style={{ color: COLORS.tealDark, fontWeight: 800, fontSize: 13, marginBottom: 8 }}>
-            Planned Expansion
-          </div>
-
-          <h2 style={{ margin: "0 0 10px", fontSize: 30 }}>
-            Next cases can expand toward common real-world comorbidity patterns.
-          </h2>
-
-          <p style={{ color: COLORS.muted, lineHeight: 1.8, marginTop: 0 }}>
-            A future diabetes case would fit very naturally here, especially a patient with
-            multiple interacting conditions such as heart failure, chronic kidney disease, or
-            infection. That would let students practice glucose trends, insulin timing, meal
-            coordination, and comorbidity-aware documentation.
-          </p>
-
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 14,
-              marginTop: 14,
+              gridTemplateColumns: "2fr 1fr 2fr 1fr 1fr",
+              background: COLORS.soft,
+              fontWeight: 800,
+              fontSize: 14,
             }}
           >
-            <MiniPlanCard
-              title="Future Case 4"
-              text="Diabetes + CHF or CKD with glucose trends, insulin timing, and meal coordination."
-            />
-            <MiniPlanCard
-              title="Future Feature"
-              text="Preceptor comments and evaluation notes attached to printable review summaries."
-            />
-            <MiniPlanCard
-              title="Future Workflow"
-              text="Case-specific checkpoints such as sepsis escalation timing or insulin safety prompts."
-            />
+            <div style={headCell}>Patient</div>
+            <div style={headCell}>Room</div>
+            <div style={headCell}>Diagnosis</div>
+            <div style={headCell}>Status</div>
+            <div style={headCell}>Action</div>
           </div>
+
+          {PATIENTS.map((p) => (
+            <div
+              key={`${p.patient}-${p.caseKey}`}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "2fr 1fr 2fr 1fr 1fr",
+                borderTop: `1px solid ${COLORS.border}`,
+                alignItems: "stretch",
+                background: p.disabled ? "#fafafa" : "#ffffff",
+              }}
+            >
+              <div style={bodyCell}>
+                <div style={{ fontWeight: 800 }}>{p.patient}</div>
+                <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 4 }}>{p.summary}</div>
+              </div>
+
+              <div style={bodyCell}>{p.room}</div>
+
+              <div style={bodyCell}>
+                <div>{p.diagnosis}</div>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    marginTop: 8,
+                    padding: "4px 8px",
+                    borderRadius: 999,
+                    border: `1px solid ${COLORS.border}`,
+                    background: COLORS.soft,
+                    color: COLORS.tealDark,
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}
+                >
+                  {p.badge}
+                </div>
+              </div>
+
+              <div style={bodyCell}>{p.status}</div>
+
+              <div style={bodyCell}>
+                {p.disabled ? (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      padding: "10px 12px",
+                      borderRadius: 10,
+                      border: `1px solid ${COLORS.border}`,
+                      background: "#f3f4f6",
+                      color: COLORS.muted,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Coming Soon
+                  </span>
+                ) : (
+                  <Link
+                    href={`/practice-lab/chart?case=${p.caseKey}`}
+                    style={{
+                      display: "inline-block",
+                      padding: "10px 12px",
+                      borderRadius: 10,
+                      border: `1px solid ${COLORS.tealDark}`,
+                      background: COLORS.teal,
+                      color: "#ffffff",
+                      textDecoration: "none",
+                      fontWeight: 800,
+                    }}
+                  >
+                    Open Chart
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
         </section>
       </div>
     </main>
   );
 }
 
-function MiniPlanCard({
-  title,
-  text,
-}: {
-  title: string;
-  text: string;
-}) {
-  return (
-    <div
-      style={{
-        border: "1px solid #dbe7e5",
-        borderRadius: 14,
-        padding: 16,
-        background: "#f8fbfa",
-      }}
-    >
-      <div style={{ fontWeight: 800, marginBottom: 6 }}>{title}</div>
-      <div style={{ color: "#475569", lineHeight: 1.7 }}>{text}</div>
-    </div>
-  );
-}
-
-const primaryButtonStyle: React.CSSProperties = {
-  display: "inline-block",
-  padding: "12px 16px",
-  borderRadius: 12,
-  border: "1px solid #0b5f58",
-  background: "#0f766e",
-  color: "#ffffff",
-  fontWeight: 800,
-  textDecoration: "none",
+const headCell: React.CSSProperties = {
+  padding: "14px 16px",
+  borderRight: "1px solid #dbe7e5",
 };
 
-const secondaryButtonStyle: React.CSSProperties = {
-  display: "inline-block",
-  padding: "12px 16px",
-  borderRadius: 12,
-  border: "1px solid #dbe7e5",
-  background: "#ffffff",
-  color: "#0f172a",
-  fontWeight: 700,
-  textDecoration: "none",
+const bodyCell: React.CSSProperties = {
+  padding: "16px",
+  borderRight: "1px solid #e5ecea",
 };
