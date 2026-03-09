@@ -328,6 +328,7 @@ export default function ChartSimulation() {
   const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar);
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
+  const [reviewMode, setReviewMode] = useState(false);
 
   const currentCase = CASES[caseKey];
 
@@ -562,6 +563,7 @@ export default function ChartSimulation() {
     setMar(CASES[caseKey].mar.map((m) => ({ ...m })));
     setSubmitted(false);
     setUpdated(initialUpdated);
+    setReviewMode(false);
     setActiveTab("Summary");
   };
 
@@ -573,8 +575,204 @@ export default function ChartSimulation() {
     setMar(CASES[nextCase].mar.map((m) => ({ ...m })));
     setSubmitted(false);
     setUpdated(initialUpdated);
+    setReviewMode(false);
     setActiveTab("Summary");
   };
+
+  if (reviewMode) {
+    return (
+      <main
+        style={{
+          fontFamily:
+            'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
+          backgroundColor: "#ffffff",
+          minHeight: "100vh",
+          color: COLORS.text,
+          padding: 24,
+        }}
+      >
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 12,
+              flexWrap: "wrap",
+              alignItems: "center",
+              marginBottom: 20,
+            }}
+          >
+            <div>
+              <div style={{ fontSize: 28, fontWeight: 800 }}>Preceptor Review Summary</div>
+              <div style={{ color: COLORS.muted, marginTop: 6 }}>
+                NurseBridge Practice Lab
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button
+                onClick={() => window.print()}
+                style={primaryButtonStyle}
+              >
+                Print / Save as PDF
+              </button>
+              <button
+                onClick={() => setReviewMode(false)}
+                style={secondaryButtonStyle}
+              >
+                Exit Review Mode
+              </button>
+            </div>
+          </div>
+
+          <ReviewCard title="Case Information">
+            <ReviewGrid
+              items={[
+                ["Case", currentCase.label],
+                ["Patient", currentCase.patientName],
+                ["DOB", currentCase.dob],
+                ["MRN", currentCase.mrn],
+                ["Admit Dx", currentCase.admitDx],
+                ["Room", currentCase.room],
+                ["Submitted", submitted ? "Yes" : "No"],
+              ]}
+            />
+          </ReviewCard>
+
+          <ReviewCard title="Performance Summary">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: 14,
+              }}
+            >
+              <MetricCard label="Score" value={`${scoreData.score}/100`} />
+              <MetricCard label="Level" value={scoreData.level} />
+              <MetricCard label="Completion" value={`${completionPct}%`} />
+            </div>
+          </ReviewCard>
+
+          <ReviewCard title="Strengths">
+            {scoreData.strengths.length ? (
+              <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
+                {scoreData.strengths.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <div style={{ color: COLORS.muted }}>No strengths identified yet.</div>
+            )}
+          </ReviewCard>
+
+          <ReviewCard title="Improvement Areas">
+            {scoreData.improvements.length ? (
+              <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
+                {scoreData.improvements.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <div style={{ color: COLORS.muted }}>No major improvement areas identified.</div>
+            )}
+          </ReviewCard>
+
+          <ReviewCard title="Documentation Snapshot">
+            <ReviewGrid
+              items={[
+                ["Respiratory rate", doc.respRate || "—"],
+                ["Oxygen device", doc.oxygenDevice || "—"],
+                ["Oxygen flow rate", doc.oxygenLiters || "—"],
+                ["SpO₂", doc.spo2 || "—"],
+                ["Pain score", doc.painScore || "—"],
+                ["Education documented", doc.education ? "Yes" : "No"],
+                ["Escalation documented", doc.escalationNoted ? "Yes" : "No"],
+                ["Last updated", updated.documentation || "—"],
+              ]}
+            />
+            <div style={{ marginTop: 14 }}>
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>Narrative note</div>
+              <div
+                style={{
+                  border: "1px solid #dbe7e5",
+                  borderRadius: 10,
+                  padding: 12,
+                  lineHeight: 1.7,
+                  color: doc.narrative ? COLORS.text : COLORS.muted,
+                }}
+              >
+                {doc.narrative || "No narrative note entered."}
+              </div>
+            </div>
+          </ReviewCard>
+
+          <ReviewCard title="Flowsheet Snapshot">
+            <ReviewGrid
+              items={[
+                ["Temperature", flow.temp || "—"],
+                ["Pulse", flow.pulse || "—"],
+                ["Blood Pressure", flow.bp || "—"],
+                ["SpO₂", flow.spo2 || "—"],
+                ["Pain", flow.pain || "—"],
+                ["Lung Sounds", flow.lungSounds || "—"],
+                ["Cough", flow.cough || "—"],
+                ["Activity Tolerance", flow.activityTolerance || "—"],
+                ["Last updated", updated.flowsheet || "—"],
+              ]}
+            />
+          </ReviewCard>
+
+          {caseKey === "chf" ? (
+            <ReviewCard title="CHF I&O / Daily Weight Snapshot">
+              <ReviewGrid
+                items={[
+                  ["Intake", io.intake ? `${io.intake} mL` : "—"],
+                  ["Urine output", io.urineOutput ? `${io.urineOutput} mL` : "—"],
+                  ["Other output", io.otherOutput ? `${io.otherOutput} mL` : "—"],
+                  ["Net balance", netBalance ? `${netBalance} mL` : "—"],
+                  ["Today's weight", io.todayWeight ? `${io.todayWeight} lb` : "—"],
+                  ["Yesterday's weight", io.yesterdayWeight ? `${io.yesterdayWeight} lb` : "—"],
+                  ["Weight trend", weightDelta || "—"],
+                  ["Edema", io.edema || "—"],
+                  ["Fluid restriction reviewed", io.fluidRestrictionReviewed ? "Yes" : "No"],
+                  ["Last updated", updated.io || "—"],
+                ]}
+              />
+            </ReviewCard>
+          ) : null}
+
+          <ReviewCard title="MAR Snapshot">
+            <div style={{ display: "grid", gap: 10 }}>
+              {mar.map((m) => (
+                <div
+                  key={`${m.med}-${m.due}`}
+                  style={{
+                    border: "1px solid #dbe7e5",
+                    borderRadius: 10,
+                    padding: 12,
+                  }}
+                >
+                  <div style={{ fontWeight: 700 }}>{m.med}</div>
+                  <div style={{ color: COLORS.muted, marginTop: 4 }}>
+                    {m.route} • {m.schedule} • Due {m.due}
+                  </div>
+                  <div style={{ marginTop: 6 }}>
+                    <b>Status:</b> {m.status}
+                  </div>
+                  <div style={{ marginTop: 4, color: m.note ? COLORS.text : COLORS.muted }}>
+                    <b>Follow-up note:</b> {m.note || "None documented"}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 12, color: COLORS.muted }}>
+              Last updated: {updated.mar || "—"}
+            </div>
+          </ReviewCard>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main
@@ -1599,30 +1797,21 @@ export default function ChartSimulation() {
           >
             <button
               onClick={() => setSubmitted(true)}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: `1px solid ${COLORS.tealDark}`,
-                background: COLORS.teal,
-                color: "#fff",
-                fontWeight: 800,
-                cursor: "pointer",
-              }}
+              style={primaryButtonStyle}
             >
               Submit Scenario
             </button>
 
             <button
+              onClick={() => setReviewMode(true)}
+              style={secondaryButtonStyle}
+            >
+              Open Preceptor Review Mode
+            </button>
+
+            <button
               onClick={resetCase}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: `1px solid ${COLORS.border}`,
-                background: "#fff",
-                color: COLORS.text,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
+              style={secondaryButtonStyle}
             >
               Reset Case
             </button>
@@ -1671,6 +1860,82 @@ function SectionHeaderWithTime({
       <div style={{ fontSize: 12, color: "#475569" }}>
         Last updated: {stamp || "—"}
       </div>
+    </div>
+  );
+}
+
+function ReviewCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      style={{
+        border: "1px solid #dbe7e5",
+        borderRadius: 14,
+        padding: 18,
+        marginBottom: 18,
+        background: "#fff",
+      }}
+    >
+      <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 12 }}>{title}</div>
+      {children}
+    </section>
+  );
+}
+
+function ReviewGrid({
+  items,
+}: {
+  items: [string, string][];
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 12,
+      }}
+    >
+      {items.map(([label, value]) => (
+        <div
+          key={label}
+          style={{
+            border: "1px solid #dbe7e5",
+            borderRadius: 10,
+            padding: 12,
+            background: "#f8fbfa",
+          }}
+        >
+          <div style={{ fontSize: 12, color: "#475569", marginBottom: 4 }}>{label}</div>
+          <div style={{ fontWeight: 700 }}>{value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MetricCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div
+      style={{
+        border: "1px solid #dbe7e5",
+        borderRadius: 10,
+        padding: 14,
+        background: "#f8fbfa",
+      }}
+    >
+      <div style={{ fontSize: 12, color: "#475569", marginBottom: 6 }}>{label}</div>
+      <div style={{ fontWeight: 800, fontSize: 24 }}>{value}</div>
     </div>
   );
 }
@@ -1880,6 +2145,26 @@ function miniInputStyle(colors: {
     fontSize: 13,
   };
 }
+
+const primaryButtonStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRadius: 10,
+  border: "1px solid #0b5f58",
+  background: "#0f766e",
+  color: "#fff",
+  fontWeight: 800,
+  cursor: "pointer",
+};
+
+const secondaryButtonStyle: React.CSSProperties = {
+  padding: "10px 12px",
+  borderRadius: 10,
+  border: "1px solid #dbe7e5",
+  background: "#fff",
+  color: "#0f172a",
+  fontWeight: 700,
+  cursor: "pointer",
+};
 
 const thStyle: React.CSSProperties = {
   textAlign: "left",
