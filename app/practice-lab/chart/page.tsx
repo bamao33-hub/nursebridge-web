@@ -44,7 +44,6 @@ type IOState = {
   intake: string;
   urineOutput: string;
   otherOutput: string;
-  netBalance: string;
   todayWeight: string;
   yesterdayWeight: string;
   edema: string;
@@ -90,6 +89,13 @@ type CaseConfig = {
   summaryCards: { label: string; value: string }[];
 };
 
+type UpdatedState = {
+  documentation: string;
+  flowsheet: string;
+  mar: string;
+  io: string;
+};
+
 const initialDoc: DocState = {
   respRate: "",
   oxygenDevice: "",
@@ -118,11 +124,17 @@ const initialIO: IOState = {
   intake: "",
   urineOutput: "",
   otherOutput: "",
-  netBalance: "",
   todayWeight: "",
   yesterdayWeight: "",
   edema: "",
   fluidRestrictionReviewed: false,
+};
+
+const initialUpdated: UpdatedState = {
+  documentation: "",
+  flowsheet: "",
+  mar: "",
+  io: "",
 };
 
 const CASES: Record<CaseKey, CaseConfig> = {
@@ -298,6 +310,15 @@ const CASES: Record<CaseKey, CaseConfig> = {
   },
 };
 
+function nowStamp() {
+  return new Date().toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export default function ChartSimulation() {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
   const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
@@ -306,6 +327,7 @@ export default function ChartSimulation() {
   const [io, setIo] = useState<IOState>(initialIO);
   const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar);
   const [submitted, setSubmitted] = useState(false);
+  const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
 
   const currentCase = CASES[caseKey];
 
@@ -343,6 +365,22 @@ export default function ChartSimulation() {
     "MAR",
   ];
 
+  const netBalance = useMemo(() => {
+    const intake = parseFloat(io.intake || "0");
+    const urine = parseFloat(io.urineOutput || "0");
+    const other = parseFloat(io.otherOutput || "0");
+    if (
+      (!io.intake && !io.urineOutput && !io.otherOutput) ||
+      Number.isNaN(intake) ||
+      Number.isNaN(urine) ||
+      Number.isNaN(other)
+    ) {
+      return "";
+    }
+    const total = intake - urine - other;
+    return total > 0 ? `+${total}` : `${total}`;
+  }, [io.intake, io.urineOutput, io.otherOutput]);
+
   const missingDocItems = useMemo(() => {
     const items: string[] = [];
     if (!doc.respRate) items.push("Respiratory rate");
@@ -370,12 +408,12 @@ export default function ChartSimulation() {
     const items: string[] = [];
     if (!io.intake) items.push("Intake");
     if (!io.urineOutput) items.push("Urine output");
-    if (!io.netBalance) items.push("Net balance");
+    if (!netBalance) items.push("Net balance");
     if (!io.todayWeight) items.push("Today's weight");
     if (!io.yesterdayWeight) items.push("Yesterday's weight");
     if (!io.edema) items.push("Edema assessment");
     return items;
-  }, [caseKey, io]);
+  }, [caseKey, io, netBalance]);
 
   const marGaps = useMemo(() => {
     const items: string[] = [];
@@ -474,15 +512,48 @@ export default function ChartSimulation() {
   const completionPct = Math.max(
     0,
     Math.round(
-      ((caseKey === "chf" ? 24 : 18) -
+      (((caseKey === "chf" ? 24 : 18) -
         Math.min(missingDocItems.length, 6) -
         Math.min(missingFlowItems.length, 6) -
         Math.min(marGaps.length, 6) -
         (caseKey === "chf" ? Math.min(missingIOItems.length, 6) : 0)) /
-        (caseKey === "chf" ? 24 : 18) *
+        (caseKey === "chf" ? 24 : 18)) *
         100
     )
   );
+
+  const updateDocField = <K extends keyof DocState>(key: K, value: DocState[K]) => {
+    setDoc((prev) => ({ ...prev, [key]: value }));
+    setUpdated((prev) => ({ ...prev, documentation: nowStamp() }));
+  };
+
+  const updateFlowField = <K extends keyof FlowState>(key: K, value: FlowState[K]) => {
+    setFlow((prev) => ({ ...prev, [key]: value }));
+    setUpdated((prev) => ({ ...prev, flowsheet: nowStamp() }));
+  };
+
+  const updateIOField = <K extends keyof IOState>(key: K, value: IOState[K]) => {
+    setIo((prev) => ({ ...prev, [key]: value }));
+    setUpdated((prev) => ({ ...prev, io: nowStamp() }));
+  };
+
+  const updateMarStatus = (idx: number, status: MarStatus) => {
+    setMar((prev) => {
+      const next = [...prev];
+      next[idx].status = status;
+      return next;
+    });
+    setUpdated((prev) => ({ ...prev, mar: nowStamp() }));
+  };
+
+  const updateMarNote = (idx: number, note: string) => {
+    setMar((prev) => {
+      const next = [...prev];
+      next[idx].note = note;
+      return next;
+    });
+    setUpdated((prev) => ({ ...prev, mar: nowStamp() }));
+  };
 
   const resetCase = () => {
     setDoc(initialDoc);
@@ -490,6 +561,7 @@ export default function ChartSimulation() {
     setIo(initialIO);
     setMar(CASES[caseKey].mar.map((m) => ({ ...m })));
     setSubmitted(false);
+    setUpdated(initialUpdated);
     setActiveTab("Summary");
   };
 
@@ -500,6 +572,7 @@ export default function ChartSimulation() {
     setIo(initialIO);
     setMar(CASES[nextCase].mar.map((m) => ({ ...m })));
     setSubmitted(false);
+    setUpdated(initialUpdated);
     setActiveTab("Summary");
   };
 
@@ -758,8 +831,7 @@ export default function ChartSimulation() {
 
           {activeTab === "Documentation" && (
             <div>
-              <h2 style={{ marginTop: 0 }}>Documentation Workspace</h2>
-
+              <SectionHeaderWithTime title="Documentation Workspace" stamp={updated.documentation} />
               <AlertBox
                 title={
                   missingDocItems.length
@@ -785,7 +857,7 @@ export default function ChartSimulation() {
                 <Field label="Respiratory rate">
                   <input
                     value={doc.respRate}
-                    onChange={(e) => setDoc({ ...doc, respRate: e.target.value })}
+                    onChange={(e) => updateDocField("respRate", e.target.value)}
                     style={inputStyle(COLORS)}
                     placeholder="e.g., 24"
                   />
@@ -794,7 +866,7 @@ export default function ChartSimulation() {
                 <Field label="Oxygen device">
                   <select
                     value={doc.oxygenDevice}
-                    onChange={(e) => setDoc({ ...doc, oxygenDevice: e.target.value })}
+                    onChange={(e) => updateDocField("oxygenDevice", e.target.value)}
                     style={inputStyle(COLORS)}
                   >
                     <option value="">Select...</option>
@@ -808,7 +880,7 @@ export default function ChartSimulation() {
                 <Field label="Oxygen flow rate">
                   <input
                     value={doc.oxygenLiters}
-                    onChange={(e) => setDoc({ ...doc, oxygenLiters: e.target.value })}
+                    onChange={(e) => updateDocField("oxygenLiters", e.target.value)}
                     style={inputStyle(COLORS)}
                     placeholder="e.g., 2 L/min"
                   />
@@ -817,7 +889,7 @@ export default function ChartSimulation() {
                 <Field label="SpO₂">
                   <input
                     value={doc.spo2}
-                    onChange={(e) => setDoc({ ...doc, spo2: e.target.value })}
+                    onChange={(e) => updateDocField("spo2", e.target.value)}
                     style={inputStyle(COLORS)}
                     placeholder="e.g., 94%"
                   />
@@ -826,7 +898,7 @@ export default function ChartSimulation() {
                 <Field label="Pain score">
                   <input
                     value={doc.painScore}
-                    onChange={(e) => setDoc({ ...doc, painScore: e.target.value })}
+                    onChange={(e) => updateDocField("painScore", e.target.value)}
                     style={inputStyle(COLORS)}
                     placeholder="0–10"
                   />
@@ -846,27 +918,27 @@ export default function ChartSimulation() {
 
                 <ChecklistRow
                   checked={doc.education}
-                  onChange={() => setDoc({ ...doc, education: !doc.education })}
+                  onChange={() => updateDocField("education", !doc.education)}
                   label="Education provided about disease process and therapy"
                 />
                 <ChecklistRow
                   checked={doc.coughDeepBreathing}
                   onChange={() =>
-                    setDoc({ ...doc, coughDeepBreathing: !doc.coughDeepBreathing })
+                    updateDocField("coughDeepBreathing", !doc.coughDeepBreathing)
                   }
                   label="Breathing / self-management interventions reinforced"
                 />
                 <ChecklistRow
                   checked={doc.incentiveSpirometry}
                   onChange={() =>
-                    setDoc({ ...doc, incentiveSpirometry: !doc.incentiveSpirometry })
+                    updateDocField("incentiveSpirometry", !doc.incentiveSpirometry)
                   }
                   label="Therapeutic technique / equipment use reviewed"
                 />
                 <ChecklistRow
                   checked={doc.escalationNoted}
                   onChange={() =>
-                    setDoc({ ...doc, escalationNoted: !doc.escalationNoted })
+                    updateDocField("escalationNoted", !doc.escalationNoted)
                   }
                   label="Escalation / provider notification documented if indicated"
                 />
@@ -876,7 +948,7 @@ export default function ChartSimulation() {
                 <Field label="Brief documentation narrative">
                   <textarea
                     value={doc.narrative}
-                    onChange={(e) => setDoc({ ...doc, narrative: e.target.value })}
+                    onChange={(e) => updateDocField("narrative", e.target.value)}
                     style={{
                       ...inputStyle(COLORS),
                       minHeight: 110,
@@ -896,8 +968,7 @@ export default function ChartSimulation() {
 
           {activeTab === "Flowsheet" && (
             <div>
-              <h2 style={{ marginTop: 0 }}>Flowsheet</h2>
-
+              <SectionHeaderWithTime title="Flowsheet" stamp={updated.flowsheet} />
               <AlertBox
                 title={
                   missingFlowItems.length
@@ -940,7 +1011,7 @@ export default function ChartSimulation() {
                   input={
                     <input
                       value={flow.temp}
-                      onChange={(e) => setFlow({ ...flow, temp: e.target.value })}
+                      onChange={(e) => updateFlowField("temp", e.target.value)}
                       style={miniInputStyle(COLORS)}
                       placeholder="e.g., 38.1 °C"
                     />
@@ -953,7 +1024,7 @@ export default function ChartSimulation() {
                   input={
                     <input
                       value={flow.pulse}
-                      onChange={(e) => setFlow({ ...flow, pulse: e.target.value })}
+                      onChange={(e) => updateFlowField("pulse", e.target.value)}
                       style={miniInputStyle(COLORS)}
                       placeholder="e.g., 104"
                     />
@@ -966,7 +1037,7 @@ export default function ChartSimulation() {
                   input={
                     <input
                       value={flow.bp}
-                      onChange={(e) => setFlow({ ...flow, bp: e.target.value })}
+                      onChange={(e) => updateFlowField("bp", e.target.value)}
                       style={miniInputStyle(COLORS)}
                       placeholder="e.g., 138/82"
                     />
@@ -979,7 +1050,7 @@ export default function ChartSimulation() {
                   input={
                     <input
                       value={flow.spo2}
-                      onChange={(e) => setFlow({ ...flow, spo2: e.target.value })}
+                      onChange={(e) => updateFlowField("spo2", e.target.value)}
                       style={miniInputStyle(COLORS)}
                       placeholder="e.g., 94%"
                     />
@@ -992,7 +1063,7 @@ export default function ChartSimulation() {
                   input={
                     <input
                       value={flow.pain}
-                      onChange={(e) => setFlow({ ...flow, pain: e.target.value })}
+                      onChange={(e) => updateFlowField("pain", e.target.value)}
                       style={miniInputStyle(COLORS)}
                       placeholder="0–10"
                     />
@@ -1005,7 +1076,7 @@ export default function ChartSimulation() {
                   input={
                     <select
                       value={flow.lungSounds}
-                      onChange={(e) => setFlow({ ...flow, lungSounds: e.target.value })}
+                      onChange={(e) => updateFlowField("lungSounds", e.target.value)}
                       style={miniInputStyle(COLORS)}
                     >
                       <option value="">Select...</option>
@@ -1023,7 +1094,7 @@ export default function ChartSimulation() {
                   input={
                     <select
                       value={flow.cough}
-                      onChange={(e) => setFlow({ ...flow, cough: e.target.value })}
+                      onChange={(e) => updateFlowField("cough", e.target.value)}
                       style={miniInputStyle(COLORS)}
                     >
                       <option value="">Select...</option>
@@ -1040,9 +1111,7 @@ export default function ChartSimulation() {
                   input={
                     <select
                       value={flow.activityTolerance}
-                      onChange={(e) =>
-                        setFlow({ ...flow, activityTolerance: e.target.value })
-                      }
+                      onChange={(e) => updateFlowField("activityTolerance", e.target.value)}
                       style={miniInputStyle(COLORS)}
                     >
                       <option value="">Select...</option>
@@ -1064,7 +1133,10 @@ export default function ChartSimulation() {
 
           {activeTab === "I&O" && (
             <div>
-              <h2 style={{ marginTop: 0 }}>Intake & Output / Daily Weights</h2>
+              <SectionHeaderWithTime
+                title="Intake & Output / Daily Weights"
+                stamp={updated.io}
+              />
 
               {caseKey !== "chf" ? (
                 <div
@@ -1107,7 +1179,7 @@ export default function ChartSimulation() {
                     <Field label="Intake (mL)">
                       <input
                         value={io.intake}
-                        onChange={(e) => setIo({ ...io, intake: e.target.value })}
+                        onChange={(e) => updateIOField("intake", e.target.value)}
                         style={inputStyle(COLORS)}
                         placeholder="e.g., 1500"
                       />
@@ -1116,7 +1188,7 @@ export default function ChartSimulation() {
                     <Field label="Urine output (mL)">
                       <input
                         value={io.urineOutput}
-                        onChange={(e) => setIo({ ...io, urineOutput: e.target.value })}
+                        onChange={(e) => updateIOField("urineOutput", e.target.value)}
                         style={inputStyle(COLORS)}
                         placeholder="e.g., 1100"
                       />
@@ -1125,7 +1197,7 @@ export default function ChartSimulation() {
                     <Field label="Other output (mL)">
                       <input
                         value={io.otherOutput}
-                        onChange={(e) => setIo({ ...io, otherOutput: e.target.value })}
+                        onChange={(e) => updateIOField("otherOutput", e.target.value)}
                         style={inputStyle(COLORS)}
                         placeholder="e.g., 0"
                       />
@@ -1133,17 +1205,21 @@ export default function ChartSimulation() {
 
                     <Field label="Net balance (mL)">
                       <input
-                        value={io.netBalance}
-                        onChange={(e) => setIo({ ...io, netBalance: e.target.value })}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., +400"
+                        value={netBalance}
+                        readOnly
+                        style={{
+                          ...inputStyle(COLORS),
+                          backgroundColor: COLORS.soft,
+                          fontWeight: 700,
+                        }}
+                        placeholder="Auto-calculated"
                       />
                     </Field>
 
                     <Field label="Today's weight (lb)">
                       <input
                         value={io.todayWeight}
-                        onChange={(e) => setIo({ ...io, todayWeight: e.target.value })}
+                        onChange={(e) => updateIOField("todayWeight", e.target.value)}
                         style={inputStyle(COLORS)}
                         placeholder="e.g., 198.4"
                       />
@@ -1152,7 +1228,7 @@ export default function ChartSimulation() {
                     <Field label="Yesterday's weight (lb)">
                       <input
                         value={io.yesterdayWeight}
-                        onChange={(e) => setIo({ ...io, yesterdayWeight: e.target.value })}
+                        onChange={(e) => updateIOField("yesterdayWeight", e.target.value)}
                         style={inputStyle(COLORS)}
                         placeholder="e.g., 194.8"
                       />
@@ -1161,7 +1237,7 @@ export default function ChartSimulation() {
                     <Field label="Edema assessment">
                       <select
                         value={io.edema}
-                        onChange={(e) => setIo({ ...io, edema: e.target.value })}
+                        onChange={(e) => updateIOField("edema", e.target.value)}
                         style={inputStyle(COLORS)}
                       >
                         <option value="">Select...</option>
@@ -1185,10 +1261,10 @@ export default function ChartSimulation() {
                     <ChecklistRow
                       checked={io.fluidRestrictionReviewed}
                       onChange={() =>
-                        setIo({
-                          ...io,
-                          fluidRestrictionReviewed: !io.fluidRestrictionReviewed,
-                        })
+                        updateIOField(
+                          "fluidRestrictionReviewed",
+                          !io.fluidRestrictionReviewed
+                        )
                       }
                       label="Fluid restriction and CHF self-management teaching reviewed"
                     />
@@ -1268,8 +1344,10 @@ export default function ChartSimulation() {
 
           {activeTab === "MAR" && (
             <div>
-              <h2 style={{ marginTop: 0 }}>Medication Administration Record (MAR)</h2>
-
+              <SectionHeaderWithTime
+                title="Medication Administration Record (MAR)"
+                stamp={updated.mar}
+              />
               <AlertBox
                 title={marGaps.length ? "MAR review needed" : "MAR looks complete"}
                 text={
@@ -1327,11 +1405,7 @@ export default function ChartSimulation() {
                     <div style={marCellStyle}>
                       <select
                         value={m.status}
-                        onChange={(e) => {
-                          const next = [...mar];
-                          next[idx].status = e.target.value as MarStatus;
-                          setMar(next);
-                        }}
+                        onChange={(e) => updateMarStatus(idx, e.target.value as MarStatus)}
                         style={miniInputStyle(COLORS)}
                       >
                         <option value="Due">Due</option>
@@ -1343,11 +1417,7 @@ export default function ChartSimulation() {
                     <div style={marCellStyle}>
                       <input
                         value={m.note}
-                        onChange={(e) => {
-                          const next = [...mar];
-                          next[idx].note = e.target.value;
-                          setMar(next);
-                        }}
+                        onChange={(e) => updateMarNote(idx, e.target.value)}
                         style={miniInputStyle(COLORS)}
                         placeholder="Add note if held / late"
                       />
@@ -1408,6 +1478,22 @@ export default function ChartSimulation() {
                 <li key={goal}>{goal}</li>
               ))}
             </ul>
+          </div>
+
+          <div
+            style={{
+              marginTop: 14,
+              borderTop: `1px solid ${COLORS.border}`,
+              paddingTop: 12,
+            }}
+          >
+            <div style={{ fontWeight: 700, marginBottom: 6 }}>Last updated</div>
+            <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.8 }}>
+              <div>Documentation: {updated.documentation || "—"}</div>
+              <div>Flowsheet: {updated.flowsheet || "—"}</div>
+              <div>I&O: {updated.io || "—"}</div>
+              <div>MAR: {updated.mar || "—"}</div>
+            </div>
           </div>
 
           <div
@@ -1560,6 +1646,32 @@ export default function ChartSimulation() {
         </div>
       </div>
     </main>
+  );
+}
+
+function SectionHeaderWithTime({
+  title,
+  stamp,
+}: {
+  title: string;
+  stamp: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        gap: 12,
+        alignItems: "center",
+        flexWrap: "wrap",
+        marginBottom: 8,
+      }}
+    >
+      <h2 style={{ margin: 0 }}>{title}</h2>
+      <div style={{ fontSize: 12, color: "#475569" }}>
+        Last updated: {stamp || "—"}
+      </div>
+    </div>
   );
 }
 
