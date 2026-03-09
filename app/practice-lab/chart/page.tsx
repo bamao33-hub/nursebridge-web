@@ -14,7 +14,7 @@ type TabKey =
   | "I&O";
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
-type CaseKey = "pneumonia" | "chf";
+type CaseKey = "pneumonia" | "chf" | "sepsis";
 
 type DocState = {
   respRate: string;
@@ -181,38 +181,10 @@ const CASES: Record<CaseKey, CaseConfig> = {
     orderPrompt:
       "Which orders require nursing follow-through documentation, and where would you expect that documentation to appear in the chart?",
     mar: [
-      {
-        med: "Ceftriaxone 1g",
-        route: "IV",
-        schedule: "q24h",
-        due: "09:00",
-        status: "Due",
-        note: "",
-      },
-      {
-        med: "Azithromycin 500mg",
-        route: "PO",
-        schedule: "Daily",
-        due: "09:00",
-        status: "Given",
-        note: "Given with water",
-      },
-      {
-        med: "Acetaminophen 650mg",
-        route: "PO",
-        schedule: "PRN",
-        due: "12:00",
-        status: "Late",
-        note: "",
-      },
-      {
-        med: "Albuterol Neb",
-        route: "Neb",
-        schedule: "q6h",
-        due: "14:00",
-        status: "Held",
-        note: "Patient resting; reassess respiratory status",
-      },
+      { med: "Ceftriaxone 1g", route: "IV", schedule: "q24h", due: "09:00", status: "Due", note: "" },
+      { med: "Azithromycin 500mg", route: "PO", schedule: "Daily", due: "09:00", status: "Given", note: "Given with water" },
+      { med: "Acetaminophen 650mg", route: "PO", schedule: "PRN", due: "12:00", status: "Late", note: "" },
+      { med: "Albuterol Neb", route: "Neb", schedule: "q6h", due: "14:00", status: "Held", note: "Patient resting; reassess respiratory status" },
     ],
     summaryCards: [
       { label: "Primary Nurse", value: "J. Thompson, RN" },
@@ -266,38 +238,10 @@ const CASES: Record<CaseKey, CaseConfig> = {
     orderPrompt:
       "Which CHF-related orders require consistent nursing documentation and trending for safe care?",
     mar: [
-      {
-        med: "Furosemide 40mg",
-        route: "IV",
-        schedule: "BID",
-        due: "08:00",
-        status: "Due",
-        note: "",
-      },
-      {
-        med: "Potassium Chloride 20 mEq",
-        route: "PO",
-        schedule: "Daily",
-        due: "09:00",
-        status: "Given",
-        note: "Given with breakfast",
-      },
-      {
-        med: "Metoprolol 25mg",
-        route: "PO",
-        schedule: "BID",
-        due: "09:00",
-        status: "Held",
-        note: "",
-      },
-      {
-        med: "Enoxaparin 40mg",
-        route: "SubQ",
-        schedule: "Daily",
-        due: "10:00",
-        status: "Given",
-        note: "Administered to abdomen",
-      },
+      { med: "Furosemide 40mg", route: "IV", schedule: "BID", due: "08:00", status: "Due", note: "" },
+      { med: "Potassium Chloride 20 mEq", route: "PO", schedule: "Daily", due: "09:00", status: "Given", note: "Given with breakfast" },
+      { med: "Metoprolol 25mg", route: "PO", schedule: "BID", due: "09:00", status: "Held", note: "" },
+      { med: "Enoxaparin 40mg", route: "SubQ", schedule: "Daily", due: "10:00", status: "Given", note: "Administered to abdomen" },
     ],
     summaryCards: [
       { label: "Primary Nurse", value: "L. Harris, RN" },
@@ -305,6 +249,63 @@ const CASES: Record<CaseKey, CaseConfig> = {
       { label: "Allergies", value: "ACE inhibitors" },
       { label: "Diet", value: "Low sodium" },
       { label: "Current O₂", value: "2L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
+  sepsis: {
+    key: "sepsis",
+    label: "Case 3 • Sepsis / Infection Escalation",
+    patientName: "Angela Brooks",
+    dob: "07/19/1966",
+    mrn: "661782",
+    admitDx: "Sepsis secondary to UTI",
+    room: "620C",
+    scenario:
+      "Sepsis screening, abnormal vital sign trending, elevated lactate review, culture timing, antibiotic administration, fluid resuscitation, and rapid escalation workflow.",
+    learningGoals: [
+      "Recognize sepsis-related abnormal trends",
+      "Connect time-sensitive tasks to documentation quality",
+      "Review escalation and provider notification workflow",
+      "Track culture / antibiotic timing logic",
+      "Practice structured documentation under urgency",
+    ],
+    summary:
+      "Patient admitted with suspected sepsis secondary to urinary tract infection. Febrile, tachycardic, hypotensive, and intermittently confused. Blood cultures, lactate, IV fluids, and broad-spectrum antibiotics ordered. Escalation timing and reassessment are critical.",
+    summaryPrompt:
+      "Which structured documentation fields are most critical when a patient is showing possible sepsis and requires rapid reassessment and escalation?",
+    noteTitle: "Sepsis Reassessment Note",
+    noteBody:
+      "Patient febrile and tachycardic with soft blood pressure. Provider notified of clinical deterioration. Blood cultures obtained and IV fluid bolus initiated per order. Antibiotic timing and lactate follow-up under review.",
+    notePrompt:
+      "Strengthen the note by adding exact abnormal findings, escalation timing, intervention response, and reassessment details.",
+    labs: [
+      { lab: "WBC", result: "18.9", reference: "4.0–11.0", status: "High" },
+      { lab: "Lactate", result: "4.3", reference: "0.5–2.0", status: "Critical High" },
+      { lab: "Creatinine", result: "1.8", reference: "0.6–1.2", status: "High" },
+      { lab: "Procalcitonin", result: "6.2", reference: "<0.10", status: "High" },
+    ],
+    labPrompt:
+      "Which laboratory findings most strongly support urgent sepsis escalation, and how should they influence reassessment and communication workflow?",
+    orders: [
+      "Blood cultures x2 prior to antibiotics",
+      "Normal saline 30 mL/kg bolus",
+      "Piperacillin-tazobactam 3.375g IV now",
+      "Repeat lactate in 2 hours",
+    ],
+    orderPrompt:
+      "Which sepsis orders are most time-sensitive, and where should completion and follow-up be documented to support safe escalation?",
+    mar: [
+      { med: "Piperacillin-tazobactam 3.375g", route: "IV", schedule: "Now", due: "08:15", status: "Due", note: "" },
+      { med: "Normal Saline Bolus", route: "IV", schedule: "Once", due: "08:20", status: "Given", note: "Bolus started" },
+      { med: "Acetaminophen 650mg", route: "PO", schedule: "PRN", due: "08:30", status: "Late", note: "" },
+      { med: "Vancomycin 1g", route: "IV", schedule: "Now", due: "09:00", status: "Held", note: "" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "S. Reed, RN" },
+      { label: "Attending", value: "M. Ellis, MD" },
+      { label: "Allergies", value: "Sulfa" },
+      { label: "Isolation", value: "Standard" },
+      { label: "Current O₂", value: "3L NC" },
       { label: "Code Status", value: "Full Code" },
     ],
   },
@@ -325,7 +326,7 @@ export default function ChartSimulation() {
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
   const [io, setIo] = useState<IOState>(initialIO);
-  const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar);
+  const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar.map((m) => ({ ...m })));
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
@@ -451,7 +452,6 @@ export default function ChartSimulation() {
 
   const scoreData = useMemo(() => {
     let score = 100;
-
     score -= missingDocItems.length * 6;
     score -= missingFlowItems.length * 5;
     score -= marGaps.length * 7;
@@ -474,41 +474,20 @@ export default function ChartSimulation() {
     if (!marGaps.length) strengths.push("MAR statuses and follow-up notes are aligned.");
     if (doc.education) strengths.push("Patient education is documented.");
     if (doc.narrative.trim().length >= 100) strengths.push("Narrative note includes helpful detail.");
-    if (caseKey === "chf" && !missingIOItems.length) {
-      strengths.push("CHF intake/output and daily weight tracking are documented.");
-    }
+    if (caseKey === "chf" && !missingIOItems.length) strengths.push("CHF intake/output and daily weight tracking are documented.");
 
-    if (missingDocItems.length) {
-      improvements.push(`Complete core documentation fields: ${missingDocItems.join(", ")}.`);
-    }
-    if (missingFlowItems.length) {
-      improvements.push(`Finish key flowsheet rows: ${missingFlowItems.join(", ")}.`);
-    }
-    if (caseKey === "chf" && missingIOItems.length) {
-      improvements.push(`Complete CHF I&O / weight fields: ${missingIOItems.join(", ")}.`);
-    }
-    if (marGaps.length) {
-      improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
-    }
-    if (noteGaps.length) {
-      improvements.push(`Strengthen note quality: ${noteGaps.join(", ")}.`);
-    }
+    if (missingDocItems.length) improvements.push(`Complete core documentation fields: ${missingDocItems.join(", ")}.`);
+    if (missingFlowItems.length) improvements.push(`Finish key flowsheet rows: ${missingFlowItems.join(", ")}.`);
+    if (caseKey === "chf" && missingIOItems.length) improvements.push(`Complete CHF I&O / weight fields: ${missingIOItems.join(", ")}.`);
+    if (marGaps.length) improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
+    if (noteGaps.length) improvements.push(`Strengthen note quality: ${noteGaps.join(", ")}.`);
 
     let level = "Needs improvement";
     if (score >= 90) level = "Strong";
     else if (score >= 75) level = "Developing well";
 
     return { score, strengths, improvements, level };
-  }, [
-    caseKey,
-    doc,
-    io.fluidRestrictionReviewed,
-    marGaps,
-    missingDocItems,
-    missingFlowItems,
-    missingIOItems,
-    noteGaps,
-  ]);
+  }, [caseKey, doc, io.fluidRestrictionReviewed, marGaps, missingDocItems, missingFlowItems, missingIOItems, noteGaps]);
 
   const completionPct = Math.max(
     0,
@@ -604,22 +583,14 @@ export default function ChartSimulation() {
           >
             <div>
               <div style={{ fontSize: 28, fontWeight: 800 }}>Preceptor Review Summary</div>
-              <div style={{ color: COLORS.muted, marginTop: 6 }}>
-                NurseBridge Practice Lab
-              </div>
+              <div style={{ color: COLORS.muted, marginTop: 6 }}>NurseBridge Practice Lab</div>
             </div>
 
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <button
-                onClick={() => window.print()}
-                style={primaryButtonStyle}
-              >
+              <button onClick={() => window.print()} style={primaryButtonStyle}>
                 Print / Save as PDF
               </button>
-              <button
-                onClick={() => setReviewMode(false)}
-                style={secondaryButtonStyle}
-              >
+              <button onClick={() => setReviewMode(false)} style={secondaryButtonStyle}>
                 Exit Review Mode
               </button>
             </div>
@@ -804,16 +775,10 @@ export default function ChartSimulation() {
           <div style={{ fontWeight: 800 }}>NurseBridge Practice Lab</div>
 
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-            <Link
-              href="/practice-lab"
-              style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}
-            >
+            <Link href="/practice-lab" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>
               Back to Lab
             </Link>
-            <Link
-              href="/preceptorship"
-              style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}
-            >
+            <Link href="/preceptorship" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>
               Preceptorship
             </Link>
           </div>
@@ -840,8 +805,7 @@ export default function ChartSimulation() {
             <div>
               <div style={{ fontWeight: 800, fontSize: 18 }}>{currentCase.patientName}</div>
               <div style={{ fontSize: 13, color: COLORS.muted }}>
-                DOB: {currentCase.dob} • MRN: {currentCase.mrn} • Admit Dx: {currentCase.admitDx} • Room:{" "}
-                {currentCase.room}
+                DOB: {currentCase.dob} • MRN: {currentCase.mrn} • Admit Dx: {currentCase.admitDx} • Room: {currentCase.room}
               </div>
             </div>
 
@@ -961,6 +925,7 @@ export default function ChartSimulation() {
             >
               <option value="pneumonia">{CASES.pneumonia.label}</option>
               <option value="chf">{CASES.chf.label}</option>
+              <option value="sepsis">{CASES.sepsis.label}</option>
             </select>
           </div>
 
@@ -978,12 +943,7 @@ export default function ChartSimulation() {
                 }}
               >
                 {currentCase.summaryCards.map((card) => (
-                  <InfoCard
-                    key={card.label}
-                    label={card.label}
-                    value={card.value}
-                    colors={COLORS}
-                  />
+                  <InfoCard key={card.label} label={card.label} value={card.value} colors={COLORS} />
                 ))}
               </div>
 
@@ -1021,8 +981,7 @@ export default function ChartSimulation() {
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Identify one improvement that would strengthen note clarity, compliance, or data
-                quality.
+                Identify one improvement that would strengthen note clarity, compliance, or data quality.
               </ExerciseBox>
             </div>
           )}
@@ -1031,11 +990,7 @@ export default function ChartSimulation() {
             <div>
               <SectionHeaderWithTime title="Documentation Workspace" stamp={updated.documentation} />
               <AlertBox
-                title={
-                  missingDocItems.length
-                    ? "Incomplete documentation alert"
-                    : "Documentation status looks complete"
-                }
+                title={missingDocItems.length ? "Incomplete documentation alert" : "Documentation status looks complete"}
                 text={
                   missingDocItems.length
                     ? `Missing items: ${missingDocItems.join(", ")}.`
@@ -1053,20 +1008,11 @@ export default function ChartSimulation() {
                 }}
               >
                 <Field label="Respiratory rate">
-                  <input
-                    value={doc.respRate}
-                    onChange={(e) => updateDocField("respRate", e.target.value)}
-                    style={inputStyle(COLORS)}
-                    placeholder="e.g., 24"
-                  />
+                  <input value={doc.respRate} onChange={(e) => updateDocField("respRate", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 24" />
                 </Field>
 
                 <Field label="Oxygen device">
-                  <select
-                    value={doc.oxygenDevice}
-                    onChange={(e) => updateDocField("oxygenDevice", e.target.value)}
-                    style={inputStyle(COLORS)}
-                  >
+                  <select value={doc.oxygenDevice} onChange={(e) => updateDocField("oxygenDevice", e.target.value)} style={inputStyle(COLORS)}>
                     <option value="">Select...</option>
                     <option value="Room Air">Room Air</option>
                     <option value="Nasal Cannula">Nasal Cannula</option>
@@ -1076,30 +1022,15 @@ export default function ChartSimulation() {
                 </Field>
 
                 <Field label="Oxygen flow rate">
-                  <input
-                    value={doc.oxygenLiters}
-                    onChange={(e) => updateDocField("oxygenLiters", e.target.value)}
-                    style={inputStyle(COLORS)}
-                    placeholder="e.g., 2 L/min"
-                  />
+                  <input value={doc.oxygenLiters} onChange={(e) => updateDocField("oxygenLiters", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 2 L/min" />
                 </Field>
 
                 <Field label="SpO₂">
-                  <input
-                    value={doc.spo2}
-                    onChange={(e) => updateDocField("spo2", e.target.value)}
-                    style={inputStyle(COLORS)}
-                    placeholder="e.g., 94%"
-                  />
+                  <input value={doc.spo2} onChange={(e) => updateDocField("spo2", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 94%" />
                 </Field>
 
                 <Field label="Pain score">
-                  <input
-                    value={doc.painScore}
-                    onChange={(e) => updateDocField("painScore", e.target.value)}
-                    style={inputStyle(COLORS)}
-                    placeholder="0–10"
-                  />
+                  <input value={doc.painScore} onChange={(e) => updateDocField("painScore", e.target.value)} style={inputStyle(COLORS)} placeholder="0–10" />
                 </Field>
               </div>
 
@@ -1114,32 +1045,10 @@ export default function ChartSimulation() {
               >
                 <div style={{ fontWeight: 700, marginBottom: 10 }}>Patient education / interventions</div>
 
-                <ChecklistRow
-                  checked={doc.education}
-                  onChange={() => updateDocField("education", !doc.education)}
-                  label="Education provided about disease process and therapy"
-                />
-                <ChecklistRow
-                  checked={doc.coughDeepBreathing}
-                  onChange={() =>
-                    updateDocField("coughDeepBreathing", !doc.coughDeepBreathing)
-                  }
-                  label="Breathing / self-management interventions reinforced"
-                />
-                <ChecklistRow
-                  checked={doc.incentiveSpirometry}
-                  onChange={() =>
-                    updateDocField("incentiveSpirometry", !doc.incentiveSpirometry)
-                  }
-                  label="Therapeutic technique / equipment use reviewed"
-                />
-                <ChecklistRow
-                  checked={doc.escalationNoted}
-                  onChange={() =>
-                    updateDocField("escalationNoted", !doc.escalationNoted)
-                  }
-                  label="Escalation / provider notification documented if indicated"
-                />
+                <ChecklistRow checked={doc.education} onChange={() => updateDocField("education", !doc.education)} label="Education provided about disease process and therapy" />
+                <ChecklistRow checked={doc.coughDeepBreathing} onChange={() => updateDocField("coughDeepBreathing", !doc.coughDeepBreathing)} label="Breathing / self-management interventions reinforced" />
+                <ChecklistRow checked={doc.incentiveSpirometry} onChange={() => updateDocField("incentiveSpirometry", !doc.incentiveSpirometry)} label="Therapeutic technique / equipment use reviewed" />
+                <ChecklistRow checked={doc.escalationNoted} onChange={() => updateDocField("escalationNoted", !doc.escalationNoted)} label="Escalation / provider notification documented if indicated" />
               </div>
 
               <div style={{ marginTop: 18 }}>
@@ -1147,19 +1056,14 @@ export default function ChartSimulation() {
                   <textarea
                     value={doc.narrative}
                     onChange={(e) => updateDocField("narrative", e.target.value)}
-                    style={{
-                      ...inputStyle(COLORS),
-                      minHeight: 110,
-                      resize: "vertical",
-                    }}
+                    style={{ ...inputStyle(COLORS), minHeight: 110, resize: "vertical" }}
                     placeholder="Document reassessment findings, therapy status, patient response, and teaching."
                   />
                 </Field>
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Informatics review: Which required fields are most likely to impact downstream
-                reporting, clinical communication, and compliance if left incomplete?
+                Informatics review: Which required fields are most likely to impact downstream reporting, clinical communication, and compliance if left incomplete?
               </ExerciseBox>
             </div>
           )}
@@ -1168,11 +1072,7 @@ export default function ChartSimulation() {
             <div>
               <SectionHeaderWithTime title="Flowsheet" stamp={updated.flowsheet} />
               <AlertBox
-                title={
-                  missingFlowItems.length
-                    ? "Flowsheet documentation needs completion"
-                    : "Flowsheet entries look complete"
-                }
+                title={missingFlowItems.length ? "Flowsheet documentation needs completion" : "Flowsheet entries look complete"}
                 text={
                   missingFlowItems.length
                     ? `Missing items: ${missingFlowItems.join(", ")}.`
@@ -1203,80 +1103,16 @@ export default function ChartSimulation() {
                   <div style={flowHeadStyle}>Document</div>
                 </div>
 
-                <FlowRow
-                  label="Temperature"
-                  value={flow.temp}
-                  input={
-                    <input
-                      value={flow.temp}
-                      onChange={(e) => updateFlowField("temp", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                      placeholder="e.g., 38.1 °C"
-                    />
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="Pulse"
-                  value={flow.pulse}
-                  input={
-                    <input
-                      value={flow.pulse}
-                      onChange={(e) => updateFlowField("pulse", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                      placeholder="e.g., 104"
-                    />
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="Blood Pressure"
-                  value={flow.bp}
-                  input={
-                    <input
-                      value={flow.bp}
-                      onChange={(e) => updateFlowField("bp", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                      placeholder="e.g., 138/82"
-                    />
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="SpO₂"
-                  value={flow.spo2}
-                  input={
-                    <input
-                      value={flow.spo2}
-                      onChange={(e) => updateFlowField("spo2", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                      placeholder="e.g., 94%"
-                    />
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="Pain"
-                  value={flow.pain}
-                  input={
-                    <input
-                      value={flow.pain}
-                      onChange={(e) => updateFlowField("pain", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                      placeholder="0–10"
-                    />
-                  }
-                  colors={COLORS}
-                />
+                <FlowRow label="Temperature" value={flow.temp} input={<input value={flow.temp} onChange={(e) => updateFlowField("temp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 38.1 °C" />} colors={COLORS} />
+                <FlowRow label="Pulse" value={flow.pulse} input={<input value={flow.pulse} onChange={(e) => updateFlowField("pulse", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 104" />} colors={COLORS} />
+                <FlowRow label="Blood Pressure" value={flow.bp} input={<input value={flow.bp} onChange={(e) => updateFlowField("bp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 138/82" />} colors={COLORS} />
+                <FlowRow label="SpO₂" value={flow.spo2} input={<input value={flow.spo2} onChange={(e) => updateFlowField("spo2", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 94%" />} colors={COLORS} />
+                <FlowRow label="Pain" value={flow.pain} input={<input value={flow.pain} onChange={(e) => updateFlowField("pain", e.target.value)} style={miniInputStyle(COLORS)} placeholder="0–10" />} colors={COLORS} />
                 <FlowRow
                   label="Lung Sounds"
                   value={flow.lungSounds}
                   input={
-                    <select
-                      value={flow.lungSounds}
-                      onChange={(e) => updateFlowField("lungSounds", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                    >
+                    <select value={flow.lungSounds} onChange={(e) => updateFlowField("lungSounds", e.target.value)} style={miniInputStyle(COLORS)}>
                       <option value="">Select...</option>
                       <option value="Clear">Clear</option>
                       <option value="Diminished">Diminished</option>
@@ -1290,11 +1126,7 @@ export default function ChartSimulation() {
                   label="Cough"
                   value={flow.cough}
                   input={
-                    <select
-                      value={flow.cough}
-                      onChange={(e) => updateFlowField("cough", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                    >
+                    <select value={flow.cough} onChange={(e) => updateFlowField("cough", e.target.value)} style={miniInputStyle(COLORS)}>
                       <option value="">Select...</option>
                       <option value="None">None</option>
                       <option value="Dry">Dry</option>
@@ -1307,11 +1139,7 @@ export default function ChartSimulation() {
                   label="Activity Tolerance"
                   value={flow.activityTolerance}
                   input={
-                    <select
-                      value={flow.activityTolerance}
-                      onChange={(e) => updateFlowField("activityTolerance", e.target.value)}
-                      style={miniInputStyle(COLORS)}
-                    >
+                    <select value={flow.activityTolerance} onChange={(e) => updateFlowField("activityTolerance", e.target.value)} style={miniInputStyle(COLORS)}>
                       <option value="">Select...</option>
                       <option value="Independent">Independent</option>
                       <option value="Mild fatigue">Mild fatigue</option>
@@ -1323,18 +1151,14 @@ export default function ChartSimulation() {
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Informatics review: Which flowsheet rows are most important for trending status,
-                and how could missing structured entries affect quality reporting or team communication?
+                Informatics review: Which flowsheet rows are most important for trending status, and how could missing structured entries affect quality reporting or team communication?
               </ExerciseBox>
             </div>
           )}
 
           {activeTab === "I&O" && (
             <div>
-              <SectionHeaderWithTime
-                title="Intake & Output / Daily Weights"
-                stamp={updated.io}
-              />
+              <SectionHeaderWithTime title="Intake & Output / Daily Weights" stamp={updated.io} />
 
               {caseKey !== "chf" ? (
                 <div
@@ -1352,11 +1176,7 @@ export default function ChartSimulation() {
               ) : (
                 <>
                   <AlertBox
-                    title={
-                      missingIOItems.length
-                        ? "I&O / weight documentation needs completion"
-                        : "I&O / weight tracking looks complete"
-                    }
+                    title={missingIOItems.length ? "I&O / weight documentation needs completion" : "I&O / weight tracking looks complete"}
                     text={
                       missingIOItems.length
                         ? `Missing items: ${missingIOItems.join(", ")}.`
@@ -1375,69 +1195,36 @@ export default function ChartSimulation() {
                     }}
                   >
                     <Field label="Intake (mL)">
-                      <input
-                        value={io.intake}
-                        onChange={(e) => updateIOField("intake", e.target.value)}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., 1500"
-                      />
+                      <input value={io.intake} onChange={(e) => updateIOField("intake", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1500" />
                     </Field>
 
                     <Field label="Urine output (mL)">
-                      <input
-                        value={io.urineOutput}
-                        onChange={(e) => updateIOField("urineOutput", e.target.value)}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., 1100"
-                      />
+                      <input value={io.urineOutput} onChange={(e) => updateIOField("urineOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1100" />
                     </Field>
 
                     <Field label="Other output (mL)">
-                      <input
-                        value={io.otherOutput}
-                        onChange={(e) => updateIOField("otherOutput", e.target.value)}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., 0"
-                      />
+                      <input value={io.otherOutput} onChange={(e) => updateIOField("otherOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 0" />
                     </Field>
 
                     <Field label="Net balance (mL)">
                       <input
                         value={netBalance}
                         readOnly
-                        style={{
-                          ...inputStyle(COLORS),
-                          backgroundColor: COLORS.soft,
-                          fontWeight: 700,
-                        }}
+                        style={{ ...inputStyle(COLORS), backgroundColor: COLORS.soft, fontWeight: 700 }}
                         placeholder="Auto-calculated"
                       />
                     </Field>
 
                     <Field label="Today's weight (lb)">
-                      <input
-                        value={io.todayWeight}
-                        onChange={(e) => updateIOField("todayWeight", e.target.value)}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., 198.4"
-                      />
+                      <input value={io.todayWeight} onChange={(e) => updateIOField("todayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 198.4" />
                     </Field>
 
                     <Field label="Yesterday's weight (lb)">
-                      <input
-                        value={io.yesterdayWeight}
-                        onChange={(e) => updateIOField("yesterdayWeight", e.target.value)}
-                        style={inputStyle(COLORS)}
-                        placeholder="e.g., 194.8"
-                      />
+                      <input value={io.yesterdayWeight} onChange={(e) => updateIOField("yesterdayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 194.8" />
                     </Field>
 
                     <Field label="Edema assessment">
-                      <select
-                        value={io.edema}
-                        onChange={(e) => updateIOField("edema", e.target.value)}
-                        style={inputStyle(COLORS)}
-                      >
+                      <select value={io.edema} onChange={(e) => updateIOField("edema", e.target.value)} style={inputStyle(COLORS)}>
                         <option value="">Select...</option>
                         <option value="None">None</option>
                         <option value="1+">1+</option>
@@ -1458,12 +1245,7 @@ export default function ChartSimulation() {
                   >
                     <ChecklistRow
                       checked={io.fluidRestrictionReviewed}
-                      onChange={() =>
-                        updateIOField(
-                          "fluidRestrictionReviewed",
-                          !io.fluidRestrictionReviewed
-                        )
-                      }
+                      onChange={() => updateIOField("fluidRestrictionReviewed", !io.fluidRestrictionReviewed)}
                       label="Fluid restriction and CHF self-management teaching reviewed"
                     />
 
@@ -1542,10 +1324,7 @@ export default function ChartSimulation() {
 
           {activeTab === "MAR" && (
             <div>
-              <SectionHeaderWithTime
-                title="Medication Administration Record (MAR)"
-                stamp={updated.mar}
-              />
+              <SectionHeaderWithTime title="Medication Administration Record (MAR)" stamp={updated.mar} />
               <AlertBox
                 title={marGaps.length ? "MAR review needed" : "MAR looks complete"}
                 text={
@@ -1601,11 +1380,7 @@ export default function ChartSimulation() {
                     <div style={marCellStyle}>{m.schedule}</div>
                     <div style={marCellStyle}>{m.due}</div>
                     <div style={marCellStyle}>
-                      <select
-                        value={m.status}
-                        onChange={(e) => updateMarStatus(idx, e.target.value as MarStatus)}
-                        style={miniInputStyle(COLORS)}
-                      >
+                      <select value={m.status} onChange={(e) => updateMarStatus(idx, e.target.value as MarStatus)} style={miniInputStyle(COLORS)}>
                         <option value="Due">Due</option>
                         <option value="Given">Given</option>
                         <option value="Held">Held</option>
@@ -1613,20 +1388,14 @@ export default function ChartSimulation() {
                       </select>
                     </div>
                     <div style={marCellStyle}>
-                      <input
-                        value={m.note}
-                        onChange={(e) => updateMarNote(idx, e.target.value)}
-                        style={miniInputStyle(COLORS)}
-                        placeholder="Add note if held / late"
-                      />
+                      <input value={m.note} onChange={(e) => updateMarNote(idx, e.target.value)} style={miniInputStyle(COLORS)} placeholder="Add note if held / late" />
                     </div>
                   </div>
                 ))}
               </div>
 
               <ExerciseBox colors={COLORS}>
-                Which medication administration gaps could affect compliance, handoff communication,
-                or medication safety?
+                Which medication administration gaps could affect compliance, handoff communication, or medication safety?
               </ExerciseBox>
             </div>
           )}
@@ -1795,24 +1564,15 @@ export default function ChartSimulation() {
               gap: 10,
             }}
           >
-            <button
-              onClick={() => setSubmitted(true)}
-              style={primaryButtonStyle}
-            >
+            <button onClick={() => setSubmitted(true)} style={primaryButtonStyle}>
               Submit Scenario
             </button>
 
-            <button
-              onClick={() => setReviewMode(true)}
-              style={secondaryButtonStyle}
-            >
+            <button onClick={() => setReviewMode(true)} style={secondaryButtonStyle}>
               Open Preceptor Review Mode
             </button>
 
-            <button
-              onClick={resetCase}
-              style={secondaryButtonStyle}
-            >
+            <button onClick={resetCase} style={secondaryButtonStyle}>
               Reset Case
             </button>
 
