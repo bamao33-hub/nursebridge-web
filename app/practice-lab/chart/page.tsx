@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 type TabKey =
   | "Summary"
@@ -321,6 +322,9 @@ function nowStamp() {
 }
 
 export default function ChartSimulation() {
+  
+  const searchParams = useSearchParams();
+  
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
   const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
   const [doc, setDoc] = useState<DocState>(initialDoc);
@@ -330,6 +334,23 @@ export default function ChartSimulation() {
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
+
+  useEffect(() => {
+  const requestedCase = searchParams.get("case") as CaseKey | null;
+  if (!requestedCase) return;
+  if (!CASES[requestedCase]) return;
+
+  setCaseKey(requestedCase);
+  setDoc(initialDoc);
+  setFlow(initialFlow);
+  setIo(initialIO);
+  setMar(CASES[requestedCase].mar.map((m) => ({ ...m })));
+  setSubmitted(false);
+  setUpdated(initialUpdated);
+  setReviewMode(false);
+  setActiveTab("Summary");
+
+}, [searchParams]);
 
   const currentCase = CASES[caseKey];
 
