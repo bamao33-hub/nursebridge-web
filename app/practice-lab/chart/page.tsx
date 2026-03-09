@@ -10,7 +10,8 @@ type TabKey =
   | "Flowsheet"
   | "Labs"
   | "Orders"
-  | "MAR";
+  | "MAR"
+  | "I&O";
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
 type CaseKey = "pneumonia" | "chf";
@@ -37,6 +38,17 @@ type FlowState = {
   lungSounds: string;
   cough: string;
   activityTolerance: string;
+};
+
+type IOState = {
+  intake: string;
+  urineOutput: string;
+  otherOutput: string;
+  netBalance: string;
+  todayWeight: string;
+  yesterdayWeight: string;
+  edema: string;
+  fluidRestrictionReviewed: boolean;
 };
 
 type MarItem = {
@@ -100,6 +112,17 @@ const initialFlow: FlowState = {
   lungSounds: "",
   cough: "",
   activityTolerance: "",
+};
+
+const initialIO: IOState = {
+  intake: "",
+  urineOutput: "",
+  otherOutput: "",
+  netBalance: "",
+  todayWeight: "",
+  yesterdayWeight: "",
+  edema: "",
+  fluidRestrictionReviewed: false,
 };
 
 const CASES: Record<CaseKey, CaseConfig> = {
@@ -280,6 +303,7 @@ export default function ChartSimulation() {
   const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
+  const [io, setIo] = useState<IOState>(initialIO);
   const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar);
   const [submitted, setSubmitted] = useState(false);
 
@@ -313,6 +337,7 @@ export default function ChartSimulation() {
     "Notes",
     "Documentation",
     "Flowsheet",
+    "I&O",
     "Labs",
     "Orders",
     "MAR",
@@ -340,6 +365,18 @@ export default function ChartSimulation() {
     return items;
   }, [flow]);
 
+  const missingIOItems = useMemo(() => {
+    if (caseKey !== "chf") return [];
+    const items: string[] = [];
+    if (!io.intake) items.push("Intake");
+    if (!io.urineOutput) items.push("Urine output");
+    if (!io.netBalance) items.push("Net balance");
+    if (!io.todayWeight) items.push("Today's weight");
+    if (!io.yesterdayWeight) items.push("Yesterday's weight");
+    if (!io.edema) items.push("Edema assessment");
+    return items;
+  }, [caseKey, io]);
+
   const marGaps = useMemo(() => {
     const items: string[] = [];
     mar.forEach((m) => {
@@ -363,6 +400,16 @@ export default function ChartSimulation() {
     return items;
   }, [doc]);
 
+  const weightDelta = useMemo(() => {
+    const today = parseFloat(io.todayWeight);
+    const yesterday = parseFloat(io.yesterdayWeight);
+    if (Number.isNaN(today) || Number.isNaN(yesterday)) return "";
+    const diff = +(today - yesterday).toFixed(1);
+    if (diff > 0) return `+${diff} lb from yesterday`;
+    if (diff < 0) return `${diff} lb from yesterday`;
+    return "No weight change from yesterday";
+  }, [io.todayWeight, io.yesterdayWeight]);
+
   const scoreData = useMemo(() => {
     let score = 100;
 
@@ -370,28 +417,36 @@ export default function ChartSimulation() {
     score -= missingFlowItems.length * 5;
     score -= marGaps.length * 7;
     score -= noteGaps.length * 4;
+    if (caseKey === "chf") score -= missingIOItems.length * 5;
 
     if (doc.education) score += 2;
     if (doc.coughDeepBreathing) score += 1;
     if (doc.incentiveSpirometry) score += 1;
     if (doc.narrative.trim().length >= 100) score += 2;
+    if (caseKey === "chf" && io.fluidRestrictionReviewed) score += 2;
 
     score = Math.max(0, Math.min(100, score));
 
     const strengths: string[] = [];
     const improvements: string[] = [];
 
-    if (!missingDocItems.length) strengths.push("Key respiratory documentation fields are complete.");
+    if (!missingDocItems.length) strengths.push("Key documentation fields are complete.");
     if (!missingFlowItems.length) strengths.push("Flowsheet entries support trending and structured charting.");
     if (!marGaps.length) strengths.push("MAR statuses and follow-up notes are aligned.");
     if (doc.education) strengths.push("Patient education is documented.");
     if (doc.narrative.trim().length >= 100) strengths.push("Narrative note includes helpful detail.");
+    if (caseKey === "chf" && !missingIOItems.length) {
+      strengths.push("CHF intake/output and daily weight tracking are documented.");
+    }
 
     if (missingDocItems.length) {
       improvements.push(`Complete core documentation fields: ${missingDocItems.join(", ")}.`);
     }
     if (missingFlowItems.length) {
       improvements.push(`Finish key flowsheet rows: ${missingFlowItems.join(", ")}.`);
+    }
+    if (caseKey === "chf" && missingIOItems.length) {
+      improvements.push(`Complete CHF I&O / weight fields: ${missingIOItems.join(", ")}.`);
     }
     if (marGaps.length) {
       improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
@@ -405,16 +460,26 @@ export default function ChartSimulation() {
     else if (score >= 75) level = "Developing well";
 
     return { score, strengths, improvements, level };
-  }, [doc, missingDocItems, missingFlowItems, marGaps, noteGaps]);
+  }, [
+    caseKey,
+    doc,
+    io.fluidRestrictionReviewed,
+    marGaps,
+    missingDocItems,
+    missingFlowItems,
+    missingIOItems,
+    noteGaps,
+  ]);
 
   const completionPct = Math.max(
     0,
     Math.round(
-      ((18 -
+      ((caseKey === "chf" ? 24 : 18) -
         Math.min(missingDocItems.length, 6) -
         Math.min(missingFlowItems.length, 6) -
-        Math.min(marGaps.length, 6)) /
-        18) *
+        Math.min(marGaps.length, 6) -
+        (caseKey === "chf" ? Math.min(missingIOItems.length, 6) : 0)) /
+        (caseKey === "chf" ? 24 : 18) *
         100
     )
   );
@@ -422,6 +487,7 @@ export default function ChartSimulation() {
   const resetCase = () => {
     setDoc(initialDoc);
     setFlow(initialFlow);
+    setIo(initialIO);
     setMar(CASES[caseKey].mar.map((m) => ({ ...m })));
     setSubmitted(false);
     setActiveTab("Summary");
@@ -431,6 +497,7 @@ export default function ChartSimulation() {
     setCaseKey(nextCase);
     setDoc(initialDoc);
     setFlow(initialFlow);
+    setIo(initialIO);
     setMar(CASES[nextCase].mar.map((m) => ({ ...m })));
     setSubmitted(false);
     setActiveTab("Summary");
@@ -992,6 +1059,161 @@ export default function ChartSimulation() {
                 Informatics review: Which flowsheet rows are most important for trending status,
                 and how could missing structured entries affect quality reporting or team communication?
               </ExerciseBox>
+            </div>
+          )}
+
+          {activeTab === "I&O" && (
+            <div>
+              <h2 style={{ marginTop: 0 }}>Intake & Output / Daily Weights</h2>
+
+              {caseKey !== "chf" ? (
+                <div
+                  style={{
+                    border: `1px solid ${COLORS.border}`,
+                    borderRadius: 12,
+                    padding: 16,
+                    background: COLORS.soft,
+                    color: COLORS.muted,
+                    lineHeight: 1.7,
+                  }}
+                >
+                  This tab is most relevant for the CHF case. Switch to <b>Case 2 • CHF Exacerbation</b> to practice intake/output, daily weight, and edema trending.
+                </div>
+              ) : (
+                <>
+                  <AlertBox
+                    title={
+                      missingIOItems.length
+                        ? "I&O / weight documentation needs completion"
+                        : "I&O / weight tracking looks complete"
+                    }
+                    text={
+                      missingIOItems.length
+                        ? `Missing items: ${missingIOItems.join(", ")}.`
+                        : "Fluid balance and daily weight fields are documented."
+                    }
+                    ok={!missingIOItems.length}
+                    colors={COLORS}
+                  />
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                      gap: 14,
+                      marginTop: 16,
+                    }}
+                  >
+                    <Field label="Intake (mL)">
+                      <input
+                        value={io.intake}
+                        onChange={(e) => setIo({ ...io, intake: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., 1500"
+                      />
+                    </Field>
+
+                    <Field label="Urine output (mL)">
+                      <input
+                        value={io.urineOutput}
+                        onChange={(e) => setIo({ ...io, urineOutput: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., 1100"
+                      />
+                    </Field>
+
+                    <Field label="Other output (mL)">
+                      <input
+                        value={io.otherOutput}
+                        onChange={(e) => setIo({ ...io, otherOutput: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., 0"
+                      />
+                    </Field>
+
+                    <Field label="Net balance (mL)">
+                      <input
+                        value={io.netBalance}
+                        onChange={(e) => setIo({ ...io, netBalance: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., +400"
+                      />
+                    </Field>
+
+                    <Field label="Today's weight (lb)">
+                      <input
+                        value={io.todayWeight}
+                        onChange={(e) => setIo({ ...io, todayWeight: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., 198.4"
+                      />
+                    </Field>
+
+                    <Field label="Yesterday's weight (lb)">
+                      <input
+                        value={io.yesterdayWeight}
+                        onChange={(e) => setIo({ ...io, yesterdayWeight: e.target.value })}
+                        style={inputStyle(COLORS)}
+                        placeholder="e.g., 194.8"
+                      />
+                    </Field>
+
+                    <Field label="Edema assessment">
+                      <select
+                        value={io.edema}
+                        onChange={(e) => setIo({ ...io, edema: e.target.value })}
+                        style={inputStyle(COLORS)}
+                      >
+                        <option value="">Select...</option>
+                        <option value="None">None</option>
+                        <option value="1+">1+</option>
+                        <option value="2+">2+</option>
+                        <option value="3+">3+</option>
+                      </select>
+                    </Field>
+                  </div>
+
+                  <div
+                    style={{
+                      marginTop: 18,
+                      border: `1px solid ${COLORS.border}`,
+                      borderRadius: 12,
+                      padding: 14,
+                      background: COLORS.soft,
+                    }}
+                  >
+                    <ChecklistRow
+                      checked={io.fluidRestrictionReviewed}
+                      onChange={() =>
+                        setIo({
+                          ...io,
+                          fluidRestrictionReviewed: !io.fluidRestrictionReviewed,
+                        })
+                      }
+                      label="Fluid restriction and CHF self-management teaching reviewed"
+                    />
+
+                    <div
+                      style={{
+                        marginTop: 8,
+                        padding: 12,
+                        borderRadius: 10,
+                        background: "#fff",
+                        border: `1px solid ${COLORS.border}`,
+                        color: COLORS.muted,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      <b style={{ color: COLORS.text }}>Weight trend:</b>{" "}
+                      {weightDelta || "Enter today's and yesterday's weights to calculate change."}
+                    </div>
+                  </div>
+
+                  <ExerciseBox colors={COLORS}>
+                    Informatics review: Which CHF trends require the most reliable structured documentation—net balance, edema, daily weights, or oxygen status—and how could missing entries delay escalation?
+                  </ExerciseBox>
+                </>
+              )}
             </div>
           )}
 
