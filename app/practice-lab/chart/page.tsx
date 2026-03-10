@@ -322,6 +322,9 @@ function nowStamp() {
 }
 
 export default function ChartSimulation() {
+
+  const searchParams = useSearchParams();
+const requestedCase = searchParams.get("case") as CaseKey | null;
   
   const searchParams = useSearchParams();
   
@@ -334,6 +337,22 @@ export default function ChartSimulation() {
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
+
+  useEffect(() => {
+  if (!requestedCase) return;
+  if (!CASES[requestedCase]) return;
+
+  setCaseKey(requestedCase);
+  setDoc(initialDoc);
+  setFlow(initialFlow);
+  setIo(initialIO);
+  setMar(CASES[requestedCase].mar.map((m) => ({ ...m })));
+  setSubmitted(false);
+  setUpdated(initialUpdated);
+  setReviewMode(false);
+  setActiveTab("Summary");
+
+}, [requestedCase]);
 
   useEffect(() => {
   const requestedCase = searchParams.get("case") as CaseKey | null;
