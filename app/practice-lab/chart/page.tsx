@@ -328,7 +328,7 @@ function nowStamp() {
 const requestedCase = searchParams.get("case") as CaseKey | null;
    
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
-  const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
+  const [caseKey, setCaseKey] = useState<CaseKey>(() => {   if (requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis") {     return requestedCase;   }   return "pneumonia"; });
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
   const [io, setIo] = useState<IOState>(initialIO);
@@ -337,9 +337,14 @@ const requestedCase = searchParams.get("case") as CaseKey | null;
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
 
-  useEffect(() => {
-  if (!requestedCase) return;
-  if (!CASES[requestedCase]) return;
+    useEffect(() => {
+  if (
+    requestedCase !== "pneumonia" &&
+    requestedCase !== "chf" &&
+    requestedCase !== "sepsis"
+  ) {
+    return;
+  }
 
   setCaseKey(requestedCase);
   setDoc(initialDoc);
@@ -350,10 +355,9 @@ const requestedCase = searchParams.get("case") as CaseKey | null;
   setUpdated(initialUpdated);
   setReviewMode(false);
   setActiveTab("Summary");
-
 }, [requestedCase]);
 
-  const currentCase = CASES[caseKey];
+    const currentCase = CASES[caseKey];
 }
 export default function ChartSimulation() {
   return (
@@ -1986,10 +1990,22 @@ const marCellStyle: React.CSSProperties = {
   borderRight: "1px solid #e5ecea",
 };
 
-    export default function ChartSimulation() {
+   export default function ChartSimulation() {
   return (
     <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
-      <ChartSimulationContent />
+      <ChartPageKeyed />
     </Suspense>
   );
+}
+
+function ChartPageKeyed() {
+  const searchParams = useSearchParams();
+  const requestedCase = searchParams.get("case");
+
+  const caseKey =
+    requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis"
+      ? requestedCase
+      : "pneumonia";
+
+  return <ChartSimulationContent key={caseKey} />;
 }
