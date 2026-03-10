@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const COLORS = {
   teal: "#0f766e",
   tealDark: "#0b5f58",
@@ -224,7 +222,7 @@ export default function PracticeLabPage() {
               </div>
 
               <div style={bodyCell}>
-                <Link
+                <a
                   href={`/practice-lab/chart?case=${p.caseKey}`}
                   style={{
                     display: "inline-block",
@@ -239,7 +237,7 @@ export default function PracticeLabPage() {
                   }}
                 >
                   Open
-                </Link>
+                </a>
               </div>
             </div>
           ))}
