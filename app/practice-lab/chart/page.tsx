@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type TabKey =
@@ -321,11 +321,10 @@ function nowStamp() {
   });
 }
 
-export default function ChartSimulation() {
-
+  function ChartSimulationContent() {
   const searchParams = useSearchParams();
 const requestedCase = searchParams.get("case") as CaseKey | null;
-  
+   
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
   const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
   const [doc, setDoc] = useState<DocState>(initialDoc);
@@ -353,7 +352,14 @@ const requestedCase = searchParams.get("case") as CaseKey | null;
 }, [requestedCase]);
 
   const currentCase = CASES[caseKey];
-
+}
+export default function ChartSimulation() {
+  return (
+    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
+      <ChartSimulationContent />
+    </Suspense>
+  );
+}
   const COLORS = {
     teal: "#0f766e",
     tealDark: "#0b5f58",
