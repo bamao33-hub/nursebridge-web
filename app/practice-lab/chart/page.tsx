@@ -335,14 +335,6 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 
    const currentCase = CASES[caseKey];
 }
-export default function ChartSimulation() {
-  return (
-    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
-      <ChartPageInner />
-    </Suspense>
-  );
-}
-
 function ChartPageInner() {
   const rawCase = searchParams.get("case");
   const selectedCase: CaseKey =
@@ -1976,3 +1968,28 @@ const marCellStyle: React.CSSProperties = {
   padding: "10px 12px",
   borderRight: "1px solid #e5ecea",
 };
+
+    export default function ChartSimulation() {
+  return (
+    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
+      <ChartPageInner />
+    </Suspense>
+  );
+}
+
+function ChartPageInner() {
+  const searchParams = useSearchParams();
+  const rawCase = searchParams.get("case");
+
+  const selectedCase: CaseKey =
+    rawCase === "chf" || rawCase === "sepsis" || rawCase === "pneumonia"
+      ? rawCase
+      : "pneumonia";
+
+  return (
+    <ChartSimulationContent
+      key={selectedCase}
+      selectedCase={selectedCase}
+    />
+  );
+}
