@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type TabKey =
@@ -95,6 +95,29 @@ type UpdatedState = {
   flowsheet: string;
   mar: string;
   io: string;
+};
+
+const COLORS = {
+  teal: "#0f766e",
+  tealDark: "#0b5f58",
+  bg: "#f7faf9",
+  card: "#ffffff",
+  border: "#dbe7e5",
+  text: "#0f172a",
+  muted: "#475569",
+  soft: "#ecf7f5",
+  warnBg: "#fff7ed",
+  warnBorder: "#fdba74",
+  warnText: "#9a3412",
+  okBg: "#ecfdf5",
+  okBorder: "#86efac",
+  okText: "#166534",
+  lateBg: "#fef2f2",
+  lateBorder: "#fca5a5",
+  lateText: "#991b1b",
+  scoreBg: "#eff6ff",
+  scoreBorder: "#93c5fd",
+  scoreText: "#1d4ed8",
 };
 
 const initialDoc: DocState = {
@@ -312,6 +335,17 @@ const CASES: Record<CaseKey, CaseConfig> = {
   },
 };
 
+const tabs: TabKey[] = [
+  "Summary",
+  "Notes",
+  "Documentation",
+  "Flowsheet",
+  "I&O",
+  "Labs",
+  "Orders",
+  "MAR",
+];
+
 function nowStamp() {
   return new Date().toLocaleString([], {
     month: "short",
@@ -321,87 +355,44 @@ function nowStamp() {
   });
 }
 
-  function ChartSimulationContent() {
+export default function ChartSimulation() {
+  return (
+    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
+      <ChartPageKeyed />
+    </Suspense>
+  );
+}
+
+function ChartPageKeyed() {
   const searchParams = useSearchParams();
-const requestedCase = searchParams.get("case") as CaseKey | null;
-   
+  const requestedCase = searchParams.get("case");
+
+  const selectedCase: CaseKey =
+    requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis"
+      ? requestedCase
+      : "pneumonia";
+
+  return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
+}
+
+function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
-  const [caseKey, setCaseKey] = useState<CaseKey>(() => {   if (requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis") {     return requestedCase;   }   return "pneumonia"; });
+  const [caseKey, setCaseKey] = useState<CaseKey>(selectedCase);
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
   const [io, setIo] = useState<IOState>(initialIO);
-  const [mar, setMar] = useState<MarItem[]>(CASES.pneumonia.mar.map((m) => ({ ...m })));
+  const [mar, setMar] = useState<MarItem[]>(CASES[selectedCase].mar.map((m) => ({ ...m })));
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
 
-    useEffect(() => {
-  if (
-    requestedCase !== "pneumonia" &&
-    requestedCase !== "chf" &&
-    requestedCase !== "sepsis"
-  ) {
-    return;
-  }
-
-  setCaseKey(requestedCase);
-  setDoc(initialDoc);
-  setFlow(initialFlow);
-  setIo(initialIO);
-  setMar(CASES[requestedCase].mar.map((m) => ({ ...m })));
-  setSubmitted(false);
-  setUpdated(initialUpdated);
-  setReviewMode(false);
-  setActiveTab("Summary");
-}, [requestedCase]);
-
-    const currentCase = CASES[caseKey];
-}
-export default function ChartSimulation() {
-  return (
-    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
-      <ChartSimulationContent />
-    </Suspense>
-  );
-}
-  const COLORS = {
-    teal: "#0f766e",
-    tealDark: "#0b5f58",
-    bg: "#f7faf9",
-    card: "#ffffff",
-    border: "#dbe7e5",
-    text: "#0f172a",
-    muted: "#475569",
-    soft: "#ecf7f5",
-    warnBg: "#fff7ed",
-    warnBorder: "#fdba74",
-    warnText: "#9a3412",
-    okBg: "#ecfdf5",
-    okBorder: "#86efac",
-    okText: "#166534",
-    lateBg: "#fef2f2",
-    lateBorder: "#fca5a5",
-    lateText: "#991b1b",
-    scoreBg: "#eff6ff",
-    scoreBorder: "#93c5fd",
-    scoreText: "#1d4ed8",
-  };
-
-  const tabs: TabKey[] = [
-    "Summary",
-    "Notes",
-    "Documentation",
-    "Flowsheet",
-    "I&O",
-    "Labs",
-    "Orders",
-    "MAR",
-  ];
+  const currentCase = CASES[caseKey];
 
   const netBalance = useMemo(() => {
     const intake = parseFloat(io.intake || "0");
     const urine = parseFloat(io.urineOutput || "0");
     const other = parseFloat(io.otherOutput || "0");
+
     if (
       (!io.intake && !io.urineOutput && !io.otherOutput) ||
       Number.isNaN(intake) ||
@@ -410,6 +401,7 @@ export default function ChartSimulation() {
     ) {
       return "";
     }
+
     const total = intake - urine - other;
     return total > 0 ? `+${total}` : `${total}`;
   }, [io.intake, io.urineOutput, io.otherOutput]);
@@ -1393,7 +1385,7 @@ export default function ChartSimulation() {
 
                 {mar.map((m, idx) => (
                   <div
-                    key={m.med}
+                    key={`${m.med}-${m.due}`}
                     style={{
                       display: "grid",
                       gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr",
@@ -1987,23 +1979,3 @@ const marCellStyle: React.CSSProperties = {
   padding: "10px 12px",
   borderRight: "1px solid #e5ecea",
 };
-
-   export default function ChartSimulation() {
-  return (
-    <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
-      <ChartPageKeyed />
-    </Suspense>
-  );
-}
-
-function ChartPageKeyed() {
-  const searchParams = useSearchParams();
-  const requestedCase = searchParams.get("case");
-
-  const caseKey =
-    requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis"
-      ? requestedCase
-      : "pneumonia";
-
-  return <ChartSimulationContent key={caseKey} />;
-}
