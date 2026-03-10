@@ -321,12 +321,10 @@ function nowStamp() {
   });
 }
 
-  function ChartSimulationContent() {
-  const searchParams = useSearchParams();
-const requestedCase = searchParams.get("case") as CaseKey | null;
-   
+function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
+
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
-  const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
+  const caseKey = selectedCase;
   const [doc, setDoc] = useState<DocState>(initialDoc);
   const [flow, setFlow] = useState<FlowState>(initialFlow);
   const [io, setIo] = useState<IOState>(initialIO);
@@ -335,31 +333,26 @@ const requestedCase = searchParams.get("case") as CaseKey | null;
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
 
-  useEffect(() => {
-  if (!requestedCase) return;
-  if (!CASES[requestedCase]) return;
-
-  setCaseKey(requestedCase);
-  setDoc(initialDoc);
-  setFlow(initialFlow);
-  setIo(initialIO);
-  setMar(CASES[requestedCase].mar.map((m) => ({ ...m })));
-  setSubmitted(false);
-  setUpdated(initialUpdated);
-  setReviewMode(false);
-  setActiveTab("Summary");
-
-}, [requestedCase]);
-
-  const currentCase = CASES[caseKey];
+   const currentCase = CASES[caseKey];
 }
 export default function ChartSimulation() {
   return (
     <Suspense fallback={<div style={{ padding: 24 }}>Loading chart...</div>}>
-      <ChartSimulationContent />
+      <ChartPageInner />
     </Suspense>
   );
 }
+
+function ChartPageInner() {
+  const rawCase = searchParams.get("case");
+  const selectedCase: CaseKey =
+    rawCase === "chf" || rawCase === "sepsis" || rawCase === "pneumonia"
+      ? rawCase
+      : "pneumonia";
+
+  return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
+}
+
   const COLORS = {
     teal: "#0f766e",
     tealDark: "#0b5f58",
