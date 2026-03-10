@@ -334,8 +334,7 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   const [reviewMode, setReviewMode] = useState(false);
 
    const currentCase = CASES[caseKey];
-}
-function ChartPageInner() {
+  
   const rawCase = searchParams.get("case");
   const selectedCase: CaseKey =
     rawCase === "chf" || rawCase === "sepsis" || rawCase === "pneumonia"
