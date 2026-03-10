@@ -326,8 +326,6 @@ export default function ChartSimulation() {
   const searchParams = useSearchParams();
 const requestedCase = searchParams.get("case") as CaseKey | null;
   
-  const searchParams = useSearchParams();
-  
   const [activeTab, setActiveTab] = useState<TabKey>("Summary");
   const [caseKey, setCaseKey] = useState<CaseKey>("pneumonia");
   const [doc, setDoc] = useState<DocState>(initialDoc);
