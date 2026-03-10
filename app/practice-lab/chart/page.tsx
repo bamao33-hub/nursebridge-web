@@ -352,23 +352,6 @@ const requestedCase = searchParams.get("case") as CaseKey | null;
 
 }, [requestedCase]);
 
-  useEffect(() => {
-  const requestedCase = searchParams.get("case") as CaseKey | null;
-  if (!requestedCase) return;
-  if (!CASES[requestedCase]) return;
-
-  setCaseKey(requestedCase);
-  setDoc(initialDoc);
-  setFlow(initialFlow);
-  setIo(initialIO);
-  setMar(CASES[requestedCase].mar.map((m) => ({ ...m })));
-  setSubmitted(false);
-  setUpdated(initialUpdated);
-  setReviewMode(false);
-  setActiveTab("Summary");
-
-}, [searchParams]);
-
   const currentCase = CASES[caseKey];
 
   const COLORS = {
