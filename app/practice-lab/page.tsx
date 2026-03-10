@@ -1,3 +1,4 @@
+import Link from "next/link";
 const COLORS = {
   teal: "#0f766e",
   tealDark: "#0b5f58",
