@@ -15,7 +15,7 @@ type TabKey =
   | "I&O";
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
-type CaseKey = "pneumonia" | "chf" | "sepsis";
+type CaseKey = "pneumonia" | "chf" | "sepsis" | "diabetes";
 
 type DocState = {
   respRate: string;
@@ -333,6 +333,63 @@ const CASES: Record<CaseKey, CaseConfig> = {
       { label: "Code Status", value: "Full Code" },
     ],
   },
+    diabetes: {
+    key: "diabetes",
+    label: "Case 4 • Diabetes / Hyperglycemia",
+    patientName: "Robert Nelson",
+    dob: "02/14/1964",
+    mrn: "774315",
+    admitDx: "Type 2 Diabetes with Hyperglycemia",
+    room: "534B",
+    scenario:
+      "Adult patient admitted with uncontrolled blood glucose, insulin administration needs, finger-stick monitoring, diet teaching, and documentation of symptoms and response to treatment.",
+    learningGoals: [
+      "Document blood glucose monitoring accurately",
+      "Connect insulin administration to reassessment workflow",
+      "Identify patient education needs for diabetes self-management",
+      "Practice documentation of symptoms related to hyperglycemia",
+      "Review medication timing and follow-up charting",
+    ],
+    summary:
+      "Patient admitted with hyperglycemia related to poorly controlled type 2 diabetes. Reports increased thirst, fatigue, and frequent urination. Sliding-scale insulin and blood glucose monitoring ordered. Diabetes education and follow-up assessment are needed.",
+    summaryPrompt:
+      "Which documentation fields are most important for blood glucose trends, insulin administration follow-up, and patient education?",
+    noteTitle: "Diabetes Nursing Note",
+    noteBody:
+      "Patient alert and oriented. Reports increased thirst and fatigue. Blood glucose elevated this shift. Sliding-scale insulin administered per order. Reinforced diabetic diet and need for routine glucose monitoring.",
+    notePrompt:
+      "Strengthen the note by adding exact glucose values, symptom details, insulin follow-up, and patient teaching response.",
+    labs: [
+      { lab: "Glucose", result: "328", reference: "70–110", status: "High" },
+      { lab: "A1c", result: "10.4%", reference: "<5.7%", status: "High" },
+      { lab: "Sodium", result: "134", reference: "135–145", status: "Low" },
+      { lab: "Potassium", result: "4.2", reference: "3.5–5.1", status: "Normal" },
+    ],
+    labPrompt:
+      "Which laboratory findings support poor glycemic control, and which values should the nurse monitor closely during treatment?",
+    orders: [
+      "Blood glucose checks before meals and at bedtime",
+      "Sliding-scale insulin lispro subcutaneous",
+      "Consistent carbohydrate diet",
+      "Diabetes education consult",
+    ],
+    orderPrompt:
+      "Which diabetes-related orders require clear nursing follow-through documentation, and where would that documentation appear in the chart?",
+    mar: [
+      { med: "Insulin Lispro", route: "SubQ", schedule: "AC/HS", due: "07:30", status: "Due", note: "" },
+      { med: "Metformin 500mg", route: "PO", schedule: "BID", due: "08:00", status: "Given", note: "Given with breakfast" },
+      { med: "Lantus 20 units", route: "SubQ", schedule: "Nightly", due: "21:00", status: "Due", note: "" },
+      { med: "Ondansetron 4mg", route: "PO", schedule: "PRN", due: "10:00", status: "Held", note: "" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "K. Morris, RN" },
+      { label: "Attending", value: "T. Shah, MD" },
+      { label: "Allergies", value: "NKDA" },
+      { label: "Diet", value: "Consistent carbohydrate" },
+      { label: "Finger-stick", value: "AC/HS" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
 };
 
 const tabs: TabKey[] = [
@@ -368,11 +425,14 @@ function ChartPageKeyed() {
   const requestedCase = searchParams.get("case");
 
   const selectedCase: CaseKey =
-    requestedCase === "pneumonia" || requestedCase === "chf" || requestedCase === "sepsis"
-      ? requestedCase
-      : "pneumonia";
+  requestedCase === "pneumonia" ||
+  requestedCase === "chf" ||
+  requestedCase === "sepsis" ||
+  requestedCase === "diabetes"
+    ? requestedCase
+    : "pneumonia";
 
-  return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
+    return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
 }
 
 function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
@@ -947,8 +1007,9 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
               }}
             >
               <option value="pneumonia">{CASES.pneumonia.label}</option>
-              <option value="chf">{CASES.chf.label}</option>
-              <option value="sepsis">{CASES.sepsis.label}</option>
+<option value="chf">{CASES.chf.label}</option>
+<option value="sepsis">{CASES.sepsis.label}</option>
+<option value="diabetes">{CASES.diabetes.label}</option>                
             </select>
           </div>
 
