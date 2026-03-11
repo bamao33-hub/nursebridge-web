@@ -15,7 +15,7 @@ type TabKey =
   | "I&O";
 
 type MarStatus = "Due" | "Given" | "Held" | "Late";
-type CaseKey = "pneumonia" | "chf" | "sepsis" | "diabetes";
+type CaseKey = "pneumonia" | "chf" | "sepsis" | "diabetes" | "trauma";
 
 type DocState = {
   respRate: string;
@@ -30,6 +30,12 @@ type DocState = {
   narrative: string;
   bloodGlucose: string;
   insulinGiven: string;
+  dyspneaLevel: string;
+  weightGainNoted: boolean;
+  sepsisScreenPositive: boolean;
+  providerNotifiedTime: string;
+  traumaMechanism: string;
+  neuroStatus: string;
 };
 
 type FlowState = {
@@ -135,7 +141,14 @@ const initialDoc: DocState = {
   narrative: "",
   bloodGlucose: "",
   insulinGiven: "",
+  dyspneaLevel: "",
+  weightGainNoted: false,
+  sepsisScreenPositive: false,
+  providerNotifiedTime: "",
+  traumaMechanism: "",
+  neuroStatus: "",
 };
+
 const initialFlow: FlowState = {
   temp: "",
   pulse: "",
@@ -174,7 +187,7 @@ const CASES: Record<CaseKey, CaseConfig> = {
     admitDx: "Pneumonia",
     room: "412B",
     scenario:
-      "Community-acquired pneumonia with oxygen therapy, patient education needs, respiratory reassessment workflow, flowsheet completion, and medication administration follow-up.",
+      "Community-acquired pneumonia with oxygen therapy, respiratory reassessment workflow, flowsheet completion, medication administration follow-up, and patient teaching.",
     learningGoals: [
       "Document key respiratory elements",
       "Identify missing structured data",
@@ -247,7 +260,7 @@ const CASES: Record<CaseKey, CaseConfig> = {
     noteBody:
       "Patient reports dyspnea with minimal exertion and difficulty lying flat. Bilateral ankle edema present. Oxygen in use via nasal cannula. Diuretic therapy ongoing. Reinforced low-sodium diet and fluid restriction teaching.",
     notePrompt:
-      "Strengthen the note by adding measurable edema, respiratory status, and response-to-treatment details.",
+      "Strengthen the note by adding measurable edema, respiratory status, weight trend, and response-to-treatment details.",
     labs: [
       { lab: "BNP", result: "1280", reference: "<100", status: "High" },
       { lab: "Potassium", result: "3.4", reference: "3.5–5.1", status: "Low" },
@@ -336,7 +349,7 @@ const CASES: Record<CaseKey, CaseConfig> = {
       { label: "Code Status", value: "Full Code" },
     ],
   },
-    diabetes: {
+  diabetes: {
     key: "diabetes",
     label: "Case 4 • Diabetes / Hyperglycemia",
     patientName: "Robert Nelson",
@@ -393,6 +406,63 @@ const CASES: Record<CaseKey, CaseConfig> = {
       { label: "Code Status", value: "Full Code" },
     ],
   },
+  trauma: {
+    key: "trauma",
+    label: "Case 5 • Trauma / Post-Op to ICU",
+    patientName: "Daniel Reed",
+    dob: "09/28/1991",
+    mrn: "912440",
+    admitDx: "Motor Vehicle Collision with Splenic Injury",
+    room: "ICU-12",
+    scenario:
+      "Adult trauma patient initially evaluated after motor vehicle collision, taken emergently to surgery for splenic injury, and transferred post-operatively to ICU for close monitoring, neuro checks, pain management, and hemodynamic reassessment.",
+    learningGoals: [
+      "Document trauma mechanism and post-op ICU priorities",
+      "Connect surgical timeline to nursing reassessment",
+      "Recognize hemodynamic and neuro monitoring needs",
+      "Practice time-sensitive documentation and escalation",
+      "Review ICU medication follow-up logic",
+    ],
+    summary:
+      "Patient involved in high-speed motor vehicle collision. Underwent exploratory laparotomy and splenectomy for intra-abdominal bleeding. Now post-op in ICU with arterial line, Foley catheter, and pain control needs. Ongoing neuro assessment, drain monitoring, and escalation readiness are required.",
+    summaryPrompt:
+      "Which structured nursing documentation fields are most important after emergent surgery and ICU transfer in a trauma patient?",
+    noteTitle: "Post-Op ICU Nursing Note",
+    noteBody:
+      "Patient transferred from OR to ICU following exploratory laparotomy and splenectomy. Drowsy but arousable. Hemodynamics under close observation. Surgical dressing dry and intact. Foley draining clear yellow urine. Pain control and neuro checks ongoing.",
+    notePrompt:
+      "Strengthen the note by adding trauma mechanism, operative course, neuro status, line/drain status, exact hemodynamic findings, and escalation triggers.",
+    labs: [
+      { lab: "Hgb", result: "8.9", reference: "12.0–16.0", status: "Low" },
+      { lab: "Hct", result: "27%", reference: "36–46%", status: "Low" },
+      { lab: "WBC", result: "15.7", reference: "4.0–11.0", status: "High" },
+      { lab: "Lactate", result: "3.1", reference: "0.5–2.0", status: "High" },
+    ],
+    labPrompt:
+      "Which post-operative trauma labs require close ICU follow-up, and how could they influence escalation or transfusion decisions?",
+    orders: [
+      "Neuro checks every 1 hour",
+      "Strict intake and output",
+      "CBC in 4 hours",
+      "Hydromorphone 0.5mg IV every 2 hours PRN severe pain",
+    ],
+    orderPrompt:
+      "Which trauma ICU orders require precise nursing documentation, and where should reassessment and escalation be captured?",
+    mar: [
+      { med: "Hydromorphone 0.5mg", route: "IV", schedule: "q2h PRN", due: "11:00", status: "Due", note: "" },
+      { med: "Cefazolin 1g", route: "IV", schedule: "q8h", due: "12:00", status: "Given", note: "Post-op dose given" },
+      { med: "Normal Saline", route: "IV", schedule: "Continuous", due: "Now", status: "Given", note: "Infusing via pump" },
+      { med: "Enoxaparin 40mg", route: "SubQ", schedule: "Daily", due: "21:00", status: "Held", note: "Awaiting surgeon clearance" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "A. Collins, RN" },
+      { label: "Attending", value: "J. Ramirez, MD" },
+      { label: "Service", value: "Trauma Surgery / ICU" },
+      { label: "Post-Op Day", value: "POD 0" },
+      { label: "Current O₂", value: "4L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
 };
 
 const tabs: TabKey[] = [
@@ -428,14 +498,15 @@ function ChartPageKeyed() {
   const requestedCase = searchParams.get("case");
 
   const selectedCase: CaseKey =
-  requestedCase === "pneumonia" ||
-  requestedCase === "chf" ||
-  requestedCase === "sepsis" ||
-  requestedCase === "diabetes"
-    ? requestedCase
-    : "pneumonia";
+    requestedCase === "pneumonia" ||
+    requestedCase === "chf" ||
+    requestedCase === "sepsis" ||
+    requestedCase === "diabetes" ||
+    requestedCase === "trauma"
+      ? requestedCase
+      : "pneumonia";
 
-    return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
+  return <ChartSimulationContent key={selectedCase} selectedCase={selectedCase} />;
 }
 
 function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
@@ -471,14 +542,42 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 
   const missingDocItems = useMemo(() => {
     const items: string[] = [];
-    if (!doc.respRate) items.push("Respiratory rate");
-    if (!doc.oxygenDevice) items.push("Oxygen device");
-    if (!doc.oxygenLiters) items.push("Oxygen flow rate");
-    if (!doc.spo2) items.push("SpO₂");
     if (!doc.painScore) items.push("Pain score");
-    if (!doc.education) items.push("Patient education documented");
+    if (!doc.narrative.trim()) items.push("Narrative note");
+
+    if (caseKey === "pneumonia") {
+      if (!doc.respRate) items.push("Respiratory rate");
+      if (!doc.oxygenDevice) items.push("Oxygen device");
+      if (!doc.oxygenLiters) items.push("Oxygen flow rate");
+      if (!doc.spo2) items.push("SpO₂");
+    }
+
+    if (caseKey === "chf") {
+      if (!doc.dyspneaLevel) items.push("Dyspnea level");
+      if (!doc.weightGainNoted) items.push("Weight gain acknowledgement");
+      if (!doc.education) items.push("Teaching documented");
+    }
+
+    if (caseKey === "sepsis") {
+      if (!doc.sepsisScreenPositive) items.push("Sepsis screen result");
+      if (!doc.providerNotifiedTime) items.push("Provider notified time");
+      if (!doc.escalationNoted) items.push("Escalation documented");
+    }
+
+    if (caseKey === "diabetes") {
+      if (!doc.bloodGlucose) items.push("Blood glucose");
+      if (!doc.insulinGiven) items.push("Insulin administered");
+      if (!doc.education) items.push("Teaching documented");
+    }
+
+    if (caseKey === "trauma") {
+      if (!doc.traumaMechanism) items.push("Trauma mechanism");
+      if (!doc.neuroStatus) items.push("Neuro status");
+      if (!doc.escalationNoted) items.push("Escalation documented");
+    }
+
     return items;
-  }, [doc]);
+  }, [caseKey, doc]);
 
   const missingFlowItems = useMemo(() => {
     const items: string[] = [];
@@ -487,19 +586,20 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
     if (!flow.bp) items.push("Blood pressure");
     if (!flow.spo2) items.push("SpO₂");
     if (!flow.pain) items.push("Pain");
-    if (!flow.lungSounds) items.push("Lung sounds");
     return items;
   }, [flow]);
 
   const missingIOItems = useMemo(() => {
-    if (caseKey !== "chf") return [];
+    if (caseKey !== "chf" && caseKey !== "trauma") return [];
     const items: string[] = [];
     if (!io.intake) items.push("Intake");
     if (!io.urineOutput) items.push("Urine output");
     if (!netBalance) items.push("Net balance");
-    if (!io.todayWeight) items.push("Today's weight");
-    if (!io.yesterdayWeight) items.push("Yesterday's weight");
-    if (!io.edema) items.push("Edema assessment");
+    if (caseKey === "chf") {
+      if (!io.todayWeight) items.push("Today's weight");
+      if (!io.yesterdayWeight) items.push("Yesterday's weight");
+      if (!io.edema) items.push("Edema assessment");
+    }
     return items;
   }, [caseKey, io, netBalance]);
 
@@ -509,22 +609,54 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
       if ((m.status === "Held" || m.status === "Late") && !m.note.trim()) {
         items.push(`${m.med} missing follow-up note`);
       }
-      if (m.status === "Due") {
-        items.push(`${m.med} still due`);
-      }
+      if (m.status === "Due") items.push(`${m.med} still due`);
     });
     return items;
   }, [mar]);
 
-  const noteGaps = useMemo(() => {
-    const items: string[] = [];
-    if (!doc.narrative.trim()) items.push("Narrative note not completed");
-    if (doc.narrative.trim() && doc.narrative.trim().length < 60) {
-      items.push("Narrative note lacks detail");
-    }
-    if (!doc.escalationNoted) items.push("Escalation/provider notification not documented");
-    return items;
-  }, [doc]);
+  const scoreData = useMemo(() => {
+    let score = 100;
+    score -= missingDocItems.length * 6;
+    score -= missingFlowItems.length * 4;
+    score -= missingIOItems.length * 4;
+    score -= marGaps.length * 6;
+    if (doc.narrative.trim().length >= 120) score += 2;
+    if (doc.education) score += 2;
+    if (doc.escalationNoted) score += 2;
+    score = Math.max(0, Math.min(100, score));
+
+    const strengths: string[] = [];
+    const improvements: string[] = [];
+
+    if (!missingDocItems.length) strengths.push("Case-specific documentation fields are complete.");
+    if (!missingFlowItems.length) strengths.push("Flowsheet supports trending and structured review.");
+    if (!marGaps.length) strengths.push("MAR statuses and follow-up notes are aligned.");
+    if (!missingIOItems.length && (caseKey === "chf" || caseKey === "trauma")) strengths.push("I&O tracking supports high-risk monitoring.");
+
+    if (missingDocItems.length) improvements.push(`Complete documentation fields: ${missingDocItems.join(", ")}.`);
+    if (missingFlowItems.length) improvements.push(`Finish flowsheet rows: ${missingFlowItems.join(", ")}.`);
+    if (missingIOItems.length) improvements.push(`Complete I&O fields: ${missingIOItems.join(", ")}.`);
+    if (marGaps.length) improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
+
+    let level = "Needs improvement";
+    if (score >= 90) level = "Strong";
+    else if (score >= 75) level = "Developing well";
+
+    return { score, strengths, improvements, level };
+  }, [caseKey, doc.education, doc.escalationNoted, doc.narrative, marGaps, missingDocItems, missingFlowItems, missingIOItems]);
+
+  const completionPct = Math.max(
+    0,
+    Math.round(
+      ((24 -
+        Math.min(missingDocItems.length, 8) -
+        Math.min(missingFlowItems.length, 6) -
+        Math.min(missingIOItems.length, 6) -
+        Math.min(marGaps.length, 6)) /
+        24) *
+        100
+    )
+  );
 
   const weightDelta = useMemo(() => {
     const today = parseFloat(io.todayWeight);
@@ -535,58 +667,6 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
     if (diff < 0) return `${diff} lb from yesterday`;
     return "No weight change from yesterday";
   }, [io.todayWeight, io.yesterdayWeight]);
-
-  const scoreData = useMemo(() => {
-    let score = 100;
-    score -= missingDocItems.length * 6;
-    score -= missingFlowItems.length * 5;
-    score -= marGaps.length * 7;
-    score -= noteGaps.length * 4;
-    if (caseKey === "chf") score -= missingIOItems.length * 5;
-
-    if (doc.education) score += 2;
-    if (doc.coughDeepBreathing) score += 1;
-    if (doc.incentiveSpirometry) score += 1;
-    if (doc.narrative.trim().length >= 100) score += 2;
-    if (caseKey === "chf" && io.fluidRestrictionReviewed) score += 2;
-
-    score = Math.max(0, Math.min(100, score));
-
-    const strengths: string[] = [];
-    const improvements: string[] = [];
-
-    if (!missingDocItems.length) strengths.push("Key documentation fields are complete.");
-    if (!missingFlowItems.length) strengths.push("Flowsheet entries support trending and structured charting.");
-    if (!marGaps.length) strengths.push("MAR statuses and follow-up notes are aligned.");
-    if (doc.education) strengths.push("Patient education is documented.");
-    if (doc.narrative.trim().length >= 100) strengths.push("Narrative note includes helpful detail.");
-    if (caseKey === "chf" && !missingIOItems.length) strengths.push("CHF intake/output and daily weight tracking are documented.");
-
-    if (missingDocItems.length) improvements.push(`Complete core documentation fields: ${missingDocItems.join(", ")}.`);
-    if (missingFlowItems.length) improvements.push(`Finish key flowsheet rows: ${missingFlowItems.join(", ")}.`);
-    if (caseKey === "chf" && missingIOItems.length) improvements.push(`Complete CHF I&O / weight fields: ${missingIOItems.join(", ")}.`);
-    if (marGaps.length) improvements.push(`Resolve MAR follow-up gaps: ${marGaps.join(", ")}.`);
-    if (noteGaps.length) improvements.push(`Strengthen note quality: ${noteGaps.join(", ")}.`);
-
-    let level = "Needs improvement";
-    if (score >= 90) level = "Strong";
-    else if (score >= 75) level = "Developing well";
-
-    return { score, strengths, improvements, level };
-  }, [caseKey, doc, io.fluidRestrictionReviewed, marGaps, missingDocItems, missingFlowItems, missingIOItems, noteGaps]);
-
-  const completionPct = Math.max(
-    0,
-    Math.round(
-      (((caseKey === "chf" ? 24 : 18) -
-        Math.min(missingDocItems.length, 6) -
-        Math.min(missingFlowItems.length, 6) -
-        Math.min(marGaps.length, 6) -
-        (caseKey === "chf" ? Math.min(missingIOItems.length, 6) : 0)) /
-        (caseKey === "chf" ? 24 : 18)) *
-        100
-    )
-  );
 
   const updateDocField = <K extends keyof DocState>(key: K, value: DocState[K]) => {
     setDoc((prev) => ({ ...prev, [key]: value }));
@@ -646,104 +726,46 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 
   if (reviewMode) {
     return (
-      <main
-        style={{
-          fontFamily:
-            'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
-          backgroundColor: "#ffffff",
-          minHeight: "100vh",
-          color: COLORS.text,
-          padding: 24,
-        }}
-      >
+      <main style={{ fontFamily: FONT_FAMILY, backgroundColor: "#ffffff", minHeight: "100vh", color: COLORS.text, padding: 24 }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              flexWrap: "wrap",
-              alignItems: "center",
-              marginBottom: 20,
-            }}
-          >
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: 20 }}>
             <div>
               <div style={{ fontSize: 28, fontWeight: 800 }}>Preceptor Review Summary</div>
               <div style={{ color: COLORS.muted, marginTop: 6 }}>NurseBridge Practice Lab</div>
             </div>
-
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <button onClick={() => window.print()} style={primaryButtonStyle}>
-                Print / Save as PDF
-              </button>
-              <button onClick={() => setReviewMode(false)} style={secondaryButtonStyle}>
-                Exit Review Mode
-              </button>
+              <button onClick={() => window.print()} style={primaryButtonStyle}>Print / Save as PDF</button>
+              <button onClick={() => setReviewMode(false)} style={secondaryButtonStyle}>Exit Review Mode</button>
             </div>
           </div>
 
           <ReviewCard title="Case Information">
-            <ReviewGrid
-              items={[
-                ["Case", currentCase.label],
-                ["Patient", currentCase.patientName],
-                ["DOB", currentCase.dob],
-                ["MRN", currentCase.mrn],
-                ["Admit Dx", currentCase.admitDx],
-                ["Room", currentCase.room],
-                ["Submitted", submitted ? "Yes" : "No"],
-              ]}
-            />
+            <ReviewGrid items={[["Case", currentCase.label],["Patient", currentCase.patientName],["DOB", currentCase.dob],["MRN", currentCase.mrn],["Admit Dx", currentCase.admitDx],["Room", currentCase.room],["Submitted", submitted ? "Yes" : "No"]]} />
           </ReviewCard>
 
           <ReviewCard title="Performance Summary">
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: 14,
-              }}
-            >
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14 }}>
               <MetricCard label="Score" value={`${scoreData.score}/100`} />
               <MetricCard label="Level" value={scoreData.level} />
               <MetricCard label="Completion" value={`${completionPct}%`} />
             </div>
           </ReviewCard>
 
-          <ReviewCard title="Strengths">
-            {scoreData.strengths.length ? (
-              <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
-                {scoreData.strengths.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            ) : (
-              <div style={{ color: COLORS.muted }}>No strengths identified yet.</div>
-            )}
-          </ReviewCard>
-
-          <ReviewCard title="Improvement Areas">
-            {scoreData.improvements.length ? (
-              <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
-                {scoreData.improvements.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            ) : (
-              <div style={{ color: COLORS.muted }}>No major improvement areas identified.</div>
-            )}
-          </ReviewCard>
-
           <ReviewCard title="Documentation Snapshot">
             <ReviewGrid
               items={[
+                ["Pain score", doc.painScore || "—"],
                 ["Respiratory rate", doc.respRate || "—"],
                 ["Oxygen device", doc.oxygenDevice || "—"],
-                ["Oxygen flow rate", doc.oxygenLiters || "—"],
                 ["SpO₂", doc.spo2 || "—"],
-                ["Pain score", doc.painScore || "—"],
                 ["Blood glucose", doc.bloodGlucose || "—"],
                 ["Insulin administered", doc.insulinGiven || "—"],
+                ["Dyspnea level", doc.dyspneaLevel || "—"],
+                ["Weight gain noted", doc.weightGainNoted ? "Yes" : "No"],
+                ["Sepsis screen positive", doc.sepsisScreenPositive ? "Yes" : "No"],
+                ["Provider notified time", doc.providerNotifiedTime || "—"],
+                ["Trauma mechanism", doc.traumaMechanism || "—"],
+                ["Neuro status", doc.neuroStatus || "—"],
                 ["Education documented", doc.education ? "Yes" : "No"],
                 ["Escalation documented", doc.escalationNoted ? "Yes" : "No"],
                 ["Last updated", updated.documentation || "—"],
@@ -751,82 +773,20 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
             />
             <div style={{ marginTop: 14 }}>
               <div style={{ fontWeight: 700, marginBottom: 6 }}>Narrative note</div>
-              <div
-                style={{
-                  border: "1px solid #dbe7e5",
-                  borderRadius: 10,
-                  padding: 12,
-                  lineHeight: 1.7,
-                  color: doc.narrative ? COLORS.text : COLORS.muted,
-                }}
-              >
+              <div style={{ border: "1px solid #dbe7e5", borderRadius: 10, padding: 12, lineHeight: 1.7, color: doc.narrative ? COLORS.text : COLORS.muted }}>
                 {doc.narrative || "No narrative note entered."}
               </div>
             </div>
           </ReviewCard>
 
-          <ReviewCard title="Flowsheet Snapshot">
-            <ReviewGrid
-              items={[
-                ["Temperature", flow.temp || "—"],
-                ["Pulse", flow.pulse || "—"],
-                ["Blood Pressure", flow.bp || "—"],
-                ["SpO₂", flow.spo2 || "—"],
-                ["Pain", flow.pain || "—"],
-                ["Lung Sounds", flow.lungSounds || "—"],
-                ["Cough", flow.cough || "—"],
-                ["Activity Tolerance", flow.activityTolerance || "—"],
-                ["Last updated", updated.flowsheet || "—"],
-              ]}
-            />
-          </ReviewCard>
-
-          {caseKey === "chf" ? (
-            <ReviewCard title="CHF I&O / Daily Weight Snapshot">
-              <ReviewGrid
-                items={[
-                  ["Intake", io.intake ? `${io.intake} mL` : "—"],
-                  ["Urine output", io.urineOutput ? `${io.urineOutput} mL` : "—"],
-                  ["Other output", io.otherOutput ? `${io.otherOutput} mL` : "—"],
-                  ["Net balance", netBalance ? `${netBalance} mL` : "—"],
-                  ["Today's weight", io.todayWeight ? `${io.todayWeight} lb` : "—"],
-                  ["Yesterday's weight", io.yesterdayWeight ? `${io.yesterdayWeight} lb` : "—"],
-                  ["Weight trend", weightDelta || "—"],
-                  ["Edema", io.edema || "—"],
-                  ["Fluid restriction reviewed", io.fluidRestrictionReviewed ? "Yes" : "No"],
-                  ["Last updated", updated.io || "—"],
-                ]}
-              />
-            </ReviewCard>
-          ) : null}
-
-          <ReviewCard title="MAR Snapshot">
-            <div style={{ display: "grid", gap: 10 }}>
-              {mar.map((m) => (
-                <div
-                  key={`${m.med}-${m.due}`}
-                  style={{
-                    border: "1px solid #dbe7e5",
-                    borderRadius: 10,
-                    padding: 12,
-                  }}
-                >
-                  <div style={{ fontWeight: 700 }}>{m.med}</div>
-                  <div style={{ color: COLORS.muted, marginTop: 4 }}>
-                    {m.route} • {m.schedule} • Due {m.due}
-                  </div>
-                  <div style={{ marginTop: 6 }}>
-                    <b>Status:</b> {m.status}
-                  </div>
-                  <div style={{ marginTop: 4, color: m.note ? COLORS.text : COLORS.muted }}>
-                    <b>Follow-up note:</b> {m.note || "None documented"}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div style={{ marginTop: 12, color: COLORS.muted }}>
-              Last updated: {updated.mar || "—"}
-            </div>
+          <ReviewCard title="Improvement Areas">
+            {scoreData.improvements.length ? (
+              <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
+                {scoreData.improvements.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            ) : (
+              <div style={{ color: COLORS.muted }}>No major improvement areas identified.</div>
+            )}
           </ReviewCard>
         </div>
       </main>
@@ -834,187 +794,59 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   }
 
   return (
-    <main
-      style={{
-        fontFamily:
-          'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
-        backgroundColor: COLORS.bg,
-        minHeight: "100vh",
-        color: COLORS.text,
-      }}
-    >
-      <div
-        style={{
-          borderBottom: `1px solid ${COLORS.border}`,
-          background: "#ffffff",
-          padding: "10px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
+    <main style={{ fontFamily: FONT_FAMILY, backgroundColor: COLORS.bg, minHeight: "100vh", color: COLORS.text }}>
+      <div style={{ borderBottom: `1px solid ${COLORS.border}`, background: "#ffffff", padding: "10px 20px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <div style={{ fontWeight: 800 }}>NurseBridge Practice Lab</div>
-
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-            <Link href="/practice-lab" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>
-              Back to Lab
-            </Link>
-            <Link href="/preceptorship" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>
-              Preceptorship
-            </Link>
+            <Link href="/practice-lab" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>Back to Lab</Link>
+            <Link href="/preceptorship" style={{ textDecoration: "none", color: COLORS.teal, fontWeight: 700 }}>Preceptorship</Link>
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          borderBottom: `1px solid ${COLORS.border}`,
-          background: COLORS.soft,
-          padding: "14px 20px",
-        }}
-      >
+      <div style={{ borderBottom: `1px solid ${COLORS.border}`, background: COLORS.soft, padding: "14px 20px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 18 }}>{currentCase.patientName}</div>
               <div style={{ fontSize: 13, color: COLORS.muted }}>
                 DOB: {currentCase.dob} • MRN: {currentCase.mrn} • Admit Dx: {currentCase.admitDx} • Room: {currentCase.room}
               </div>
             </div>
-
-            <div
-              style={{
-                display: "inline-flex",
-                gap: 8,
-                padding: "6px 10px",
-                borderRadius: 999,
-                backgroundColor: "#ffffff",
-                color: COLORS.tealDark,
-                border: `1px solid ${COLORS.border}`,
-                fontSize: 12,
-                fontWeight: 700,
-              }}
-            >
+            <div style={{ display: "inline-flex", gap: 8, padding: "6px 10px", borderRadius: 999, backgroundColor: "#ffffff", color: COLORS.tealDark, border: `1px solid ${COLORS.border}`, fontSize: 12, fontWeight: 700 }}>
               Training Chart • Mini EHR Simulation
             </div>
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "220px 1fr 320px",
-          gap: 16,
-          padding: 20,
-        }}
-      >
-        <div
-          style={{
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 12,
-            background: "#fff",
-            padding: 10,
-            alignSelf: "start",
-          }}
-        >
+      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "220px 1fr 320px", gap: 16, padding: 20 }}>
+        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 10, alignSelf: "start" }}>
           <div style={{ fontWeight: 700, marginBottom: 8 }}>Chart Navigation</div>
-
           <div style={{ display: "grid", gap: 6, fontSize: 14 }}>
             {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                style={{
-                  textAlign: "left",
-                  padding: "8px 10px",
-                  borderRadius: 8,
-                  border: `1px solid ${activeTab === tab ? COLORS.teal : "transparent"}`,
-                  background: activeTab === tab ? COLORS.soft : "transparent",
-                  color: activeTab === tab ? COLORS.tealDark : COLORS.text,
-                  fontWeight: activeTab === tab ? 700 : 500,
-                  cursor: "pointer",
-                }}
-              >
+              <button key={tab} onClick={() => setActiveTab(tab)} style={{ textAlign: "left", padding: "8px 10px", borderRadius: 8, border: `1px solid ${activeTab === tab ? COLORS.teal : "transparent"}`, background: activeTab === tab ? COLORS.soft : "transparent", color: activeTab === tab ? COLORS.tealDark : COLORS.text, fontWeight: activeTab === tab ? 700 : 500, cursor: "pointer" }}>
                 {tab}
               </button>
             ))}
           </div>
         </div>
 
-        <div
-          style={{
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 12,
-            background: "#fff",
-            padding: 18,
-            minHeight: 640,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              flexWrap: "wrap",
-              marginBottom: 18,
-              borderBottom: `1px solid ${COLORS.border}`,
-              paddingBottom: 12,
-            }}
-          >
+        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 18, minHeight: 640 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 18, borderBottom: `1px solid ${COLORS.border}`, paddingBottom: 12 }}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: 10,
-                    border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
-                    background: activeTab === tab ? COLORS.teal : "#fff",
-                    color: activeTab === tab ? "#fff" : COLORS.text,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  {tab}
-                </button>
+                <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: "8px 12px", borderRadius: 10, border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`, background: activeTab === tab ? COLORS.teal : "#fff", color: activeTab === tab ? "#fff" : COLORS.text, fontWeight: 700, cursor: "pointer" }}>{tab}</button>
               ))}
             </div>
 
-            <select
-              value={caseKey}
-              onChange={(e) => switchCase(e.target.value as CaseKey)}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: `1px solid ${COLORS.border}`,
-                background: "#fff",
-                color: COLORS.text,
-                fontWeight: 700,
-              }}
-            >
+            <select value={caseKey} onChange={(e) => switchCase(e.target.value as CaseKey)} style={{ padding: "10px 12px", borderRadius: 10, border: `1px solid ${COLORS.border}`, background: "#fff", color: COLORS.text, fontWeight: 700 }}>
               <option value="pneumonia">{CASES.pneumonia.label}</option>
-<option value="chf">{CASES.chf.label}</option>
-<option value="sepsis">{CASES.sepsis.label}</option>
-<option value="diabetes">{CASES.diabetes.label}</option>                
+              <option value="chf">{CASES.chf.label}</option>
+              <option value="sepsis">{CASES.sepsis.label}</option>
+              <option value="diabetes">{CASES.diabetes.label}</option>
+              <option value="trauma">{CASES.trauma.label}</option>
             </select>
           </div>
 
@@ -1022,20 +854,9 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
             <div>
               <h2 style={{ marginTop: 0 }}>Patient Summary</h2>
               <p style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.summary}</p>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                  gap: 14,
-                  marginTop: 16,
-                }}
-              >
-                {currentCase.summaryCards.map((card) => (
-                  <InfoCard key={card.label} label={card.label} value={card.value} colors={COLORS} />
-                ))}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginTop: 16 }}>
+                {currentCase.summaryCards.map((card) => <InfoCard key={card.label} label={card.label} value={card.value} colors={COLORS} />)}
               </div>
-
               <ExerciseBox colors={COLORS}>{currentCase.summaryPrompt}</ExerciseBox>
             </div>
           )}
@@ -1043,348 +864,126 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           {activeTab === "Notes" && (
             <div>
               <h2 style={{ marginTop: 0 }}>Clinical Notes</h2>
-
-              <div
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 10,
-                  padding: 14,
-                  background: COLORS.soft,
-                }}
-              >
+              <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 10, padding: 14, background: COLORS.soft }}>
                 <div style={{ fontWeight: 700, marginBottom: 6 }}>{currentCase.noteTitle}</div>
                 <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.noteBody}</div>
               </div>
-
-              <div
-                style={{
-                  marginTop: 16,
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 10,
-                  padding: 14,
-                  background: "#fff",
-                }}
-              >
+              <div style={{ marginTop: 16, border: `1px solid ${COLORS.border}`, borderRadius: 10, padding: 14, background: "#fff" }}>
                 <div style={{ fontWeight: 700, marginBottom: 8 }}>Documentation coaching prompt</div>
                 <div style={{ color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.notePrompt}</div>
               </div>
-
-              <ExerciseBox colors={COLORS}>
-                Identify one improvement that would strengthen note clarity, compliance, or data quality.
-              </ExerciseBox>
+              <ExerciseBox colors={COLORS}>Identify one improvement that would strengthen note clarity, compliance, or data quality.</ExerciseBox>
             </div>
           )}
 
           {activeTab === "Documentation" && (
             <div>
               <SectionHeaderWithTime title="Documentation Workspace" stamp={updated.documentation} />
-              <AlertBox
-                title={missingDocItems.length ? "Incomplete documentation alert" : "Documentation status looks complete"}
-                text={
-                  missingDocItems.length
-                    ? `Missing items: ${missingDocItems.join(", ")}.`
-                    : "Key respiratory fields and education elements are documented."
-                }
-                ok={!missingDocItems.length}
-                colors={COLORS}
-              />
+              <AlertBox title={missingDocItems.length ? "Incomplete documentation alert" : "Documentation status looks complete"} text={missingDocItems.length ? `Missing items: ${missingDocItems.join(", ")}.` : "Key case-specific fields are documented."} ok={!missingDocItems.length} colors={COLORS} />
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                  gap: 14,
-                }}
-              >
-                <Field label="Respiratory rate">
-                  <input value={doc.respRate} onChange={(e) => updateDocField("respRate", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 24" />
-                </Field>
-
-                <Field label="Oxygen device">
-                  <select value={doc.oxygenDevice} onChange={(e) => updateDocField("oxygenDevice", e.target.value)} style={inputStyle(COLORS)}>
-                    <option value="">Select...</option>
-                    <option value="Room Air">Room Air</option>
-                    <option value="Nasal Cannula">Nasal Cannula</option>
-                    <option value="Simple Mask">Simple Mask</option>
-                    <option value="Non-Rebreather">Non-Rebreather</option>
-                  </select>
-                </Field>
-
-                <Field label="Oxygen flow rate">
-                  <input value={doc.oxygenLiters} onChange={(e) => updateDocField("oxygenLiters", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 2 L/min" />
-                </Field>
-
-                <Field label="SpO₂">
-                  <input value={doc.spo2} onChange={(e) => updateDocField("spo2", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 94%" />
-                </Field>
-
-                <Field label="Pain score">
-                  <input value={doc.painScore} onChange={(e) => updateDocField("painScore", e.target.value)} style={inputStyle(COLORS)} placeholder="0–10" />
-                </Field>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+                <Field label="Pain score"><input value={doc.painScore} onChange={(e) => updateDocField("painScore", e.target.value)} style={inputStyle(COLORS)} placeholder="0–10" /></Field>
+                <Field label="Respiratory rate"><input value={doc.respRate} onChange={(e) => updateDocField("respRate", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 24" /></Field>
+                <Field label="Oxygen device"><input value={doc.oxygenDevice} onChange={(e) => updateDocField("oxygenDevice", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., Nasal Cannula" /></Field>
+                <Field label="Oxygen flow rate"><input value={doc.oxygenLiters} onChange={(e) => updateDocField("oxygenLiters", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 2 L/min" /></Field>
+                <Field label="SpO₂"><input value={doc.spo2} onChange={(e) => updateDocField("spo2", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 94%" /></Field>
               </div>
 
               {caseKey === "diabetes" && (
-  <div
-    style={{
-      marginTop: 18,
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-      gap: 14,
-    }}
-  >
-    <Field label="Blood Glucose">
-      <input
-        value={doc.bloodGlucose}
-        onChange={(e) => updateDocField("bloodGlucose", e.target.value)}
-        style={inputStyle(COLORS)}
-        placeholder="e.g., 240 mg/dL"
-      />
-    </Field>
+                <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+                  <Field label="Blood Glucose"><input value={doc.bloodGlucose} onChange={(e) => updateDocField("bloodGlucose", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 240 mg/dL" /></Field>
+                  <Field label="Insulin Administered"><input value={doc.insulinGiven} onChange={(e) => updateDocField("insulinGiven", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 6 units Lispro" /></Field>
+                </div>
+              )}
 
-    <Field label="Insulin Administered">
-      <input
-        value={doc.insulinGiven}
-        onChange={(e) => updateDocField("insulinGiven", e.target.value)}
-        style={inputStyle(COLORS)}
-        placeholder="e.g., 6 units Lispro"
-      />
-    </Field>
-  </div>
-)}
-              <div
-                style={{
-                  marginTop: 18,
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 12,
-                  padding: 14,
-                  background: COLORS.soft,
-                }}
-              >
+              {caseKey === "chf" && (
+                <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+                  <Field label="Dyspnea Level"><input value={doc.dyspneaLevel} onChange={(e) => updateDocField("dyspneaLevel", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., Dyspnea with minimal exertion" /></Field>
+                  <div style={{ alignSelf: "end" }}>
+                    <ChecklistRow checked={doc.weightGainNoted} onChange={() => updateDocField("weightGainNoted", !doc.weightGainNoted)} label="Weight gain noted this admission" />
+                  </div>
+                </div>
+              )}
+
+              {caseKey === "sepsis" && (
+                <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+                  <div style={{ alignSelf: "end" }}>
+                    <ChecklistRow checked={doc.sepsisScreenPositive} onChange={() => updateDocField("sepsisScreenPositive", !doc.sepsisScreenPositive)} label="Sepsis screen positive" />
+                  </div>
+                  <Field label="Provider Notified Time"><input value={doc.providerNotifiedTime} onChange={(e) => updateDocField("providerNotifiedTime", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 08:17" /></Field>
+                </div>
+              )}
+
+              {caseKey === "trauma" && (
+                <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+                  <Field label="Trauma Mechanism"><input value={doc.traumaMechanism} onChange={(e) => updateDocField("traumaMechanism", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., High-speed MVC" /></Field>
+                  <Field label="Neuro Status"><input value={doc.neuroStatus} onChange={(e) => updateDocField("neuroStatus", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., Drowsy but arousable, follows commands" /></Field>
+                </div>
+              )}
+
+              <div style={{ marginTop: 18, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 14, background: COLORS.soft }}>
                 <div style={{ fontWeight: 700, marginBottom: 10 }}>Patient education / interventions</div>
-
-                <ChecklistRow checked={doc.education} onChange={() => updateDocField("education", !doc.education)} label="Education provided about disease process and therapy" />
-                <ChecklistRow checked={doc.coughDeepBreathing} onChange={() => updateDocField("coughDeepBreathing", !doc.coughDeepBreathing)} label="Breathing / self-management interventions reinforced" />
-                <ChecklistRow checked={doc.incentiveSpirometry} onChange={() => updateDocField("incentiveSpirometry", !doc.incentiveSpirometry)} label="Therapeutic technique / equipment use reviewed" />
+                <ChecklistRow checked={doc.education} onChange={() => updateDocField("education", !doc.education)} label="Education provided and documented" />
+                <ChecklistRow checked={doc.coughDeepBreathing} onChange={() => updateDocField("coughDeepBreathing", !doc.coughDeepBreathing)} label="Therapeutic interventions reinforced" />
+                <ChecklistRow checked={doc.incentiveSpirometry} onChange={() => updateDocField("incentiveSpirometry", !doc.incentiveSpirometry)} label="Technique / equipment use reviewed if applicable" />
                 <ChecklistRow checked={doc.escalationNoted} onChange={() => updateDocField("escalationNoted", !doc.escalationNoted)} label="Escalation / provider notification documented if indicated" />
               </div>
 
               <div style={{ marginTop: 18 }}>
                 <Field label="Brief documentation narrative">
-                  <textarea
-                    value={doc.narrative}
-                    onChange={(e) => updateDocField("narrative", e.target.value)}
-                    style={{ ...inputStyle(COLORS), minHeight: 110, resize: "vertical" }}
-                    placeholder="Document reassessment findings, therapy status, patient response, and teaching."
-                  />
+                  <textarea value={doc.narrative} onChange={(e) => updateDocField("narrative", e.target.value)} style={{ ...inputStyle(COLORS), minHeight: 110, resize: "vertical" }} placeholder="Document findings, therapy status, patient response, and case-specific reassessment." />
                 </Field>
               </div>
-
-              <ExerciseBox colors={COLORS}>
-                Informatics review: Which required fields are most likely to impact downstream reporting, clinical communication, and compliance if left incomplete?
-              </ExerciseBox>
             </div>
           )}
 
           {activeTab === "Flowsheet" && (
             <div>
               <SectionHeaderWithTime title="Flowsheet" stamp={updated.flowsheet} />
-              <AlertBox
-                title={missingFlowItems.length ? "Flowsheet documentation needs completion" : "Flowsheet entries look complete"}
-                text={
-                  missingFlowItems.length
-                    ? `Missing items: ${missingFlowItems.join(", ")}.`
-                    : "Key vital signs and assessment items are documented."
-                }
-                ok={!missingFlowItems.length}
-                colors={COLORS}
-              />
-
-              <div
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 12,
-                  overflow: "hidden",
-                  marginTop: 16,
-                }}
-              >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "220px 1fr 1fr",
-                    background: COLORS.soft,
-                    fontWeight: 700,
-                  }}
-                >
+              <AlertBox title={missingFlowItems.length ? "Flowsheet documentation needs completion" : "Flowsheet entries look complete"} text={missingFlowItems.length ? `Missing items: ${missingFlowItems.join(", ")}.` : "Key vital signs and assessment items are documented."} ok={!missingFlowItems.length} colors={COLORS} />
+              <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, overflow: "hidden", marginTop: 16 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "220px 1fr 1fr", background: COLORS.soft, fontWeight: 700 }}>
                   <div style={flowHeadStyle}>Row</div>
                   <div style={flowHeadStyle}>Current Entry</div>
                   <div style={flowHeadStyle}>Document</div>
                 </div>
-
                 <FlowRow label="Temperature" value={flow.temp} input={<input value={flow.temp} onChange={(e) => updateFlowField("temp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 38.1 °C" />} colors={COLORS} />
                 <FlowRow label="Pulse" value={flow.pulse} input={<input value={flow.pulse} onChange={(e) => updateFlowField("pulse", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 104" />} colors={COLORS} />
                 <FlowRow label="Blood Pressure" value={flow.bp} input={<input value={flow.bp} onChange={(e) => updateFlowField("bp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 138/82" />} colors={COLORS} />
                 <FlowRow label="SpO₂" value={flow.spo2} input={<input value={flow.spo2} onChange={(e) => updateFlowField("spo2", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 94%" />} colors={COLORS} />
                 <FlowRow label="Pain" value={flow.pain} input={<input value={flow.pain} onChange={(e) => updateFlowField("pain", e.target.value)} style={miniInputStyle(COLORS)} placeholder="0–10" />} colors={COLORS} />
-                <FlowRow
-                  label="Lung Sounds"
-                  value={flow.lungSounds}
-                  input={
-                    <select value={flow.lungSounds} onChange={(e) => updateFlowField("lungSounds", e.target.value)} style={miniInputStyle(COLORS)}>
-                      <option value="">Select...</option>
-                      <option value="Clear">Clear</option>
-                      <option value="Diminished">Diminished</option>
-                      <option value="Crackles">Crackles</option>
-                      <option value="Wheezes">Wheezes</option>
-                    </select>
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="Cough"
-                  value={flow.cough}
-                  input={
-                    <select value={flow.cough} onChange={(e) => updateFlowField("cough", e.target.value)} style={miniInputStyle(COLORS)}>
-                      <option value="">Select...</option>
-                      <option value="None">None</option>
-                      <option value="Dry">Dry</option>
-                      <option value="Productive">Productive</option>
-                    </select>
-                  }
-                  colors={COLORS}
-                />
-                <FlowRow
-                  label="Activity Tolerance"
-                  value={flow.activityTolerance}
-                  input={
-                    <select value={flow.activityTolerance} onChange={(e) => updateFlowField("activityTolerance", e.target.value)} style={miniInputStyle(COLORS)}>
-                      <option value="">Select...</option>
-                      <option value="Independent">Independent</option>
-                      <option value="Mild fatigue">Mild fatigue</option>
-                      <option value="Dyspnea with exertion">Dyspnea with exertion</option>
-                    </select>
-                  }
-                  colors={COLORS}
-                />
+                <FlowRow label="Lung Sounds" value={flow.lungSounds} input={<input value={flow.lungSounds} onChange={(e) => updateFlowField("lungSounds", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Crackles" />} colors={COLORS} />
+                <FlowRow label="Cough" value={flow.cough} input={<input value={flow.cough} onChange={(e) => updateFlowField("cough", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Productive" />} colors={COLORS} />
+                <FlowRow label="Activity Tolerance" value={flow.activityTolerance} input={<input value={flow.activityTolerance} onChange={(e) => updateFlowField("activityTolerance", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Dyspnea with exertion" />} colors={COLORS} />
               </div>
-
-              <ExerciseBox colors={COLORS}>
-                Informatics review: Which flowsheet rows are most important for trending status, and how could missing structured entries affect quality reporting or team communication?
-              </ExerciseBox>
             </div>
           )}
 
           {activeTab === "I&O" && (
             <div>
               <SectionHeaderWithTime title="Intake & Output / Daily Weights" stamp={updated.io} />
-
-              {caseKey !== "chf" ? (
-                <div
-                  style={{
-                    border: `1px solid ${COLORS.border}`,
-                    borderRadius: 12,
-                    padding: 16,
-                    background: COLORS.soft,
-                    color: COLORS.muted,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  This tab is most relevant for the CHF case. Switch to <b>Case 2 • CHF Exacerbation</b> to practice intake/output, daily weight, and edema trending.
+              {(caseKey !== "chf" && caseKey !== "trauma") ? (
+                <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 16, background: COLORS.soft, color: COLORS.muted, lineHeight: 1.7 }}>
+                  This tab is most relevant for the CHF and Trauma ICU cases.
                 </div>
               ) : (
                 <>
-                  <AlertBox
-                    title={missingIOItems.length ? "I&O / weight documentation needs completion" : "I&O / weight tracking looks complete"}
-                    text={
-                      missingIOItems.length
-                        ? `Missing items: ${missingIOItems.join(", ")}.`
-                        : "Fluid balance and daily weight fields are documented."
-                    }
-                    ok={!missingIOItems.length}
-                    colors={COLORS}
-                  />
-
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                      gap: 14,
-                      marginTop: 16,
-                    }}
-                  >
-                    <Field label="Intake (mL)">
-                      <input value={io.intake} onChange={(e) => updateIOField("intake", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1500" />
-                    </Field>
-
-                    <Field label="Urine output (mL)">
-                      <input value={io.urineOutput} onChange={(e) => updateIOField("urineOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1100" />
-                    </Field>
-
-                    <Field label="Other output (mL)">
-                      <input value={io.otherOutput} onChange={(e) => updateIOField("otherOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 0" />
-                    </Field>
-
-                    <Field label="Net balance (mL)">
-                      <input
-                        value={netBalance}
-                        readOnly
-                        style={{ ...inputStyle(COLORS), backgroundColor: COLORS.soft, fontWeight: 700 }}
-                        placeholder="Auto-calculated"
-                      />
-                    </Field>
-
-                    <Field label="Today's weight (lb)">
-                      <input value={io.todayWeight} onChange={(e) => updateIOField("todayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 198.4" />
-                    </Field>
-
-                    <Field label="Yesterday's weight (lb)">
-                      <input value={io.yesterdayWeight} onChange={(e) => updateIOField("yesterdayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 194.8" />
-                    </Field>
-
-                    <Field label="Edema assessment">
-                      <select value={io.edema} onChange={(e) => updateIOField("edema", e.target.value)} style={inputStyle(COLORS)}>
-                        <option value="">Select...</option>
-                        <option value="None">None</option>
-                        <option value="1+">1+</option>
-                        <option value="2+">2+</option>
-                        <option value="3+">3+</option>
-                      </select>
-                    </Field>
+                  <AlertBox title={missingIOItems.length ? "I&O documentation needs completion" : "I&O tracking looks complete"} text={missingIOItems.length ? `Missing items: ${missingIOItems.join(", ")}.` : "Fluid balance fields are documented."} ok={!missingIOItems.length} colors={COLORS} />
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginTop: 16 }}>
+                    <Field label="Intake (mL)"><input value={io.intake} onChange={(e) => updateIOField("intake", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1500" /></Field>
+                    <Field label="Urine output (mL)"><input value={io.urineOutput} onChange={(e) => updateIOField("urineOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 1100" /></Field>
+                    <Field label="Other output (mL)"><input value={io.otherOutput} onChange={(e) => updateIOField("otherOutput", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 150" /></Field>
+                    <Field label="Net balance (mL)"><input value={netBalance} readOnly style={{ ...inputStyle(COLORS), backgroundColor: COLORS.soft, fontWeight: 700 }} placeholder="Auto-calculated" /></Field>
+                    <Field label="Today's weight (lb)"><input value={io.todayWeight} onChange={(e) => updateIOField("todayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 198.4" /></Field>
+                    <Field label="Yesterday's weight (lb)"><input value={io.yesterdayWeight} onChange={(e) => updateIOField("yesterdayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 194.8" /></Field>
+                    <Field label="Edema assessment"><input value={io.edema} onChange={(e) => updateIOField("edema", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 2+ bilateral" /></Field>
                   </div>
-
-                  <div
-                    style={{
-                      marginTop: 18,
-                      border: `1px solid ${COLORS.border}`,
-                      borderRadius: 12,
-                      padding: 14,
-                      background: COLORS.soft,
-                    }}
-                  >
-                    <ChecklistRow
-                      checked={io.fluidRestrictionReviewed}
-                      onChange={() => updateIOField("fluidRestrictionReviewed", !io.fluidRestrictionReviewed)}
-                      label="Fluid restriction and CHF self-management teaching reviewed"
-                    />
-
-                    <div
-                      style={{
-                        marginTop: 8,
-                        padding: 12,
-                        borderRadius: 10,
-                        background: "#fff",
-                        border: `1px solid ${COLORS.border}`,
-                        color: COLORS.muted,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      <b style={{ color: COLORS.text }}>Weight trend:</b>{" "}
-                      {weightDelta || "Enter today's and yesterday's weights to calculate change."}
+                  <div style={{ marginTop: 18, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 14, background: COLORS.soft }}>
+                    <ChecklistRow checked={io.fluidRestrictionReviewed} onChange={() => updateIOField("fluidRestrictionReviewed", !io.fluidRestrictionReviewed)} label="Fluid restriction / monitoring teaching reviewed if applicable" />
+                    <div style={{ marginTop: 8, padding: 12, borderRadius: 10, background: "#fff", border: `1px solid ${COLORS.border}`, color: COLORS.muted, lineHeight: 1.6 }}>
+                      <b style={{ color: COLORS.text }}>Weight trend:</b> {weightDelta || "Enter today's and yesterday's weights to calculate change."}
                     </div>
                   </div>
-
-                  <ExerciseBox colors={COLORS}>
-                    Informatics review: Which CHF trends require the most reliable structured documentation—net balance, edema, daily weights, or oxygen status—and how could missing entries delay escalation?
-                  </ExerciseBox>
                 </>
               )}
             </div>
@@ -1393,14 +992,7 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           {activeTab === "Labs" && (
             <div>
               <h2 style={{ marginTop: 0 }}>Recent Labs</h2>
-
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  fontSize: 14,
-                }}
-              >
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                 <thead>
                   <tr style={{ background: COLORS.soft }}>
                     <th style={thStyle}>Lab</th>
@@ -1420,7 +1012,6 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
                   ))}
                 </tbody>
               </table>
-
               <ExerciseBox colors={COLORS}>{currentCase.labPrompt}</ExerciseBox>
             </div>
           )}
@@ -1428,13 +1019,9 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           {activeTab === "Orders" && (
             <div>
               <h2 style={{ marginTop: 0 }}>Active Orders</h2>
-
               <div style={{ display: "grid", gap: 10 }}>
-                {currentCase.orders.map((order) => (
-                  <OrderRow key={order} text={order} colors={COLORS} />
-                ))}
+                {currentCase.orders.map((order) => <OrderRow key={order} text={order} colors={COLORS} />)}
               </div>
-
               <ExerciseBox colors={COLORS}>{currentCase.orderPrompt}</ExerciseBox>
             </div>
           )}
@@ -1442,33 +1029,9 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           {activeTab === "MAR" && (
             <div>
               <SectionHeaderWithTime title="Medication Administration Record (MAR)" stamp={updated.mar} />
-              <AlertBox
-                title={marGaps.length ? "MAR review needed" : "MAR looks complete"}
-                text={
-                  marGaps.length
-                    ? `Items needing follow-up: ${marGaps.join(", ")}.`
-                    : "Medication statuses and follow-up notes appear complete."
-                }
-                ok={!marGaps.length}
-                colors={COLORS}
-              />
-
-              <div
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 12,
-                  overflow: "hidden",
-                  marginTop: 16,
-                }}
-              >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr",
-                    background: COLORS.soft,
-                    fontWeight: 700,
-                  }}
-                >
+              <AlertBox title={marGaps.length ? "MAR review needed" : "MAR looks complete"} text={marGaps.length ? `Items needing follow-up: ${marGaps.join(", ")}.` : "Medication statuses and follow-up notes appear complete."} ok={!marGaps.length} colors={COLORS} />
+              <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, overflow: "hidden", marginTop: 16 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr", background: COLORS.soft, fontWeight: 700 }}>
                   <div style={marHeadStyle}>Medication</div>
                   <div style={marHeadStyle}>Route</div>
                   <div style={marHeadStyle}>Schedule</div>
@@ -1476,238 +1039,52 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
                   <div style={marHeadStyle}>Status</div>
                   <div style={marHeadStyle}>Follow-up note</div>
                 </div>
-
                 {mar.map((m, idx) => (
-                  <div
-                    key={`${m.med}-${m.due}`}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr",
-                      borderTop: `1px solid ${COLORS.border}`,
-                      background:
-                        m.status === "Late"
-                          ? COLORS.lateBg
-                          : m.status === "Held"
-                          ? COLORS.warnBg
-                          : "#fff",
-                    }}
-                  >
+                  <div key={`${m.med}-${m.due}`} style={{ display: "grid", gridTemplateColumns: "2fr 80px 90px 80px 100px 1.5fr", borderTop: `1px solid ${COLORS.border}`, background: m.status === "Late" ? COLORS.lateBg : m.status === "Held" ? COLORS.warnBg : "#fff" }}>
                     <div style={marCellStyle}>{m.med}</div>
                     <div style={marCellStyle}>{m.route}</div>
                     <div style={marCellStyle}>{m.schedule}</div>
                     <div style={marCellStyle}>{m.due}</div>
-                    <div style={marCellStyle}>
-                      <select value={m.status} onChange={(e) => updateMarStatus(idx, e.target.value as MarStatus)} style={miniInputStyle(COLORS)}>
-                        <option value="Due">Due</option>
-                        <option value="Given">Given</option>
-                        <option value="Held">Held</option>
-                        <option value="Late">Late</option>
-                      </select>
-                    </div>
-                    <div style={marCellStyle}>
-                      <input value={m.note} onChange={(e) => updateMarNote(idx, e.target.value)} style={miniInputStyle(COLORS)} placeholder="Add note if held / late" />
-                    </div>
+                    <div style={marCellStyle}><select value={m.status} onChange={(e) => updateMarStatus(idx, e.target.value as MarStatus)} style={miniInputStyle(COLORS)}><option value="Due">Due</option><option value="Given">Given</option><option value="Held">Held</option><option value="Late">Late</option></select></div>
+                    <div style={marCellStyle}><input value={m.note} onChange={(e) => updateMarNote(idx, e.target.value)} style={miniInputStyle(COLORS)} placeholder="Add note if held / late" /></div>
                   </div>
                 ))}
               </div>
-
-              <ExerciseBox colors={COLORS}>
-                Which medication administration gaps could affect compliance, handoff communication, or medication safety?
-              </ExerciseBox>
             </div>
           )}
         </div>
 
-        <div
-          style={{
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 12,
-            background: "#fff",
-            padding: 14,
-            alignSelf: "start",
-          }}
-        >
+        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 14, alignSelf: "start" }}>
           <div style={{ fontWeight: 800, marginBottom: 10 }}>Instructor Panel</div>
-
-          <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.7 }}>
-            Use this screen to practice chart review, documentation quality, and workflow thinking.
-          </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
+          <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.7 }}>Use this screen to practice chart review, documentation quality, and workflow thinking.</div>
+          <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12 }}>
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Current case</div>
-            <div style={{ color: COLORS.text, fontWeight: 700, marginBottom: 6 }}>
-              {currentCase.label}
-            </div>
-            <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6 }}>
-              {currentCase.scenario}
-            </div>
+            <div style={{ color: COLORS.text, fontWeight: 700, marginBottom: 6 }}>{currentCase.label}</div>
+            <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6 }}>{currentCase.scenario}</div>
           </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
+          <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12 }}>
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Learning goals</div>
-            <ul style={{ paddingLeft: 18, margin: 0, color: COLORS.muted, lineHeight: 1.7 }}>
-              {currentCase.learningGoals.map((goal) => (
-                <li key={goal}>{goal}</li>
-              ))}
-            </ul>
+            <ul style={{ paddingLeft: 18, margin: 0, color: COLORS.muted, lineHeight: 1.7 }}>{currentCase.learningGoals.map((goal) => <li key={goal}>{goal}</li>)}</ul>
           </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Last updated</div>
-            <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.8 }}>
-              <div>Documentation: {updated.documentation || "—"}</div>
-              <div>Flowsheet: {updated.flowsheet || "—"}</div>
-              <div>I&O: {updated.io || "—"}</div>
-              <div>MAR: {updated.mar || "—"}</div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
+          <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12 }}>
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Overall completion</div>
-            <div
-              style={{
-                height: 10,
-                background: COLORS.soft,
-                borderRadius: 999,
-                overflow: "hidden",
-                border: `1px solid ${COLORS.border}`,
-              }}
-            >
-              <div
-                style={{
-                  width: `${completionPct}%`,
-                  height: "100%",
-                  background: COLORS.teal,
-                }}
-              />
+            <div style={{ height: 10, background: COLORS.soft, borderRadius: 999, overflow: "hidden", border: `1px solid ${COLORS.border}` }}>
+              <div style={{ width: `${completionPct}%`, height: "100%", background: COLORS.teal }} />
             </div>
-            <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 6 }}>
-              {completionPct}% complete
-            </div>
+            <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 6 }}>{completionPct}% complete</div>
           </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
+          <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12 }}>
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Score</div>
-            <div
-              style={{
-                border: `1px solid ${COLORS.scoreBorder}`,
-                background: COLORS.scoreBg,
-                color: COLORS.scoreText,
-                borderRadius: 10,
-                padding: 12,
-              }}
-            >
-              <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1 }}>
-                {scoreData.score}/100
-              </div>
+            <div style={{ border: `1px solid ${COLORS.scoreBorder}`, background: COLORS.scoreBg, color: COLORS.scoreText, borderRadius: 10, padding: 12 }}>
+              <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1 }}>{scoreData.score}/100</div>
               <div style={{ fontSize: 13, marginTop: 6 }}>{scoreData.level}</div>
             </div>
           </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Feedback</div>
-
-            <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.7 }}>
-              {scoreData.strengths.length ? (
-                <div style={{ marginBottom: 10 }}>
-                  <div style={{ fontWeight: 700, color: COLORS.text, marginBottom: 4 }}>
-                    Strengths
-                  </div>
-                  <ul style={{ paddingLeft: 18, margin: 0 }}>
-                    {scoreData.strengths.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-
-              <div>
-                <div style={{ fontWeight: 700, color: COLORS.text, marginBottom: 4 }}>
-                  Improve next
-                </div>
-                <ul style={{ paddingLeft: 18, margin: 0 }}>
-                  {scoreData.improvements.length ? (
-                    scoreData.improvements.map((item) => <li key={item}>{item}</li>)
-                  ) : (
-                    <li>Scenario looks strong. Review the chart one more time before submission.</li>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              borderTop: `1px solid ${COLORS.border}`,
-              paddingTop: 12,
-              display: "grid",
-              gap: 10,
-            }}
-          >
-            <button onClick={() => setSubmitted(true)} style={primaryButtonStyle}>
-              Submit Scenario
-            </button>
-
-            <button onClick={() => setReviewMode(true)} style={secondaryButtonStyle}>
-              Open Preceptor Review Mode
-            </button>
-
-            <button onClick={resetCase} style={secondaryButtonStyle}>
-              Reset Case
-            </button>
-
-            {submitted ? (
-              <div
-                style={{
-                  border: `1px solid ${COLORS.okBorder}`,
-                  background: COLORS.okBg,
-                  color: COLORS.okText,
-                  borderRadius: 10,
-                  padding: 10,
-                  fontSize: 13,
-                  lineHeight: 1.6,
-                }}
-              >
-                Scenario submitted. Final score: <b>{scoreData.score}/100</b>.
-              </div>
-            ) : null}
+          <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12, display: "grid", gap: 10 }}>
+            <button onClick={() => setSubmitted(true)} style={primaryButtonStyle}>Submit Scenario</button>
+            <button onClick={() => setReviewMode(true)} style={secondaryButtonStyle}>Open Preceptor Review Mode</button>
+            <button onClick={resetCase} style={secondaryButtonStyle}>Reset Case</button>
+            {submitted ? <div style={{ border: `1px solid ${COLORS.okBorder}`, background: COLORS.okBg, color: COLORS.okText, borderRadius: 10, padding: 10, fontSize: 13, lineHeight: 1.6 }}>Scenario submitted. Final score: <b>{scoreData.score}/100</b>.</div> : null}
           </div>
         </div>
       </div>
@@ -1715,361 +1092,70 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   );
 }
 
-function SectionHeaderWithTime({
-  title,
-  stamp,
-}: {
-  title: string;
-  stamp: string;
-}) {
+const FONT_FAMILY = 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"';
+
+function SectionHeaderWithTime({ title, stamp }: { title: string; stamp: string }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        gap: 12,
-        alignItems: "center",
-        flexWrap: "wrap",
-        marginBottom: 8,
-      }}
-    >
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 8 }}>
       <h2 style={{ margin: 0 }}>{title}</h2>
-      <div style={{ fontSize: 12, color: "#475569" }}>
-        Last updated: {stamp || "—"}
-      </div>
+      <div style={{ fontSize: 12, color: "#475569" }}>Last updated: {stamp || "—"}</div>
     </div>
   );
 }
 
-function ReviewCard({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section
-      style={{
-        border: "1px solid #dbe7e5",
-        borderRadius: 14,
-        padding: 18,
-        marginBottom: 18,
-        background: "#fff",
-      }}
-    >
-      <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 12 }}>{title}</div>
-      {children}
-    </section>
-  );
+function ReviewCard({ title, children }: { title: string; children: React.ReactNode }) {
+  return <section style={{ border: "1px solid #dbe7e5", borderRadius: 14, padding: 18, marginBottom: 18, background: "#fff" }}><div style={{ fontSize: 18, fontWeight: 800, marginBottom: 12 }}>{title}</div>{children}</section>;
 }
 
-function ReviewGrid({
-  items,
-}: {
-  items: [string, string][];
-}) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-        gap: 12,
-      }}
-    >
-      {items.map(([label, value]) => (
-        <div
-          key={label}
-          style={{
-            border: "1px solid #dbe7e5",
-            borderRadius: 10,
-            padding: 12,
-            background: "#f8fbfa",
-          }}
-        >
-          <div style={{ fontSize: 12, color: "#475569", marginBottom: 4 }}>{label}</div>
-          <div style={{ fontWeight: 700 }}>{value}</div>
-        </div>
-      ))}
-    </div>
-  );
+function ReviewGrid({ items }: { items: [string, string][] }) {
+  return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}>{items.map(([label, value]) => <div key={label} style={{ border: "1px solid #dbe7e5", borderRadius: 10, padding: 12, background: "#f8fbfa" }}><div style={{ fontSize: 12, color: "#475569", marginBottom: 4 }}>{label}</div><div style={{ fontWeight: 700 }}>{value}</div></div>)}</div>;
 }
 
-function MetricCard({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div
-      style={{
-        border: "1px solid #dbe7e5",
-        borderRadius: 10,
-        padding: 14,
-        background: "#f8fbfa",
-      }}
-    >
-      <div style={{ fontSize: 12, color: "#475569", marginBottom: 6 }}>{label}</div>
-      <div style={{ fontWeight: 800, fontSize: 24 }}>{value}</div>
-    </div>
-  );
+function MetricCard({ label, value }: { label: string; value: string }) {
+  return <div style={{ border: "1px solid #dbe7e5", borderRadius: 10, padding: 14, background: "#f8fbfa" }}><div style={{ fontSize: 12, color: "#475569", marginBottom: 6 }}>{label}</div><div style={{ fontWeight: 800, fontSize: 24 }}>{value}</div></div>;
 }
 
-function InfoCard({
-  label,
-  value,
-  colors,
-}: {
-  label: string;
-  value: string;
-  colors: { border: string; soft: string; muted: string; text: string };
-}) {
-  return (
-    <div
-      style={{
-        border: `1px solid ${colors.border}`,
-        borderRadius: 10,
-        padding: 12,
-        background: colors.soft,
-      }}
-    >
-      <div style={{ fontSize: 12, color: colors.muted, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontWeight: 700, color: colors.text }}>{value}</div>
-    </div>
-  );
+function InfoCard({ label, value, colors }: { label: string; value: string; colors: { border: string; soft: string; muted: string; text: string } }) {
+  return <div style={{ border: `1px solid ${colors.border}`, borderRadius: 10, padding: 12, background: colors.soft }}><div style={{ fontSize: 12, color: colors.muted, marginBottom: 4 }}>{label}</div><div style={{ fontWeight: 700, color: colors.text }}>{value}</div></div>;
 }
 
-function ExerciseBox({
-  children,
-  colors,
-}: {
-  children: React.ReactNode;
-  colors: { border: string; muted: string };
-}) {
-  return (
-    <div
-      style={{
-        marginTop: 20,
-        padding: 14,
-        border: `1px dashed ${colors.border}`,
-        borderRadius: 10,
-      }}
-    >
-      <div style={{ fontWeight: 800, marginBottom: 6 }}>Informatics Exercise</div>
-      <div style={{ color: colors.muted, lineHeight: 1.7 }}>{children}</div>
-    </div>
-  );
+function ExerciseBox({ children, colors }: { children: React.ReactNode; colors: { border: string; muted: string } }) {
+  return <div style={{ marginTop: 20, padding: 14, border: `1px dashed ${colors.border}`, borderRadius: 10 }}><div style={{ fontWeight: 800, marginBottom: 6 }}>Informatics Exercise</div><div style={{ color: colors.muted, lineHeight: 1.7 }}>{children}</div></div>;
 }
 
-function OrderRow({
-  text,
-  colors,
-}: {
-  text: string;
-  colors: { border: string; soft: string };
-}) {
-  return (
-    <div
-      style={{
-        border: `1px solid ${colors.border}`,
-        borderRadius: 8,
-        padding: 12,
-        background: colors.soft,
-      }}
-    >
-      {text}
-    </div>
-  );
+function OrderRow({ text, colors }: { text: string; colors: { border: string; soft: string } }) {
+  return <div style={{ border: `1px solid ${colors.border}`, borderRadius: 8, padding: 12, background: colors.soft }}>{text}</div>;
 }
 
-function ChecklistRow({
-  checked,
-  onChange,
-  label,
-}: {
-  checked: boolean;
-  onChange: () => void;
-  label: string;
-}) {
-  return (
-    <label
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        marginBottom: 10,
-        cursor: "pointer",
-      }}
-    >
-      <input type="checkbox" checked={checked} onChange={onChange} />
-      <span>{label}</span>
-    </label>
-  );
+function ChecklistRow({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
+  return <label style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, cursor: "pointer" }}><input type="checkbox" checked={checked} onChange={onChange} /><span>{label}</span></label>;
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label style={{ display: "block" }}>
-      <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>
-      {children}
-    </label>
-  );
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return <label style={{ display: "block" }}><div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>{children}</label>;
 }
 
-function AlertBox({
-  title,
-  text,
-  ok,
-  colors,
-}: {
-  title: string;
-  text: string;
-  ok: boolean;
-  colors: {
-    warnBg: string;
-    warnBorder: string;
-    warnText: string;
-    okBg: string;
-    okBorder: string;
-    okText: string;
-  };
-}) {
-  return (
-    <div
-      style={{
-        border: `1px solid ${ok ? colors.okBorder : colors.warnBorder}`,
-        backgroundColor: ok ? colors.okBg : colors.warnBg,
-        color: ok ? colors.okText : colors.warnText,
-        borderRadius: 10,
-        padding: 12,
-        marginBottom: 16,
-      }}
-    >
-      <div style={{ fontWeight: 800, marginBottom: 4 }}>{title}</div>
-      <div style={{ lineHeight: 1.6 }}>{text}</div>
-    </div>
-  );
+function AlertBox({ title, text, ok, colors }: { title: string; text: string; ok: boolean; colors: { warnBg: string; warnBorder: string; warnText: string; okBg: string; okBorder: string; okText: string } }) {
+  return <div style={{ border: `1px solid ${ok ? colors.okBorder : colors.warnBorder}`, backgroundColor: ok ? colors.okBg : colors.warnBg, color: ok ? colors.okText : colors.warnText, borderRadius: 10, padding: 12, marginBottom: 16 }}><div style={{ fontWeight: 800, marginBottom: 4 }}>{title}</div><div style={{ lineHeight: 1.6 }}>{text}</div></div>;
 }
 
-function FlowRow({
-  label,
-  value,
-  input,
-  colors,
-}: {
-  label: string;
-  value: string;
-  input: React.ReactNode;
-  colors: { border: string; muted: string };
-}) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "220px 1fr 1fr",
-        borderTop: `1px solid ${colors.border}`,
-      }}
-    >
-      <div style={flowCellStyle}>
-        <div style={{ fontWeight: 700 }}>{label}</div>
-      </div>
-      <div style={flowCellStyle}>
-        <span style={{ color: value ? "#0f172a" : colors.muted }}>
-          {value || "Not documented"}
-        </span>
-      </div>
-      <div style={flowCellStyle}>{input}</div>
-    </div>
-  );
+function FlowRow({ label, value, input, colors }: { label: string; value: string; input: React.ReactNode; colors: { border: string; muted: string } }) {
+  return <div style={{ display: "grid", gridTemplateColumns: "220px 1fr 1fr", borderTop: `1px solid ${colors.border}` }}><div style={flowCellStyle}><div style={{ fontWeight: 700 }}>{label}</div></div><div style={flowCellStyle}><span style={{ color: value ? "#0f172a" : colors.muted }}>{value || "Not documented"}</span></div><div style={flowCellStyle}>{input}</div></div>;
 }
 
-function inputStyle(colors: {
-  border: string;
-  text: string;
-}): React.CSSProperties {
-  return {
-    width: "100%",
-    padding: "12px 12px",
-    borderRadius: 12,
-    border: `1px solid ${colors.border}`,
-    backgroundColor: "#ffffff",
-    color: colors.text,
-    outline: "none",
-    fontSize: 14,
-  };
+function inputStyle(colors: { border: string; text: string }): React.CSSProperties {
+  return { width: "100%", padding: "12px 12px", borderRadius: 12, border: `1px solid ${colors.border}`, backgroundColor: "#ffffff", color: colors.text, outline: "none", fontSize: 14 };
 }
 
-function miniInputStyle(colors: {
-  border: string;
-  text: string;
-}): React.CSSProperties {
-  return {
-    width: "100%",
-    padding: "10px 10px",
-    borderRadius: 10,
-    border: `1px solid ${colors.border}`,
-    backgroundColor: "#ffffff",
-    color: colors.text,
-    outline: "none",
-    fontSize: 13,
-  };
+function miniInputStyle(colors: { border: string; text: string }): React.CSSProperties {
+  return { width: "100%", padding: "10px 10px", borderRadius: 10, border: `1px solid ${colors.border}`, backgroundColor: "#ffffff", color: colors.text, outline: "none", fontSize: 13 };
 }
 
-const primaryButtonStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRadius: 10,
-  border: "1px solid #0b5f58",
-  background: "#0f766e",
-  color: "#fff",
-  fontWeight: 800,
-  cursor: "pointer",
-};
-
-const secondaryButtonStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRadius: 10,
-  border: "1px solid #dbe7e5",
-  background: "#fff",
-  color: "#0f172a",
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const thStyle: React.CSSProperties = {
-  textAlign: "left",
-  padding: "10px 12px",
-  borderBottom: "1px solid #dbe7e5",
-};
-
-const tdStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderBottom: "1px solid #e5ecea",
-};
-
-const flowHeadStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRight: "1px solid #dbe7e5",
-};
-
-const flowCellStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRight: "1px solid #e5ecea",
-};
-
-const marHeadStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRight: "1px solid #dbe7e5",
-};
-
-const marCellStyle: React.CSSProperties = {
-  padding: "10px 12px",
-  borderRight: "1px solid #e5ecea",
-};
+const primaryButtonStyle: React.CSSProperties = { padding: "10px 12px", borderRadius: 10, border: "1px solid #0b5f58", background: "#0f766e", color: "#fff", fontWeight: 800, cursor: "pointer" };
+const secondaryButtonStyle: React.CSSProperties = { padding: "10px 12px", borderRadius: 10, border: "1px solid #dbe7e5", background: "#fff", color: "#0f172a", fontWeight: 700, cursor: "pointer" };
+const thStyle: React.CSSProperties = { textAlign: "left", padding: "10px 12px", borderBottom: "1px solid #dbe7e5" };
+const tdStyle: React.CSSProperties = { padding: "10px 12px", borderBottom: "1px solid #e5ecea" };
+const flowHeadStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #dbe7e5" };
+const flowCellStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #e5ecea" };
+const marHeadStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #dbe7e5" };
+const marCellStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #e5ecea" };
