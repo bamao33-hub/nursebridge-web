@@ -28,6 +28,8 @@ type DocState = {
   incentiveSpirometry: boolean;
   escalationNoted: boolean;
   narrative: string;
+bloodGlucose: string;
+insulinGiven: string;
 };
 
 type FlowState = {
