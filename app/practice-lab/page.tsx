@@ -54,6 +54,16 @@ const PATIENTS = [
     priority: "Moderate",
     lastUpdate: "Blood glucose reassessment due",
   },
+  {
+  caseKey: "trauma",
+  room: "ICU-12",
+  patient: "Daniel Reed",
+  diagnosis: "MVC Trauma / Post-Op Splenectomy",
+  nurse: "A. Collins, RN",
+  status: "Critical",
+  priority: "High",
+  lastUpdate: "ICU reassessment and neuro checks due",
+},
 ];
 
 export default function PracticeLabPage() {
