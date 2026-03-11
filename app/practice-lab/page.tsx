@@ -44,6 +44,16 @@ const PATIENTS = [
     priority: "High",
     lastUpdate: "Lactate / antibiotic timing",
   },
+    {
+    caseKey: "diabetes",
+    room: "534B",
+    patient: "Robert Nelson",
+    diagnosis: "Type 2 Diabetes with Hyperglycemia",
+    nurse: "K. Morris, RN",
+    status: "Needs Monitoring",
+    priority: "Moderate",
+    lastUpdate: "Blood glucose reassessment due",
+  },
 ];
 
 export default function PracticeLabPage() {
