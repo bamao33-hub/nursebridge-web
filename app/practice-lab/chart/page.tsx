@@ -133,8 +133,9 @@ const initialDoc: DocState = {
   incentiveSpirometry: false,
   escalationNoted: false,
   narrative: "",
+  bloodGlucose: "",
+  insulinGiven: "",
 };
-
 const initialFlow: FlowState = {
   temp: "",
   pulse: "",
@@ -741,6 +742,8 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
                 ["Oxygen flow rate", doc.oxygenLiters || "—"],
                 ["SpO₂", doc.spo2 || "—"],
                 ["Pain score", doc.painScore || "—"],
+                ["Blood glucose", doc.bloodGlucose || "—"],
+                ["Insulin administered", doc.insulinGiven || "—"],
                 ["Education documented", doc.education ? "Yes" : "No"],
                 ["Escalation documented", doc.escalationNoted ? "Yes" : "No"],
                 ["Last updated", updated.documentation || "—"],
@@ -1120,6 +1123,34 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
                 </Field>
               </div>
 
+              {caseKey === "diabetes" && (
+  <div
+    style={{
+      marginTop: 18,
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+      gap: 14,
+    }}
+  >
+    <Field label="Blood Glucose">
+      <input
+        value={doc.bloodGlucose}
+        onChange={(e) => updateDocField("bloodGlucose", e.target.value)}
+        style={inputStyle(COLORS)}
+        placeholder="e.g., 240 mg/dL"
+      />
+    </Field>
+
+    <Field label="Insulin Administered">
+      <input
+        value={doc.insulinGiven}
+        onChange={(e) => updateDocField("insulinGiven", e.target.value)}
+        style={inputStyle(COLORS)}
+        placeholder="e.g., 6 units Lispro"
+      />
+    </Field>
+  </div>
+)}
               <div
                 style={{
                   marginTop: 18,
