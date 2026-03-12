@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type TabKey =
@@ -521,6 +521,38 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   const [reviewMode, setReviewMode] = useState(false);
 
   const currentCase = CASES[caseKey];
+  const storageKey = `nursebridge-practice-lab-${caseKey}`;
+  useEffect(() => {
+  const saved = localStorage.getItem(storageKey);
+  if (!saved) return;
+
+  try {
+    const parsed = JSON.parse(saved);
+
+    if (parsed.activeTab) setActiveTab(parsed.activeTab);
+    if (parsed.doc) setDoc(parsed.doc);
+    if (parsed.flow) setFlow(parsed.flow);
+    if (parsed.io) setIo(parsed.io);
+    if (parsed.mar) setMar(parsed.mar);
+    if (typeof parsed.submitted === "boolean") setSubmitted(parsed.submitted);
+    if (parsed.updated) setUpdated(parsed.updated);
+  } catch (error) {
+    console.error("Failed to restore saved chart state", error);
+  }
+}, [storageKey]);
+  useEffect(() => {
+  const payload = {
+    activeTab,
+    doc,
+    flow,
+    io,
+    mar,
+    submitted,
+    updated,
+  };
+
+  localStorage.setItem(storageKey, JSON.stringify(payload));
+}, [storageKey, activeTab, doc, flow, io, mar, submitted, updated]);
 
   const netBalance = useMemo(() => {
     const intake = parseFloat(io.intake || "0");
@@ -702,6 +734,7 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   };
 
   const resetCase = () => {
+    localStorage.removeItem(storageKey);
     setDoc(initialDoc);
     setFlow(initialFlow);
     setIo(initialIO);
