@@ -533,9 +533,9 @@ export default function Home() {
     </p>
 
     <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
-      <Link href="/practice-lab" style={primaryButtonStyle}>
-        Enter Practice Lab
-      </Link>
+      <Link href="/practice-lab-access" style={primaryButtonStyle}>
+  Enter Practice Lab
+</Link>
 
       <a
         style={{ ...primaryButtonStyle, backgroundColor: "white", color: TEXT, border: `1px solid ${BORDER}` }}
