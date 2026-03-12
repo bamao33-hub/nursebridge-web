@@ -8,6 +8,17 @@ const MUTED = "#475569";
 const BORDER = "#e2e8f0";
 const SOFT = "#f0fdfa";
 
+const primaryButtonStyle = {
+  display: "inline-block",
+  padding: "10px 14px",
+  borderRadius: 12,
+  backgroundColor: TEAL,
+  color: "white",
+  fontWeight: 800,
+  textDecoration: "none",
+  border: `1px solid ${TEAL_DARK}`,
+};
+
 const SectionDivider = () => (
   <div
     style={{
@@ -75,32 +86,23 @@ export default function Home() {
           </Link>
 
           <nav style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-            <a href="#services" style={{ color: TEXT, textDecoration: "none", fontSize: 14 }}>
-              Services
-            </a>
-            <a href="#about" style={{ color: TEXT, textDecoration: "none", fontSize: 14 }}>
-              About
-            </a>
-            <a href="#contact" style={{ color: TEXT, textDecoration: "none", fontSize: 14 }}>
-              Contact
-            </a>
+  <a href="#services" style={primaryButtonStyle}>
+    Our Services
+  </a>
+  <a href="#about" style={primaryButtonStyle}>
+    About the Founder
+  </a>
+  <a href="#simulation" style={primaryButtonStyle}>
+    EHR Practice Lab (Simulation)
+  </a>
+  <a href="#contact" style={primaryButtonStyle}>
+    Contact
+  </a>
 
-            <Link
-              href="/preceptorship"
-              style={{
-                display: "inline-block",
-                padding: "10px 14px",
-                borderRadius: 12,
-                backgroundColor: TEAL,
-                color: "white",
-                fontWeight: 800,
-                textDecoration: "none",
-                border: `1px solid ${TEAL_DARK}`,
-              }}
-            >
-              Apply for Preceptorship
-            </Link>
-          </nav>
+  <Link href="/preceptorship" style={primaryButtonStyle}>
+    Apply for Preceptorship
+  </Link>
+</nav>
         </div>
       </header>
 
@@ -512,31 +514,38 @@ export default function Home() {
         <SectionDivider />
 
         {/* Simulation */}
-        <section style={{ paddingTop: 18, paddingBottom: 12 }}>
-          <div
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 16,
-              padding: 18,
-              backgroundColor: "white",
-            }}
-          >
-            <h2 style={{ margin: "0 0 8px 0" }}>Coming soon: EHR Practice Lab (Simulation)</h2>
-            <p style={{ margin: 0, color: MUTED, lineHeight: 1.7 }}>
-              We’ll build a simulation environment where students can practice structured documentation workflows during preceptorship (skills, scenarios, and guided feedback).
-            </p>
-            <p style={{ margin: "10px 0 0 0", color: MUTED, fontSize: 13 }}>
-              Want early access? Email{" "}
-              <a
-                style={{ color: TEAL, fontWeight: 700 }}
-                href="mailto:info@nursebridgeconsulting.com?subject=EHR%20Practice%20Lab%20Interest"
-              >
-                info@nursebridgeconsulting.com
-              </a>{" "}
-              with the subject “EHR Practice Lab Interest”.
-            </p>
-          </div>
-        </section>
+       <section id="simulation" style={{ scrollMarginTop: 90, paddingTop: 18, paddingBottom: 12 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 18,
+      backgroundColor: "white",
+    }}
+  >
+    <h2 style={{ margin: "0 0 8px 0" }}>EHR Practice Lab (Simulation)</h2>
+    <p style={{ margin: 0, color: MUTED, lineHeight: 1.7 }}>
+      A guided simulation environment where students can practice structured documentation workflows,
+      case-based chart review, and informatics thinking during preceptorship.
+    </p>
+    <p style={{ margin: "10px 0 0 0", color: MUTED, fontSize: 13 }}>
+      Access is provided to approved students and participants.
+    </p>
+
+    <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
+      <Link href="/practice-lab" style={primaryButtonStyle}>
+        Enter Practice Lab
+      </Link>
+
+      <a
+        style={{ ...primaryButtonStyle, backgroundColor: "white", color: TEXT, border: `1px solid ${BORDER}` }}
+        href="mailto:info@nursebridgeconsulting.com?subject=EHR%20Practice%20Lab%20Access"
+      >
+        Request Access
+      </a>
+    </div>
+  </div>
+</section>
 
         <SectionDivider />
 
