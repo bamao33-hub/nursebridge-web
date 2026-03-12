@@ -1,4 +1,9 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+
 const COLORS = {
   teal: "#0f766e",
   tealDark: "#0b5f58",
@@ -67,6 +72,15 @@ const PATIENTS = [
 ];
 
 export default function PracticeLabPage() {
+  const router = useRouter();
+
+useEffect(() => {
+  const granted = localStorage.getItem("nursebridge-lab-access");
+
+  if (granted !== "granted") {
+    router.replace("/practice-lab-access");
+  }
+}, [router]);
   return (
     <main
       style={{
