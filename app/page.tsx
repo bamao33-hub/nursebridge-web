@@ -363,11 +363,103 @@ export default function Home() {
         </section>
 
         <SectionDivider />
+<SectionDivider />
 
+{/* Paths in Nursing Informatics */}
+<section style={{ paddingTop: 18, paddingBottom: 10 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Paths in Nursing Informatics
+    </div>
+
+    <h2 style={{ margin: "0 0 10px 0" }}>
+      Nursing informatics includes more than analyst roles
+    </h2>
+
+    <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 900 }}>
+      NurseBridge recognizes that nursing informatics spans multiple career pathways, including
+      systems analysis, clinical liaison work, training and education, workflow leadership, and
+      digital transformation support. Students should understand the breadth of the field as they
+      explore where they best fit.
+    </p>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+        gap: 16,
+        marginTop: 12,
+      }}
+    >
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>Systems Analyst</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Support EHR build, testing, optimization, and workflow configuration within clinical systems.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>Clinical Liaison</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Bridge clinicians and IT teams by translating workflow needs into practical system solutions.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>EHR Trainer / Educator</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Teach users how to document efficiently, adopt workflows, and use digital tools correctly.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${BORDER}`,
+          borderRadius: 14,
+          padding: 18,
+          backgroundColor: SOFT,
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0" }}>Informatics Leadership</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Guide workflow improvement, governance, implementation planning, and broader digital health strategy.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+        
         {/* Services */}
         <section id="services" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
-          <h2 style={{ margin: "10px 0 14px 0" }}>Our Services</h2>
-
+<h2 style={{ margin: "10px 0 14px 0" }}>How NurseBridge Supports Your Informatics Journey</h2>
           <div
             style={{
               display: "grid",
