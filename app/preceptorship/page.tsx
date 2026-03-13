@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export default function PreceptorshipPage() {
   // --- theme (matches your teal + light home page) ---
@@ -18,6 +18,7 @@ export default function PreceptorshipPage() {
   };
 
   const [form, setForm] = useState({
+  const [submitted, setSubmitted] = useState(false);
     fullName: "",
     email: "",
     phone: "",
@@ -35,45 +36,6 @@ export default function PreceptorshipPage() {
   const update = (k: keyof typeof form) => (e: any) =>
     setForm((p) => ({ ...p, [k]: e.target.value }));
 
-  const subject = useMemo(() => {
-    const who = form.fullName?.trim() ? ` - ${form.fullName.trim()}` : "";
-    return `Preceptorship Inquiry${who}`;
-  }, [form.fullName]);
-
-  const body = useMemo(() => {
-    return [
-      "Hello NurseBridge Consulting,",
-      "",
-      "I am requesting a Nursing Informatics preceptorship.",
-      "",
-      `Full name: ${form.fullName}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone || "N/A"}`,
-      "",
-      `School: ${form.school}`,
-      `Program: ${form.program}`,
-      `Track/Focus: ${form.track}`,
-      "",
-      `Target start date: ${form.startDate || "N/A"}`,
-      `Hours needed: ${form.hours}`,
-      `Time zone: ${form.timeZone || "N/A"}`,
-      `Preferred contact: ${form.preferred}`,
-      "",
-      `Availability: ${form.availability}`,
-      "",
-      "Goals / what I want from the preceptorship:",
-      form.goals,
-      "",
-      "Thank you,",
-      form.fullName || "",
-    ].join("\n");
-  }, [form]);
-
-  const mailtoHref = useMemo(() => {
-    const to = "info@nursebridgeconsulting.com";
-    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [subject, body]);
-
   const canSubmit =
     form.fullName.trim() &&
     form.email.trim() &&
@@ -83,6 +45,36 @@ export default function PreceptorshipPage() {
     form.hours.trim() &&
     form.availability.trim() &&
     form.goals.trim();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!canSubmit) return;
+
+  await fetch("https://script.google.com/macros/s/AKfycbwQ5Rdi-g1Y7-A-_B2IkEr34ybGvLFIPFE8g1TnAXZFy3W3WZCCjjZfn9qM9szuDntd/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      formType: "Preceptorship Inquiry",
+      fullName: form.fullName,
+      email: form.email,
+      phone: form.phone,
+      school: form.school,
+      program: `${form.program}${form.track ? ` - ${form.track}` : ""}`,
+      hasPreceptor: "",
+      message: [
+        `Target start date: ${form.startDate || "N/A"}`,
+        `Hours needed: ${form.hours || "N/A"}`,
+        `Time zone: ${form.timeZone || "N/A"}`,
+        `Preferred contact: ${form.preferred || "N/A"}`,
+        `Availability: ${form.availability || "N/A"}`,
+        "",
+        "Goals / what you want from the preceptorship:",
+        form.goals || "",
+      ].join("\n"),
+    }),
+  });
+
+  setSubmitted(true);
+};
 
   return (
     <main
@@ -225,15 +217,16 @@ export default function PreceptorshipPage() {
         </section>
 
         {/* Form card */}
-        <section
-          style={{
-            marginTop: 18,
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 18,
-            background: COLORS.card,
-            padding: 22,
-          }}
-        >
+       <form
+  onSubmit={handleSubmit}
+  style={{
+    marginTop: 18,
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 18,
+    background: COLORS.card,
+    padding: 22,
+  }}
+>
           <div style={{ fontWeight: 900, marginBottom: 6, color: COLORS.teal }}>Contact</div>
           <div style={{ color: COLORS.muted, marginBottom: 18 }}>
             Email: <strong>info@nursebridgeconsulting.com</strong>
@@ -357,49 +350,38 @@ export default function PreceptorshipPage() {
           </div>
 
           {/* Actions */}
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-            <a
-              href={mailtoHref}
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: canSubmit ? COLORS.teal : "#94a3b8",
-                color: "white",
-                fontWeight: 900,
-                textDecoration: "none",
-                border: `1px solid ${COLORS.border}`,
-                pointerEvents: canSubmit ? "auto" : "none",
-              }}
-            >
-              Email NurseBridge
-            </a>
+         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
+  <button
+    type="submit"
+    disabled={!canSubmit}
+    style={{
+      display: "inline-block",
+      padding: "12px 16px",
+      borderRadius: 12,
+      backgroundColor: canSubmit ? COLORS.teal : "#94a3b8",
+      color: "white",
+      fontWeight: 900,
+      textDecoration: "none",
+      border: `1px solid ${COLORS.border}`,
+      cursor: canSubmit ? "pointer" : "not-allowed",
+    }}
+  >
+    Submit Inquiry
+  </button>
 
-            <a
-              href={mailtoHref}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: "inline-block",
-                padding: "12px 16px",
-                borderRadius: 12,
-                backgroundColor: "white",
-                color: COLORS.teal,
-                fontWeight: 900,
-                textDecoration: "none",
-                border: `1px solid ${COLORS.border}`,
-              }}
-            >
-              Open Email App
-            </a>
+  {!canSubmit ? (
+    <div style={{ alignSelf: "center", color: COLORS.muted, fontSize: 13 }}>
+      Please complete the required fields (*) to enable submission.
+    </div>
+  ) : null}
 
-            {!canSubmit ? (
-              <div style={{ alignSelf: "center", color: COLORS.muted, fontSize: 13 }}>
-                Please complete the required fields (*) to enable the email button.
-              </div>
-            ) : null}
-          </div>
-        </section>
+  {submitted ? (
+    <div style={{ alignSelf: "center", color: COLORS.teal, fontSize: 13, fontWeight: 700 }}>
+      Inquiry submitted successfully.
+    </div>
+  ) : null}
+</div>
+       </form>
          <section style={{ marginTop: 24 }}>
   <div
     style={{
