@@ -645,17 +645,9 @@ export default function Home() {
   Enter Practice Lab
 </Link>
 
-      <a
-  href="mailto:info@nursebridgeconsulting.com?subject=EHR%20Practice%20Lab%20Access%20Request"
-  style={{
-    ...primaryButtonStyle,
-    backgroundColor: "white",
-    color: TEXT,
-    border: `1px solid ${BORDER}`,
-  }}
->
-  Request Access
-</a>
+     <Link href="/practice-lab-request" style={secondaryButtonStyle}>
+Request Access
+</Link>
   </div>
   </div>
 </section>
