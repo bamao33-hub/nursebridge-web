@@ -127,13 +127,14 @@ useEffect(() => {
   <div style={{ fontSize: 14 }}>
     <strong>Email:</strong> {studentEmail || "Unknown"}
   </div>
-</div>
-      style={{
-          borderBottom: `1px solid ${COLORS.border}`,
-          background: "#ffffff",
-          padding: "10px 20px",
-        }}
-      >
+  </div>     
+<div
+  style={{
+    borderBottom: `1px solid ${COLORS.border}`,
+    background: "#ffffff",
+    padding: "10px 20px",
+  }}
+>
         <div
           style={{
             maxWidth: 1240,
