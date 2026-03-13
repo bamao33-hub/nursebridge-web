@@ -103,7 +103,7 @@ useEffect(() => {
         color: COLORS.text,
       }}
     >
-      <div
+     <div
   style={{
     border: "1px solid #e2e8f0",
     borderRadius: 14,
@@ -127,9 +127,8 @@ useEffect(() => {
   <div style={{ fontSize: 14 }}>
     <strong>Email:</strong> {studentEmail || "Unknown"}
   </div>
-        
-      <div
-        style={{
+</div>
+      style={{
           borderBottom: `1px solid ${COLORS.border}`,
           background: "#ffffff",
           padding: "10px 20px",
