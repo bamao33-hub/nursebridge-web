@@ -18,7 +18,16 @@ const primaryButtonStyle = {
   textDecoration: "none",
   border: `1px solid ${TEAL_DARK}`,
 };
-
+const secondaryButtonStyle = {
+  display: "inline-block",
+  padding: "10px 14px",
+  borderRadius: 12,
+  backgroundColor: "white",
+  color: TEXT,
+  fontWeight: 800,
+  textDecoration: "none",
+  border: `1px solid ${BORDER}`,
+};
 const SectionDivider = () => (
   <div
     style={{
