@@ -24,7 +24,7 @@ const SectionDivider = () => (
     style={{
       height: 1,
       background: BORDER,
-      margin: "42px 0",
+      margin: "32px 0",
       opacity: 0.6,
     }}
   />
@@ -458,15 +458,30 @@ export default function Home() {
 </section>
         
         {/* Services */}
-        <section id="services" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
-<h2 style={{ margin: "10px 0 14px 0" }}>How NurseBridge Supports Your Informatics Journey</h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: 16,
-            }}
-          >
+      <section id="services" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Our Services
+    </div>
+
+    <h2 style={{ margin: "0 0 14px 0" }}>
+      How NurseBridge Supports Your Informatics Journey
+    </h2>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        gap: 16,
+      }}
+    >
             {[
               {
                 title: "EHR Workflow Optimization",
@@ -630,10 +645,44 @@ export default function Home() {
 </Link>
 
       <a
-        style={{ ...primaryButtonStyle, backgroundColor: "white", color: TEXT, border: `1px solid ${BORDER}` }}
-        href="mailto:info@nursebridgeconsulting.com?subject=EHR%20Practice%20Lab%20Access"
-      >
-        Request Access
+  href="mailto:info@nursebridgeconsulting.com?subject=EHR%20Practice%20Lab%20Access%20Request"
+  style={{
+    ...primaryButtonStyle,
+    backgroundColor: "white",
+    color: TEXT,
+    border: `1px solid ${BORDER}`,
+  }}
+>
+  Request Access
+</a>
+  </div>
+  </div>
+</section>
+
+        <SectionDivider />
+
+        {/* About */}
+       <section id="about" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 18,
+      backgroundColor: "white",
+    }}
+  >
+    <h2 style={{ margin: "0 0 10px 0" }}>About the Founder</h2>
+
+    <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: 0 }}>
+      Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified Clinical Informatics analyst with more than 13 years of experience supporting hospital systems, clinicians, and digital health initiatives.
+    </p>
+    <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: "10px 0 0 0" }}>
+      Her work focuses on bridging the gap between bedside clinicians and healthcare technology while mentoring the next generation of informatics professionals.
+    </p>
+
+    <div style={{ marginTop: 16 }}>
+      <a href="#contact" style={primaryButtonStyle}>
+        Connect with NurseBridge
       </a>
     </div>
   </div>
@@ -641,69 +690,38 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* About */}
-        <section id="about" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 12 }}>
-          <h2 style={{ margin: "10px 0 10px 0" }}>About the Founder</h2>
-
-          <div
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 16,
-              padding: 18,
-              backgroundColor: "white",
-            }}
-          >
-            <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: 0 }}>
-              Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified Clinical Informatics analyst with more than 13 years of experience supporting hospital systems, clinicians, and digital health initiatives.
-            </p>
-            <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: "10px 0 0 0" }}>
-              Her work focuses on bridging the gap between bedside clinicians and healthcare technology while mentoring the next generation of informatics professionals.
-            </p>
-          </div>
-        </section>
-
-        <SectionDivider />
-
         {/* Contact */}
         <section id="contact" style={{ scrollMarginTop: 90, paddingTop: 26, paddingBottom: 10 }}>
-          <h2 style={{ margin: "10px 0 10px 0" }}>Contact</h2>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 18,
+      backgroundColor: "white",
+    }}
+  >
+    <h2 style={{ margin: "0 0 12px 0" }}>Contact</h2>
 
-          <div
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 16,
-              padding: 18,
-              backgroundColor: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 16,
-              flexWrap: "wrap",
-            }}
-          >
-            <div>
-              <div style={{ fontSize: 14, color: MUTED, marginBottom: 4 }}>Email</div>
-              <div style={{ fontSize: 16, fontWeight: 800 }}>{`info@nursebridgeconsulting.com`}</div>
-            </div>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 16,
+        flexWrap: "wrap",
+      }}
+    >
+      <div>
+        <div style={{ fontSize: 14, color: MUTED, marginBottom: 4 }}>Email</div>
+        <div style={{ fontSize: 16, fontWeight: 800 }}>info@nursebridgeconsulting.com</div>
+      </div>
 
-            <Link
-              href="/preceptorship"
-              style={{
-                display: "inline-block",
-                padding: "10px 14px",
-                borderRadius: 12,
-                backgroundColor: TEAL,
-                color: "white",
-                fontWeight: 800,
-                textDecoration: "none",
-                border: `1px solid ${TEAL_DARK}`,
-              }}
-            >
-              Preceptorship Inquiry Form
-            </Link>
-          </div>
-        </section>
-
+      <Link href="/preceptorship" style={primaryButtonStyle}>
+        Preceptorship Inquiry Form
+      </Link>
+    </div>
+  </div>
+</section>
         <SectionDivider />
 
 {/* Resources & Learning */}
