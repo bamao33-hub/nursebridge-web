@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -73,6 +73,9 @@ const PATIENTS = [
 
 export default function PracticeLabPage() {
   const router = useRouter();
+  const [studentName, setStudentName] = useState("");
+const [studentSchool, setStudentSchool] = useState("");
+const [studentEmail, setStudentEmail] = useState("");
 
 useEffect(() => {
   const granted = localStorage.getItem("nursebridge-lab-access");
@@ -81,6 +84,15 @@ useEffect(() => {
     router.replace("/practice-lab-access");
   }
 }, [router]);
+  useEffect(() => {
+  const name = localStorage.getItem("nursebridge-student-name") || "";
+  const school = localStorage.getItem("nursebridge-student-school") || "";
+  const email = localStorage.getItem("nursebridge-student-email") || "";
+
+  setStudentName(name);
+  setStudentSchool(school);
+  setStudentEmail(email);
+}, []);
   return (
     <main
       style={{
@@ -91,6 +103,31 @@ useEffect(() => {
         color: COLORS.text,
       }}
     >
+      <div
+  style={{
+    border: "1px solid #e2e8f0",
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 20,
+    backgroundColor: "#f8fafc",
+  }}
+>
+  <div style={{ fontWeight: 800, marginBottom: 6 }}>
+    Student Session
+  </div>
+
+  <div style={{ fontSize: 14 }}>
+    <strong>Student:</strong> {studentName || "Unknown"}
+  </div>
+
+  <div style={{ fontSize: 14 }}>
+    <strong>Program:</strong> {studentSchool || "Unknown"}
+  </div>
+
+  <div style={{ fontSize: 14 }}>
+    <strong>Email:</strong> {studentEmail || "Unknown"}
+  </div>
+        
       <div
         style={{
           borderBottom: `1px solid ${COLORS.border}`,
