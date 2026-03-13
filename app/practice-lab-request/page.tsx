@@ -28,15 +28,20 @@ export default function PracticeLabRequestPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!form.fullName || !form.email || !form.school || !form.program) {
-      return;
-    }
+  if (!form.fullName || !form.email || !form.school || !form.program) {
+    return;
+  }
 
-    setSubmitted(true);
-  };
+  await fetch("https://script.google.com/macros/s/AKfycbwQ5Rdi-g1Y7-A-_B2IkEr34ybGvLFIPFE8g1TnAXZFy3W3WZCCjjZfn9qM9szuDntd/exec", {
+    method: "POST",
+    body: JSON.stringify(form),
+  });
+
+  setSubmitted(true);
+};
 
   return (
     <main
