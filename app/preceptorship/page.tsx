@@ -18,7 +18,6 @@ export default function PreceptorshipPage() {
   };
 
   const [form, setForm] = useState({
-  const [submitted, setSubmitted] = useState(false);
     fullName: "",
     email: "",
     phone: "",
@@ -32,6 +31,7 @@ export default function PreceptorshipPage() {
     availability: "",
     goals: "",
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const update = (k: keyof typeof form) => (e: any) =>
     setForm((p) => ({ ...p, [k]: e.target.value }));
