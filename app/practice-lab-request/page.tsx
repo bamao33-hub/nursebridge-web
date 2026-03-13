@@ -38,6 +38,7 @@ export default function PracticeLabRequestPage() {
   await fetch("https://script.google.com/macros/s/AKfycbwQ5Rdi-g1Y7-A-_B2IkEr34ybGvLFIPFE8g1TnAXZFy3W3WZCCjjZfn9qM9szuDntd/exec", {
     method: "POST",
     body: JSON.stringify(form),
+    formType: "Practice Lab Request",
   });
 
   setSubmitted(true);
