@@ -50,7 +50,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   if (!canSubmit) return;
 
-  await fetch("https://script.google.com/macros/s/AKfycbwQ5Rdi-g1Y7-A-_B2IkEr34ybGvLFIPFE8g1TnAXZFy3W3WZCCjjZfn9qM9szuDntd/exec", {
+  await fetch("https://script.google.com/macros/s/AKfycby0fndW49SRmLryW1Xq89X5iFWNAhrhncgInxGhpNFvQVNGi7nUJhdDlx6eNluyeSUA/exec", {
     method: "POST",
     body: JSON.stringify({
       formType: "Preceptorship Inquiry",
