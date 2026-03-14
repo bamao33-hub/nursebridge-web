@@ -199,7 +199,7 @@ useEffect(() => {
           <h1
             style={{
               margin: "0 0 10px",
-              fontSize: 40,
+              fontSize: "clamp(28px, 6vw, 40px)",
               lineHeight: 1.06,
               maxWidth: 920,
             }}
@@ -211,7 +211,7 @@ useEffect(() => {
             style={{
               margin: 0,
               color: COLORS.muted,
-              fontSize: 19,
+              fontSize: "clamp(16px, 3.5vw, 19px)",
               lineHeight: 1.7,
               maxWidth: 980,
             }}
@@ -222,100 +222,96 @@ useEffect(() => {
         </section>
 
         <section
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 18,
+    background: "#ffffff",
+    overflow: "hidden",
+    marginBottom: 18,
+  }}
+>
+  <div
+    style={{
+      padding: "14px 16px",
+      borderBottom: `1px solid ${COLORS.border}`,
+      background: "#ffffff",
+      fontWeight: 800,
+    }}
+  >
+    Medical Floor Census
+  </div>
+
+  <div style={{ display: "grid", gap: 0 }}>
+    {PATIENTS.map((p) => (
+      <div
+        key={`${p.caseKey}-${p.room}`}
+        style={{
+          borderTop: `1px solid ${COLORS.border}`,
+          padding: 16,
+          background: "#ffffff",
+        }}
+      >
+        <div
           style={{
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 18,
-            background: "#ffffff",
-            overflow: "hidden",
-            marginBottom: 18,
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 12,
+            alignItems: "flex-start",
+            flexWrap: "wrap",
+            marginBottom: 10,
           }}
         >
-          <div
-            style={{
-              padding: "14px 16px",
-              borderBottom: `1px solid ${COLORS.border}`,
-              background: "#ffffff",
-              fontWeight: 800,
-            }}
-          >
-            Medical Floor Census
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "90px 2fr 2fr 1.3fr 1fr 1.4fr 130px",
-              background: COLORS.soft,
-              fontWeight: 800,
-              fontSize: 13,
-            }}
-          >
-            <div style={headCell}>Room</div>
-            <div style={headCell}>Patient</div>
-            <div style={headCell}>Diagnosis</div>
-            <div style={headCell}>Assigned Nurse</div>
-            <div style={headCell}>Priority</div>
-            <div style={headCell}>Latest Focus</div>
-            <div style={headCell}>Chart</div>
-          </div>
-
-          {PATIENTS.map((p) => (
-            <div
-              key={`${p.caseKey}-${p.room}`}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "90px 2fr 2fr 1.3fr 1fr 1.4fr 130px",
-                borderTop: `1px solid ${COLORS.border}`,
-                alignItems: "stretch",
-                background: "#ffffff",
-              }}
-            >
-              <div style={bodyCell}>
-                <div style={{ fontWeight: 800 }}>{p.room}</div>
-              </div>
-
-              <div style={bodyCell}>
-                <div style={{ fontWeight: 800 }}>{p.patient}</div>
-                <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 4 }}>
-                  {p.status}
-                </div>
-              </div>
-
-              <div style={bodyCell}>{p.diagnosis}</div>
-
-              <div style={bodyCell}>{p.nurse}</div>
-
-              <div style={bodyCell}>
-                <PriorityBadge priority={p.priority} />
-              </div>
-
-              <div style={bodyCell}>
-                <div style={{ color: COLORS.muted }}>{p.lastUpdate}</div>
-              </div>
-
-              <div style={bodyCell}>
-                <a
-                  href={`/practice-lab/chart?case=${p.caseKey}`}
-                  style={{
-                    display: "inline-block",
-                    padding: "10px 12px",
-                    borderRadius: 10,
-                    border: `1px solid ${COLORS.tealDark}`,
-                    background: COLORS.teal,
-                    color: "#ffffff",
-                    textDecoration: "none",
-                    fontWeight: 800,
-                    textAlign: "center",
-                  }}
-                >
-                  Open
-                </a>
-              </div>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 16 }}>
+              {p.patient}
             </div>
-          ))}
-        </section>
+            <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 4 }}>
+              Room {p.room} • {p.status}
+            </div>
+          </div>
 
-        <section
+          <PriorityBadge priority={p.priority} />
+        </div>
+
+        <div style={{ display: "grid", gap: 8, marginBottom: 14 }}>
+          <div>
+            <span style={{ fontWeight: 700 }}>Diagnosis: </span>
+            <span style={{ color: COLORS.muted }}>{p.diagnosis}</span>
+          </div>
+
+          <div>
+            <span style={{ fontWeight: 700 }}>Assigned Nurse: </span>
+            <span style={{ color: COLORS.muted }}>{p.nurse}</span>
+          </div>
+
+          <div>
+            <span style={{ fontWeight: 700 }}>Latest Focus: </span>
+            <span style={{ color: COLORS.muted }}>{p.lastUpdate}</span>
+          </div>
+        </div>
+
+        <a
+          href={`/practice-lab/chart?case=${p.caseKey}`}
+          style={{
+            display: "inline-block",
+            padding: "10px 14px",
+            borderRadius: 10,
+            border: `1px solid ${COLORS.tealDark}`,
+            background: COLORS.teal,
+            color: "#ffffff",
+            textDecoration: "none",
+            fontWeight: 800,
+            textAlign: "center",
+          }}
+        >
+          Open Chart
+        </a>
+      </div>
+    ))}
+  </div>
+</section>
+        
+               <section
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
@@ -397,14 +393,3 @@ function MiniCard({
   );
 }
 
-const headCell: React.CSSProperties = {
-  padding: "12px 14px",
-  borderRight: "1px solid #dbe7e5",
-};
-
-const bodyCell: React.CSSProperties = {
-  padding: "14px",
-  borderRight: "1px solid #e5ecea",
-  display: "flex",
-  alignItems: "center",
-};
