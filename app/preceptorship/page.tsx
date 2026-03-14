@@ -32,6 +32,7 @@ export default function PreceptorshipPage() {
     goals: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const update = (k: keyof typeof form) => (e: any) =>
     setForm((p) => ({ ...p, [k]: e.target.value }));
@@ -48,33 +49,40 @@ export default function PreceptorshipPage() {
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
-  if (!canSubmit) return;
+  if (isSubmitting || !canSubmit) return;
 
-  await fetch("https://script.google.com/macros/s/AKfycby0fndW49SRmLryW1Xq89X5iFWNAhrhncgInxGhpNFvQVNGi7nUJhdDlx6eNluyeSUA/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      formType: "Preceptorship Inquiry",
-      fullName: form.fullName,
-      email: form.email,
-      phone: form.phone,
-      school: form.school,
-      program: `${form.program}${form.track ? ` - ${form.track}` : ""}`,
-      hasPreceptor: "",
-      message: [
-        `Target start date: ${form.startDate || "N/A"}`,
-        `Hours needed: ${form.hours || "N/A"}`,
-        `Time zone: ${form.timeZone || "N/A"}`,
-        `Preferred contact: ${form.preferred || "N/A"}`,
-        `Availability: ${form.availability || "N/A"}`,
-        "",
-        "Goals / what you want from the preceptorship:",
-        form.goals || "",
-      ].join("\n"),
-    }),
-  });
+  setIsSubmitting(true);
 
-  setSubmitted(true);
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycby0fndW49SRmLryW1Xq89X5iFWNAhrhncgInxGhpNFvQVNGi7nUJhdDlx6eNluyeSUA/exec", {
+      method: "POST",
+      body: JSON.stringify({
+        formType: "Preceptorship Inquiry",
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        school: form.school,
+        program: `${form.program}${form.track ? ` - ${form.track}` : ""}`,
+        hasPreceptor: "",
+        message: [
+          `Target start date: ${form.startDate || "N/A"}`,
+          `Hours needed: ${form.hours || "N/A"}`,
+          `Time zone: ${form.timeZone || "N/A"}`,
+          `Preferred contact: ${form.preferred || "N/A"}`,
+          `Availability: ${form.availability || "N/A"}`,
+          "",
+          "Goals / what you want from the preceptorship:",
+          form.goals || "",
+        ].join("\n"),
+      }),
+    });
+
+    setSubmitted(true);
+  } finally {
+    setIsSubmitting(false);
+  }
 };
+
 
   return (
     <main
@@ -351,25 +359,25 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* Actions */}
          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-  <button
-    type="submit"
-    disabled={!canSubmit}
-    style={{
-      display: "inline-block",
-      padding: "12px 16px",
-      borderRadius: 12,
-      backgroundColor: canSubmit ? COLORS.teal : "#94a3b8",
-      color: "white",
-      fontWeight: 900,
-      textDecoration: "none",
-      border: `1px solid ${COLORS.border}`,
-      cursor: canSubmit ? "pointer" : "not-allowed",
-    }}
-  >
-    Submit Inquiry
-  </button>
-
-  {!canSubmit ? (
+<button
+  type="submit"
+  disabled={!canSubmit || isSubmitting}
+  style={{
+    display: "inline-block",
+    padding: "12px 16px",
+    borderRadius: 12,
+    backgroundColor: !canSubmit || isSubmitting ? "#94a3b8" : COLORS.teal,
+    color: "white",
+    fontWeight: 900,
+    textDecoration: "none",
+    border: `1px solid ${COLORS.border}`,
+    cursor: !canSubmit || isSubmitting ? "not-allowed" : "pointer",
+  }}
+>
+  {isSubmitting ? "Submitting..." : "Submit Inquiry"}
+</button>
+           
+    {!canSubmit ? (
     <div style={{ alignSelf: "center", color: COLORS.muted, fontSize: 13 }}>
       Please complete the required fields (*) to enable submission.
     </div>
