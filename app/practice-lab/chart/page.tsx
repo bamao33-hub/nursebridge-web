@@ -47,6 +47,12 @@ type FlowState = {
   lungSounds: string;
   cough: string;
   activityTolerance: string;
+  orientation: string;
+  pupils: string;
+  heartRhythm: string;
+  bowelSounds: string;
+  skinCondition: string;
+  assistLevel: string;
 };
 
 type IOState = {
@@ -158,7 +164,14 @@ const initialFlow: FlowState = {
   lungSounds: "",
   cough: "",
   activityTolerance: "",
+  orientation: "",
+  pupils: "",
+  heartRhythm: "",
+  bowelSounds: "",
+  skinCondition: "",
+  assistLevel: "",
 };
+
 
 const initialIO: IOState = {
   intake: "",
@@ -971,26 +984,284 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           )}
 
           {activeTab === "Flowsheet" && (
-            <div>
-              <SectionHeaderWithTime title="Flowsheet" stamp={updated.flowsheet} />
-              <AlertBox title={missingFlowItems.length ? "Flowsheet documentation needs completion" : "Flowsheet entries look complete"} text={missingFlowItems.length ? `Missing items: ${missingFlowItems.join(", ")}.` : "Key vital signs and assessment items are documented."} ok={!missingFlowItems.length} colors={COLORS} />
-              <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, overflow: "hidden", marginTop: 16 }}>
-                <div style={{ display: "grid", gridTemplateColumns: "220px 1fr 1fr", background: COLORS.soft, fontWeight: 700 }}>
-                  <div style={flowHeadStyle}>Row</div>
-                  <div style={flowHeadStyle}>Current Entry</div>
-                  <div style={flowHeadStyle}>Document</div>
-                </div>
-                <FlowRow label="Temperature" value={flow.temp} input={<input value={flow.temp} onChange={(e) => updateFlowField("temp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 38.1 °C" />} colors={COLORS} />
-                <FlowRow label="Pulse" value={flow.pulse} input={<input value={flow.pulse} onChange={(e) => updateFlowField("pulse", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 104" />} colors={COLORS} />
-                <FlowRow label="Blood Pressure" value={flow.bp} input={<input value={flow.bp} onChange={(e) => updateFlowField("bp", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 138/82" />} colors={COLORS} />
-                <FlowRow label="SpO₂" value={flow.spo2} input={<input value={flow.spo2} onChange={(e) => updateFlowField("spo2", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., 94%" />} colors={COLORS} />
-                <FlowRow label="Pain" value={flow.pain} input={<input value={flow.pain} onChange={(e) => updateFlowField("pain", e.target.value)} style={miniInputStyle(COLORS)} placeholder="0–10" />} colors={COLORS} />
-                <FlowRow label="Lung Sounds" value={flow.lungSounds} input={<input value={flow.lungSounds} onChange={(e) => updateFlowField("lungSounds", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Crackles" />} colors={COLORS} />
-                <FlowRow label="Cough" value={flow.cough} input={<input value={flow.cough} onChange={(e) => updateFlowField("cough", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Productive" />} colors={COLORS} />
-                <FlowRow label="Activity Tolerance" value={flow.activityTolerance} input={<input value={flow.activityTolerance} onChange={(e) => updateFlowField("activityTolerance", e.target.value)} style={miniInputStyle(COLORS)} placeholder="e.g., Dyspnea with exertion" />} colors={COLORS} />
-              </div>
-            </div>
-          )}
+  <div>
+    <SectionHeaderWithTime title="Flowsheet" stamp={updated.flowsheet} />
+
+    <AlertBox
+      title={
+        missingFlowItems.length
+          ? "Flowsheet documentation needs completion"
+          : "Flowsheet entries look complete"
+      }
+      text={
+        missingFlowItems.length
+          ? `Missing items: ${missingFlowItems.join(", ")}.`
+          : "Key vital signs and assessment items are documented."
+      }
+      ok={!missingFlowItems.length}
+      colors={COLORS}
+    />
+
+    <div
+      style={{
+        display: "grid",
+        gap: 12,
+        marginTop: 16,
+      }}
+    >
+      <FlowCardRow
+        label="Temperature"
+        value={flow.temp}
+        input={
+          <input
+            value={flow.temp}
+            onChange={(e) => updateFlowField("temp", e.target.value)}
+            style={inputStyle(COLORS)}
+            placeholder="e.g., 38.1 °C"
+          />
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Pulse"
+        value={flow.pulse}
+        input={
+          <input
+            value={flow.pulse}
+            onChange={(e) => updateFlowField("pulse", e.target.value)}
+            style={inputStyle(COLORS)}
+            placeholder="e.g., 104"
+          />
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Blood Pressure"
+        value={flow.bp}
+        input={
+          <input
+            value={flow.bp}
+            onChange={(e) => updateFlowField("bp", e.target.value)}
+            style={inputStyle(COLORS)}
+            placeholder="e.g., 138/82"
+          />
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="SpO₂"
+        value={flow.spo2}
+        input={
+          <input
+            value={flow.spo2}
+            onChange={(e) => updateFlowField("spo2", e.target.value)}
+            style={inputStyle(COLORS)}
+            placeholder="e.g., 94%"
+          />
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Pain"
+        value={flow.pain}
+        input={
+          <input
+            value={flow.pain}
+            onChange={(e) => updateFlowField("pain", e.target.value)}
+            style={inputStyle(COLORS)}
+            placeholder="0–10"
+          />
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Lung Sounds"
+        value={flow.lungSounds}
+        input={
+          <select
+            value={flow.lungSounds}
+            onChange={(e) => updateFlowField("lungSounds", e.target.value)}
+            style={inputStyle(COLORS)}
+          >
+            <option value="">Select...</option>
+            <option value="Clear">Clear</option>
+            <option value="Diminished">Diminished</option>
+            <option value="Crackles">Crackles</option>
+            <option value="Wheezes">Wheezes</option>
+            <option value="Rhonchi">Rhonchi</option>
+          </select>
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Cough"
+        value={flow.cough}
+        input={
+          <select
+            value={flow.cough}
+            onChange={(e) => updateFlowField("cough", e.target.value)}
+            style={inputStyle(COLORS)}
+          >
+            <option value="">Select...</option>
+            <option value="None">None</option>
+            <option value="Dry">Dry</option>
+            <option value="Productive">Productive</option>
+            <option value="Weak">Weak</option>
+          </select>
+        }
+        colors={COLORS}
+      />
+
+      <FlowCardRow
+        label="Activity Tolerance"
+        value={flow.activityTolerance}
+        input={
+          <select
+            value={flow.activityTolerance}
+            onChange={(e) => updateFlowField("activityTolerance", e.target.value)}
+            style={inputStyle(COLORS)}
+          >
+            <option value="">Select...</option>
+            <option value="Independent">Independent</option>
+            <option value="Mild fatigue">Mild fatigue</option>
+            <option value="Dyspnea with exertion">Dyspnea with exertion</option>
+            <option value="Weakness">Weakness</option>
+            <option value="Bedrest">Bedrest</option>
+          </select>
+        }
+        colors={COLORS}
+      />
+    </div>
+
+    <div style={{ marginTop: 24 }}>
+      <h3 style={{ margin: "0 0 12px 0" }}>Head-to-Toe Assessment</h3>
+
+      <div style={{ display: "grid", gap: 12 }}>
+        <FlowCardRow
+          label="Orientation"
+          value={flow.orientation}
+          input={
+            <select
+              value={flow.orientation}
+              onChange={(e) => updateFlowField("orientation", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="Alert and oriented x4">Alert and oriented x4</option>
+              <option value="Alert and oriented x3">Alert and oriented x3</option>
+              <option value="Confused">Confused</option>
+              <option value="Drowsy">Drowsy</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+
+        <FlowCardRow
+          label="Pupils"
+          value={flow.pupils}
+          input={
+            <select
+              value={flow.pupils}
+              onChange={(e) => updateFlowField("pupils", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="PERRLA">PERRLA</option>
+              <option value="Equal and reactive">Equal and reactive</option>
+              <option value="Sluggish">Sluggish</option>
+              <option value="Unequal">Unequal</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+
+        <FlowCardRow
+          label="Heart Rhythm"
+          value={flow.heartRhythm}
+          input={
+            <select
+              value={flow.heartRhythm}
+              onChange={(e) => updateFlowField("heartRhythm", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="Regular">Regular</option>
+              <option value="Irregular">Irregular</option>
+              <option value="Sinus tachycardia">Sinus tachycardia</option>
+              <option value="Atrial fibrillation">Atrial fibrillation</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+
+        <FlowCardRow
+          label="Bowel Sounds"
+          value={flow.bowelSounds}
+          input={
+            <select
+              value={flow.bowelSounds}
+              onChange={(e) => updateFlowField("bowelSounds", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="Active">Active</option>
+              <option value="Hypoactive">Hypoactive</option>
+              <option value="Absent">Absent</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+
+        <FlowCardRow
+          label="Skin Condition"
+          value={flow.skinCondition}
+          input={
+            <select
+              value={flow.skinCondition}
+              onChange={(e) => updateFlowField("skinCondition", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="Warm and dry">Warm and dry</option>
+              <option value="Cool and clammy">Cool and clammy</option>
+              <option value="Pale">Pale</option>
+              <option value="Intact">Intact</option>
+              <option value="Bruising noted">Bruising noted</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+
+        <FlowCardRow
+          label="Assist Level"
+          value={flow.assistLevel}
+          input={
+            <select
+              value={flow.assistLevel}
+              onChange={(e) => updateFlowField("assistLevel", e.target.value)}
+              style={inputStyle(COLORS)}
+            >
+              <option value="">Select...</option>
+              <option value="Independent">Independent</option>
+              <option value="Standby assist">Standby assist</option>
+              <option value="1-person assist">1-person assist</option>
+              <option value="2-person assist">2-person assist</option>
+              <option value="Total assist">Total assist</option>
+            </select>
+          }
+          colors={COLORS}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
 
           {activeTab === "I&O" && (
             <div>
@@ -1009,7 +1280,22 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
                     <Field label="Net balance (mL)"><input value={netBalance} readOnly style={{ ...inputStyle(COLORS), backgroundColor: COLORS.soft, fontWeight: 700 }} placeholder="Auto-calculated" /></Field>
                     <Field label="Today's weight (lb)"><input value={io.todayWeight} onChange={(e) => updateIOField("todayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 198.4" /></Field>
                     <Field label="Yesterday's weight (lb)"><input value={io.yesterdayWeight} onChange={(e) => updateIOField("yesterdayWeight", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 194.8" /></Field>
-                    <Field label="Edema assessment"><input value={io.edema} onChange={(e) => updateIOField("edema", e.target.value)} style={inputStyle(COLORS)} placeholder="e.g., 2+ bilateral" /></Field>
+                   <Field label="Edema assessment">
+  <select
+    value={io.edema}
+    onChange={(e) => updateIOField("edema", e.target.value)}
+    style={inputStyle(COLORS)}
+  >
+    <option value="">Select...</option>
+    <option value="None">None</option>
+    <option value="1+">1+</option>
+    <option value="2+">2+</option>
+    <option value="3+">3+</option>
+    <option value="4+">4+</option>
+    <option value="Generalized">Generalized</option>
+  </select>
+</Field>
+
                   </div>
                   <div style={{ marginTop: 18, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 14, background: COLORS.soft }}>
                     <ChecklistRow checked={io.fluidRestrictionReviewed} onChange={() => updateIOField("fluidRestrictionReviewed", !io.fluidRestrictionReviewed)} label="Fluid restriction / monitoring teaching reviewed if applicable" />
@@ -1172,8 +1458,39 @@ function AlertBox({ title, text, ok, colors }: { title: string; text: string; ok
   return <div style={{ border: `1px solid ${ok ? colors.okBorder : colors.warnBorder}`, backgroundColor: ok ? colors.okBg : colors.warnBg, color: ok ? colors.okText : colors.warnText, borderRadius: 10, padding: 12, marginBottom: 16 }}><div style={{ fontWeight: 800, marginBottom: 4 }}>{title}</div><div style={{ lineHeight: 1.6 }}>{text}</div></div>;
 }
 
-function FlowRow({ label, value, input, colors }: { label: string; value: string; input: React.ReactNode; colors: { border: string; muted: string } }) {
-  return <div style={{ display: "grid", gridTemplateColumns: "220px 1fr 1fr", borderTop: `1px solid ${colors.border}` }}><div style={flowCellStyle}><div style={{ fontWeight: 700 }}>{label}</div></div><div style={flowCellStyle}><span style={{ color: value ? "#0f172a" : colors.muted }}>{value || "Not documented"}</span></div><div style={flowCellStyle}>{input}</div></div>;
+function FlowCardRow({
+  label,
+  value,
+  input,
+  colors,
+}: {
+  label: string;
+  value: string;
+  input: React.ReactNode;
+  colors: { border: string; muted: string; soft: string };
+}) {
+  return (
+    <div
+      style={{
+        border: `1px solid ${colors.border}`,
+        borderRadius: 12,
+        padding: 14,
+        background: "#fff",
+      }}
+    >
+      <div style={{ fontWeight: 700, marginBottom: 8 }}>{label}</div>
+      <div
+        style={{
+          color: value ? "#0f172a" : colors.muted,
+          marginBottom: 10,
+          lineHeight: 1.5,
+        }}
+      >
+        Current Entry: {value || "Not documented"}
+      </div>
+      {input}
+    </div>
+  );
 }
 
 function inputStyle(colors: { border: string; text: string }): React.CSSProperties {
@@ -1188,7 +1505,5 @@ const primaryButtonStyle: React.CSSProperties = { padding: "10px 12px", borderRa
 const secondaryButtonStyle: React.CSSProperties = { padding: "10px 12px", borderRadius: 10, border: "1px solid #dbe7e5", background: "#fff", color: "#0f172a", fontWeight: 700, cursor: "pointer" };
 const thStyle: React.CSSProperties = { textAlign: "left", padding: "10px 12px", borderBottom: "1px solid #dbe7e5" };
 const tdStyle: React.CSSProperties = { padding: "10px 12px", borderBottom: "1px solid #e5ecea" };
-const flowHeadStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #dbe7e5" };
-const flowCellStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #e5ecea" };
 const marHeadStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #dbe7e5" };
 const marCellStyle: React.CSSProperties = { padding: "10px 12px", borderRight: "1px solid #e5ecea" };
