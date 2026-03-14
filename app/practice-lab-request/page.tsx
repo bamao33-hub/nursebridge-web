@@ -23,6 +23,7 @@ export default function PracticeLabRequestPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -31,20 +32,29 @@ export default function PracticeLabRequestPage() {
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
+  if (isSubmitting) return;
+
   if (!form.fullName || !form.email || !form.school || !form.program) {
     return;
   }
 
-  await fetch("https://script.google.com/macros/s/AKfycby0fndW49SRmLryW1Xq89X5iFWNAhrhncgInxGhpNFvQVNGi7nUJhdDlx6eNluyeSUA/exec", {
-    method: "POST",
-  body: JSON.stringify({
-    ...form,
-    formType: "Practice Lab Request",
-  }),
-});
+  setIsSubmitting(true);
 
-  setSubmitted(true);
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycby0fndW49SRmLryW1Xq89X5iFWNAhrhncgInxGhpNFvQVNGi7nUJhdDlx6eNluyeSUA/exec", {
+      method: "POST",
+      body: JSON.stringify({
+        ...form,
+        formType: "Practice Lab Request",
+      }),
+    });
+
+    setSubmitted(true);
+  } finally {
+    setIsSubmitting(false);
+  }
 };
+
 
   return (
     <main
@@ -203,23 +213,24 @@ export default function PracticeLabRequestPage() {
                 placeholder="Tell us briefly what kind of access or support you are seeking."
               />
 
-              <button
-                type="submit"
-                style={{
-                  display: "inline-block",
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  backgroundColor: TEAL,
-                  color: "white",
-                  fontWeight: 800,
-                  textDecoration: "none",
-                  border: `1px solid ${TEAL_DARK}`,
-                  cursor: "pointer",
-                  width: "100%",
-                }}
-              >
-                Submit Request
-              </button>
+             <button
+  type="submit"
+  disabled={isSubmitting}
+  style={{
+    display: "inline-block",
+    padding: "12px 16px",
+    borderRadius: 12,
+    backgroundColor: isSubmitting ? "#94a3b8" : TEAL,
+    color: "white",
+    fontWeight: 800,
+    textDecoration: "none",
+    border: `1px solid ${TEAL_DARK}`,
+    cursor: isSubmitting ? "not-allowed" : "pointer",
+    width: "100%",
+  }}
+>
+  {isSubmitting ? "Submitting..." : "Submit Request"}
+</button>
             </form>
           )}
 
