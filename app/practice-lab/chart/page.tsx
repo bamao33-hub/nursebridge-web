@@ -896,7 +896,17 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   }}
 >
 
-        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 10, alignSelf: "start" }}>
+        <div
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 12,
+    background: "#fff",
+    padding: 10,
+    alignSelf: "start",
+    order: isMobile ? 3 : 1,
+  }}
+>
+
           <div style={{ fontWeight: 700, marginBottom: 8 }}>Chart Navigation</div>
           <div style={{ display: "grid", gap: 6, fontSize: 14 }}>
             {tabs.map((tab) => (
@@ -907,7 +917,17 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           </div>
         </div>
 
-        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 18, minHeight: 640 }}>
+        <div
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 12,
+    background: "#fff",
+    padding: 18,
+    minHeight: 640,
+    order: isMobile ? 1 : 2,
+  }}
+>
+
           <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 18, borderBottom: `1px solid ${COLORS.border}`, paddingBottom: 12 }}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {tabs.map((tab) => (
@@ -1401,7 +1421,17 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
           )}
         </div>
 
-        <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 14, alignSelf: "start" }}>
+        <div
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 12,
+    background: "#fff",
+    padding: 14,
+    alignSelf: "start",
+    order: isMobile ? 2 : 3,
+  }}
+>
+
           <div style={{ fontWeight: 800, marginBottom: 10 }}>Instructor Panel</div>
           <div style={{ fontSize: 13, color: COLORS.muted, lineHeight: 1.7 }}>Use this screen to practice chart review, documentation quality, and workflow thinking.</div>
           <div style={{ marginTop: 14, borderTop: `1px solid ${COLORS.border}`, paddingTop: 12 }}>
