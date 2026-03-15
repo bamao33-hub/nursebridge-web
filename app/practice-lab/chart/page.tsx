@@ -908,7 +908,14 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 >
 
           <div style={{ fontWeight: 700, marginBottom: 8 }}>Chart Navigation</div>
-          <div style={{ display: "grid", gap: 6, fontSize: 14 }}>
+         <div
+  style={{
+    display: "grid",
+    gap: 6,
+    fontSize: 14,
+    gridTemplateColumns: isMobile ? "repeat(2, minmax(0, 1fr))" : "1fr",
+  }}
+>
             {tabs.map((tab) => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{ textAlign: "left", padding: "8px 10px", borderRadius: 8, border: `1px solid ${activeTab === tab ? COLORS.teal : "transparent"}`, background: activeTab === tab ? COLORS.soft : "transparent", color: activeTab === tab ? COLORS.tealDark : COLORS.text, fontWeight: activeTab === tab ? 700 : 500, cursor: "pointer" }}>
                 {tab}
@@ -929,9 +936,28 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 >
 
           <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 18, borderBottom: `1px solid ${COLORS.border}`, paddingBottom: 12 }}>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {tabs.map((tab) => (
-                <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: "8px 12px", borderRadius: 10, border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`, background: activeTab === tab ? COLORS.teal : "#fff", color: activeTab === tab ? "#fff" : COLORS.text, fontWeight: 700, cursor: "pointer" }}>{tab}</button>
+            <div
+  style={{
+    display: "flex",
+    gap: 10,
+    flexWrap: isMobile ? "nowrap" : "wrap",
+    overflowX: isMobile ? "auto" : "visible",
+    paddingBottom: isMobile ? 6 : 0,
+    WebkitOverflowScrolling: "touch",
+  }}
+>
+  {tabs.map((tab) => (
+
+            <button key={tab} onClick={() => setActiveTab(tab)} 
+              style={{
+  padding: "8px 12px",
+  borderRadius: 10,
+  border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
+  background: activeTab === tab ? COLORS.teal : "#fff",
+  color: activeTab === tab ? "#fff" : COLORS.text,
+  fontWeight: 
+
+              >{tab}</button>
               ))}
             </div>
 
