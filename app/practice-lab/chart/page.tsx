@@ -946,19 +946,23 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
     WebkitOverflowScrolling: "touch",
   }}
 >
-  {tabs.map((tab) => (
-
-            <button key={tab} onClick={() => setActiveTab(tab)} 
-              style={{
-  padding: "8px 12px",
-  borderRadius: 10,
-  border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
-  background: activeTab === tab ? COLORS.teal : "#fff",
-  color: activeTab === tab ? "#fff" : COLORS.text,
- fontWeight: 700,
-
-              >{tab}</button>
-              ))}
+{tabs.map((tab) => (
+  <button
+    key={tab}
+    onClick={() => setActiveTab(tab)}
+    style={{
+      padding: "8px 12px",
+      borderRadius: 10,
+      border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
+      background: activeTab === tab ? COLORS.teal : "#fff",
+      color: activeTab === tab ? "#fff" : COLORS.text,
+      fontWeight: 700,
+      cursor: "pointer",
+    }}
+  >
+    {tab}
+  </button>
+))}
             </div>
 
             <select value={caseKey} onChange={(e) => switchCase(e.target.value as CaseKey)} style={{ padding: "10px 12px", borderRadius: 10, border: `1px solid ${COLORS.border}`, background: "#fff", color: COLORS.text, fontWeight: 700 }}>
