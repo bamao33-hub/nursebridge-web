@@ -639,15 +639,25 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   }, [caseKey, doc]);
 
   const missingFlowItems = useMemo(() => {
-    const items: string[] = [];
-    if (!flow.temp) items.push("Temperature");
-    if (!flow.pulse) items.push("Pulse");
-    if (!flow.bp) items.push("Blood pressure");
-    if (!flow.spo2) items.push("SpO₂");
-    if (!flow.pain) items.push("Pain");
-    return items;
-  }, [flow]);
+  const items: string[] = [];
 
+  if (!flow.temp) items.push("Temperature");
+  if (!flow.pulse) items.push("Pulse");
+  if (!flow.bp) items.push("Blood pressure");
+  if (!flow.spo2) items.push("SpO₂");
+  if (!flow.pain) items.push("Pain");
+  if (!flow.lungSounds) items.push("Lung sounds");
+  if (!flow.cough) items.push("Cough");
+  if (!flow.activityTolerance) items.push("Activity tolerance");
+  if (!flow.orientation) items.push("Orientation");
+  if (!flow.pupils) items.push("Pupils");
+  if (!flow.heartRhythm) items.push("Heart rhythm");
+  if (!flow.bowelSounds) items.push("Bowel sounds");
+  if (!flow.skinCondition) items.push("Skin condition");
+  if (!flow.assistLevel) items.push("Assist level");
+
+  return items;
+}, [flow]);
   const missingIOItems = useMemo(() => {
     if (caseKey !== "chf" && caseKey !== "trauma") return [];
     const items: string[] = [];
@@ -675,10 +685,10 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
 
   const scoreData = useMemo(() => {
     let score = 100;
-    score -= missingDocItems.length * 6;
-    score -= missingFlowItems.length * 4;
-    score -= missingIOItems.length * 4;
-    score -= marGaps.length * 6;
+    score -= missingDocItems.length * 5;
+score -= missingFlowItems.length * 3;
+score -= missingIOItems.length * 4;
+score -= marGaps.length * 6;
     if (doc.narrative.trim().length >= 120) score += 2;
     if (doc.education) score += 2;
     if (doc.escalationNoted) score += 2;
@@ -704,18 +714,18 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
     return { score, strengths, improvements, level };
   }, [caseKey, doc.education, doc.escalationNoted, doc.narrative, marGaps, missingDocItems, missingFlowItems, missingIOItems]);
 
-  const completionPct = Math.max(
-    0,
-    Math.round(
-      ((24 -
-        Math.min(missingDocItems.length, 8) -
-        Math.min(missingFlowItems.length, 6) -
-        Math.min(missingIOItems.length, 6) -
-        Math.min(marGaps.length, 6)) /
-        24) *
-        100
-    )
-  );
+ const completionPct = Math.max(
+  0,
+  Math.round(
+    ((32 -
+      Math.min(missingDocItems.length, 8) -
+      Math.min(missingFlowItems.length, 14) -
+      Math.min(missingIOItems.length, 6) -
+      Math.min(marGaps.length, 6)) /
+      32) *
+      100
+  )
+);
 
   const weightDelta = useMemo(() => {
     const today = parseFloat(io.todayWeight);
