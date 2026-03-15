@@ -532,9 +532,23 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   const [submitted, setSubmitted] = useState(false);
   const [updated, setUpdated] = useState<UpdatedState>(initialUpdated);
   const [reviewMode, setReviewMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   const currentCase = CASES[caseKey];
   const storageKey = `nursebridge-practice-lab-${caseKey}`;
+  useEffect(() => {
+  const checkScreen = () => {
+    setIsMobile(window.innerWidth < 768);
+    setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1100);
+  };
+
+  checkScreen();
+  window.addEventListener("resize", checkScreen);
+
+  return () => window.removeEventListener("resize", checkScreen);
+}, []);
+
   useEffect(() => {
   const saved = localStorage.getItem(storageKey);
   if (!saved) return;
@@ -867,7 +881,21 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "220px 1fr 320px", gap: 16, padding: 20 }}>
+     <div
+  style={{
+    maxWidth: 1280,
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: isMobile
+      ? "1fr"
+      : isTablet
+      ? "1fr 320px"
+      : "220px 1fr 320px",
+    gap: 16,
+    padding: 20,
+  }}
+>
+
         <div style={{ border: `1px solid ${COLORS.border}`, borderRadius: 12, background: "#fff", padding: 10, alignSelf: "start" }}>
           <div style={{ fontWeight: 700, marginBottom: 8 }}>Chart Navigation</div>
           <div style={{ display: "grid", gap: 6, fontSize: 14 }}>
