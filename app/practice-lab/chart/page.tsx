@@ -955,7 +955,7 @@ function ChartSimulationContent({ selectedCase }: { selectedCase: CaseKey }) {
   border: `1px solid ${activeTab === tab ? COLORS.teal : COLORS.border}`,
   background: activeTab === tab ? COLORS.teal : "#fff",
   color: activeTab === tab ? "#fff" : COLORS.text,
-  fontWeight: 
+ fontWeight: 700,
 
               >{tab}</button>
               ))}
