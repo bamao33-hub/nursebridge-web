@@ -76,6 +76,7 @@ export default function Home() {
         minHeight: "100vh",
       }}
     >
+      {/* HEADER */}
       <header
         style={{
           position: "sticky",
@@ -122,17 +123,20 @@ export default function Home() {
           </Link>
 
           <nav style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            <a href="#services" style={primaryButtonStyle}>
-              Our Services
+            <a href="#start-here" style={secondaryButtonStyle}>
+              Start Here
             </a>
-            <a href="#about" style={primaryButtonStyle}>
-              About the Founder
+            <a href="#services" style={secondaryButtonStyle}>
+              Services
             </a>
-            <a href="#practice-lab" style={primaryButtonStyle}>
+            <a href="#pathways" style={secondaryButtonStyle}>
+              Career Paths
+            </a>
+            <a href="#books-courses" style={secondaryButtonStyle}>
+              Books & Courses
+            </a>
+            <a href="#practice-lab" style={secondaryButtonStyle}>
               EHR Practice Lab
-            </a>
-            <a href="#contact" style={primaryButtonStyle}>
-              Contact
             </a>
             <Link href="/preceptorship" style={primaryButtonStyle}>
               Apply for Preceptorship
@@ -142,7 +146,7 @@ export default function Home() {
       </header>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 20px 46px" }}>
-        {/* Hero */}
+        {/* HERO */}
         <section
           style={{
             border: `1px solid ${BORDER}`,
@@ -185,7 +189,7 @@ export default function Home() {
                   lineHeight: 1.08,
                 }}
               >
-                Clinical Informatics support that improves workflow—and builds careers.
+                Clinical informatics support that improves workflow—and builds careers.
               </h1>
 
               <p style={{ fontSize: 18, lineHeight: 1.7, color: MUTED, margin: 0 }}>
@@ -210,7 +214,9 @@ export default function Home() {
                 <span>•</span>
                 <span>Courses</span>
                 <span>•</span>
-                <span>Consulting</span>
+                <span>Preceptorship</span>
+                <span>•</span>
+                <span>EHR Practice Lab</span>
               </div>
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
@@ -218,9 +224,8 @@ export default function Home() {
                   Start Preceptorship Inquiry
                 </Link>
                 <a href="#start-here" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
-  Start Your Informatics Journey
-</a>
-                
+                  Start Your Informatics Journey
+                </a>
               </div>
 
               <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
@@ -242,7 +247,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Proof band */}
+        {/* PROOF BAND */}
         <section style={{ paddingTop: 18, paddingBottom: 8 }}>
           <div
             style={{
@@ -276,78 +281,77 @@ export default function Home() {
             </div>
           </div>
         </section>
-{/* Start Here */}
-<section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
-  <div
-    style={{
-      border: `1px solid ${BORDER}`,
-      borderRadius: 16,
-      padding: 20,
-      backgroundColor: "white",
-    }}
-  >
-    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-      Start Here
-    </div>
-    <h2 style={{ margin: "0 0 10px 0" }}>Start your informatics journey</h2>
-    <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
-      New to nursing informatics? Use the pathways below to decide where to begin based on your goals.
-    </p>
 
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-        gap: 16,
-        marginTop: 12,
-      }}
-    >
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 8px 0" }}>Explore Career Paths</h3>
-        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
-          Learn about systems, liaison, training, and leadership pathways in nursing informatics.
-        </p>
-        <a href="#pathways" style={primaryButtonStyle}>
-          Explore Pathways
-        </a>
-      </div>
+        {/* START HERE */}
+        <section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
+          <div
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 16,
+              padding: 20,
+              backgroundColor: "white",
+            }}
+          >
+            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>Start Here</div>
+            <h2 style={{ margin: "0 0 10px 0" }}>Start your informatics journey</h2>
+            <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+              New to nursing informatics? Use the pathways below to decide where to begin based on your goals.
+            </p>
 
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 8px 0" }}>Learn About Preceptorship</h3>
-        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
-          See how NurseBridge supports MSN/DNP students through structured informatics mentorship.
-        </p>
-        <a href="#preceptorship-process" style={primaryButtonStyle}>
-          View Preceptorship
-        </a>
-      </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: 16,
+                marginTop: 12,
+              }}
+            >
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 8px 0" }}>Explore Career Paths</h3>
+                <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+                  Learn about systems, liaison, training, and leadership pathways in nursing informatics.
+                </p>
+                <a href="#pathways" style={primaryButtonStyle}>
+                  Explore Pathways
+                </a>
+              </div>
 
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 8px 0" }}>Try the Practice Lab</h3>
-        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
-          Practice chart review, structured documentation, and informatics thinking in a guided simulation.
-        </p>
-        <Link href="/practice-lab" style={primaryButtonStyle}>
-          Enter Practice Lab
-        </Link>
-      </div>
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 8px 0" }}>Learn About Preceptorship</h3>
+                <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+                  See how NurseBridge supports MSN/DNP students through structured informatics mentorship.
+                </p>
+                <a href="#preceptorship-process" style={primaryButtonStyle}>
+                  View Preceptorship
+                </a>
+              </div>
 
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 8px 0" }}>Connect with NurseBridge</h3>
-        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
-          Reach out for preceptorship questions, workflow guidance, or resource support.
-        </p>
-        <a href="#contact" style={primaryButtonStyle}>
-          Contact NurseBridge
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-        
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 8px 0" }}>Try the Practice Lab</h3>
+                <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+                  Practice chart review, structured documentation, and informatics thinking in a guided simulation.
+                </p>
+                <Link href="/practice-lab" style={primaryButtonStyle}>
+                  Enter Practice Lab
+                </Link>
+              </div>
+
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 8px 0" }}>Connect with NurseBridge</h3>
+                <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+                  Reach out for preceptorship questions, workflow guidance, or resource support.
+                </p>
+                <a href="#contact" style={primaryButtonStyle}>
+                  Contact NurseBridge
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <SectionDivider />
 
-        {/* Who We Serve */}
+        {/* WHO WE SERVE */}
         <section>
           <div
             style={{
@@ -362,8 +366,8 @@ export default function Home() {
             </div>
             <h2 style={{ margin: 0, fontSize: 32 }}>Built for clinicians, students, and healthcare teams</h2>
             <p style={{ marginTop: 8, color: MUTED, lineHeight: 1.7, maxWidth: 850 }}>
-              NurseBridge Consulting supports healthcare professionals and organizations that want
-              smarter workflows, stronger documentation, and a clearer path into clinical informatics.
+              NurseBridge Consulting supports healthcare professionals and organizations that want smarter workflows,
+              stronger documentation, and a clearer path into clinical informatics.
             </p>
 
             <div
@@ -376,24 +380,24 @@ export default function Home() {
               <div style={softCardStyle}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Bedside clinicians</h3>
                 <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  For nurses and clinicians seeking better documentation workflows, stronger efficiency,
-                  and guidance on informatics-aligned practice.
+                  For nurses and clinicians seeking better documentation workflows, stronger efficiency, and guidance on
+                  informatics-aligned practice.
                 </p>
               </div>
 
               <div style={softCardStyle}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>MSN/DNP informatics students</h3>
                 <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  For graduate students seeking structured nursing informatics preceptorship,
-                  real-world mentorship, and meaningful project-based learning.
+                  For graduate students seeking structured nursing informatics preceptorship, real-world mentorship, and
+                  meaningful project-based learning.
                 </p>
               </div>
 
               <div style={softCardStyle}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Healthcare organizations</h3>
                 <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  For teams looking to improve EHR adoption, optimize workflows, and support
-                  documentation practices that align with real clinical work.
+                  For teams looking to improve EHR adoption, optimize workflows, and support documentation practices that
+                  align with real clinical work.
                 </p>
               </div>
             </div>
@@ -402,7 +406,7 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Services */}
+        {/* SERVICES */}
         <section id="services" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -412,9 +416,7 @@ export default function Home() {
               backgroundColor: "white",
             }}
           >
-            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-              Our Services
-            </div>
+            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>Our Services</div>
             <h2 style={{ margin: "0 0 10px 0" }}>How NurseBridge supports your informatics journey</h2>
 
             <div
@@ -457,67 +459,68 @@ export default function Home() {
             </div>
           </div>
         </section>
-{/* What You'll Learn */}
-<section style={{ paddingTop: 8, paddingBottom: 8 }}>
-  <div
-    style={{
-      border: `1px solid ${BORDER}`,
-      borderRadius: 16,
-      padding: 20,
-      backgroundColor: "white",
-    }}
-  >
-    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-      Student Outcomes
-    </div>
-    <h2 style={{ margin: "0 0 10px 0" }}>What you’ll learn through NurseBridge</h2>
-    <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
-      Whether you are exploring informatics for the first time or completing a graduate practicum,
-      NurseBridge is designed to help you build practical, transferable skills.
-    </p>
 
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-        gap: 16,
-        marginTop: 12,
-      }}
-    >
-      <div style={cardStyle}>
-        <div style={{ fontWeight: 800, marginBottom: 8 }}>Workflow Analysis</div>
-        <div style={{ color: MUTED, lineHeight: 1.6 }}>
-          Learn how to identify workflow gaps, reduce friction, and connect documentation to clinical operations.
-        </div>
-      </div>
+        {/* STUDENT OUTCOMES */}
+        <section style={{ paddingTop: 8, paddingBottom: 8 }}>
+          <div
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 16,
+              padding: 20,
+              backgroundColor: "white",
+            }}
+          >
+            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>Student Outcomes</div>
+            <h2 style={{ margin: "0 0 10px 0" }}>What you’ll learn through NurseBridge</h2>
+            <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+              Whether you are exploring informatics for the first time or completing a graduate practicum, NurseBridge
+              is designed to help you build practical, transferable skills.
+            </p>
 
-      <div style={cardStyle}>
-        <div style={{ fontWeight: 800, marginBottom: 8 }}>Structured Documentation Thinking</div>
-        <div style={{ color: MUTED, lineHeight: 1.6 }}>
-          Practice how structured charting supports patient safety, compliance, trending, and communication.
-        </div>
-      </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: 16,
+                marginTop: 12,
+              }}
+            >
+              <div style={cardStyle}>
+                <div style={{ fontWeight: 800, marginBottom: 8 }}>Workflow Analysis</div>
+                <div style={{ color: MUTED, lineHeight: 1.6 }}>
+                  Learn how to identify workflow gaps, reduce friction, and connect documentation to clinical
+                  operations.
+                </div>
+              </div>
 
-      <div style={cardStyle}>
-        <div style={{ fontWeight: 800, marginBottom: 8 }}>EHR Confidence</div>
-        <div style={{ color: MUTED, lineHeight: 1.6 }}>
-          Build comfort with chart review, flowsheet logic, orders, MAR follow-up, and documentation workflows.
-        </div>
-      </div>
+              <div style={cardStyle}>
+                <div style={{ fontWeight: 800, marginBottom: 8 }}>Structured Documentation Thinking</div>
+                <div style={{ color: MUTED, lineHeight: 1.6 }}>
+                  Practice how structured charting supports patient safety, compliance, trending, and communication.
+                </div>
+              </div>
 
-      <div style={cardStyle}>
-        <div style={{ fontWeight: 800, marginBottom: 8 }}>Career Exposure</div>
-        <div style={{ color: MUTED, lineHeight: 1.6 }}>
-          Explore multiple informatics pathways including technical, liaison, training, and leadership roles.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+              <div style={cardStyle}>
+                <div style={{ fontWeight: 800, marginBottom: 8 }}>EHR Confidence</div>
+                <div style={{ color: MUTED, lineHeight: 1.6 }}>
+                  Build comfort with chart review, flowsheet logic, orders, MAR follow-up, and documentation workflows.
+                </div>
+              </div>
+
+              <div style={cardStyle}>
+                <div style={{ fontWeight: 800, marginBottom: 8 }}>Career Exposure</div>
+                <div style={{ color: MUTED, lineHeight: 1.6 }}>
+                  Explore multiple informatics pathways including technical, liaison, training, and leadership roles.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <SectionDivider />
 
-       {/* Informatics pathways */}
-<section id="pathways" style={{ scrollMarginTop: 90 }}>
+        {/* INFORMATICS PATHWAYS */}
+        <section id="pathways" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
               border: `1px solid ${BORDER}`,
@@ -531,9 +534,8 @@ export default function Home() {
             </div>
             <h2 style={{ margin: "0 0 10px 0" }}>Explore nursing informatics career pathways</h2>
             <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
-              Nursing informatics includes more than analyst roles. Students may grow into
-              technical, liaison, education, leadership, and digital-health pathways depending on
-              their strengths and interests.
+              Nursing informatics includes more than analyst roles. Students may grow into technical, liaison,
+              education, leadership, and digital-health pathways depending on their strengths and interests.
             </p>
 
             <div
@@ -633,8 +635,8 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Preceptorship process */}
-<section id="preceptorship-process" style={{ scrollMarginTop: 90 }}>
+        {/* PRECEPTORSHIP PROCESS */}
+        <section id="preceptorship-process" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
               border: `1px solid ${BORDER}`,
@@ -691,7 +693,7 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Practice lab */}
+        {/* PRACTICE LAB */}
         <section id="practice-lab" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -706,8 +708,8 @@ export default function Home() {
             </div>
             <h2 style={{ margin: "0 0 10px 0" }}>Hands-on simulation for structured documentation</h2>
             <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
-              A guided simulation environment where students can practice chart review,
-              structured documentation workflows, and informatics thinking during preceptorship.
+              A guided simulation environment where students can practice chart review, structured documentation
+              workflows, and informatics thinking during preceptorship.
             </p>
 
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
@@ -723,185 +725,179 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Books & Courses */}
-<section>
-  <div
-    style={{
-      border: `1px solid ${BORDER}`,
-      borderRadius: 16,
-      padding: 20,
-      backgroundColor: "white",
-    }}
-  >
-    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-      Books & Courses
-    </div>
-
-    <h2 style={{ margin: "0 0 10px 0" }}>
-      Books and training by Dr. Bernadette
-    </h2>
-
-    <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
-      Dr. Bernadette is the author of multiple books and training programs that help
-      clinicians improve documentation, explore informatics careers, and build
-      sustainable professional pathways beyond the bedside.
-    </p>
-
-    {/* BOOKS */}
-    <div
-      style={{
-        marginTop: 18,
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-        gap: 16,
-      }}
-    >
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 6px 0" }}>Mastering EHR Efficiency</h3>
-        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-          Practical strategies to reclaim your time, streamline documentation,
-          and reduce after-hours charting.
-        </p>
-        <a
-          href="https://www.amazon.com/dp/B0GQSRTFSD"
-          target="_blank"
-          rel="noreferrer"
-          style={{ ...primaryButtonStyle, marginTop: 10 }}
-        >
-          View on Amazon
-        </a>
-      </div>
-
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
-        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-          A practical guide for nurses considering the transition into health IT
-          and clinical informatics careers.
-        </p>
-        <a
-          href="https://www.amazon.com/dp/B0GQHN3B7G"
-          target="_blank"
-          rel="noreferrer"
-          style={{ ...primaryButtonStyle, marginTop: 10 }}
-        >
-          View on Amazon
-        </a>
-      </div>
-
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
-        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-          A career pivot guide helping healthcare professionals explore
-          meaningful alternatives beyond traditional bedside roles.
-        </p>
-        <a
-          href="https://www.amazon.com/dp/B0GMC3H74W"
-          target="_blank"
-          rel="noreferrer"
-          style={{ ...primaryButtonStyle, marginTop: 10 }}
-        >
-          View on Amazon
-        </a>
-      </div>
-
-      <div style={softCardStyle}>
-        <h3 style={{ margin: "0 0 6px 0" }}>The Offline Parent</h3>
-        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-          A thoughtful guide to raising calm, creative children in a world
-          increasingly dominated by screens.
-        </p>
-        <a
-          href="https://www.amazon.com/dp/B0F4YK3T25"
-          target="_blank"
-          rel="noreferrer"
-          style={{ ...primaryButtonStyle, marginTop: 10 }}
-        >
-          View on Amazon
-        </a>
-      </div>
-    </div>
-
-    {/* COURSES */}
-    <div style={{ marginTop: 24 }}>
-      <h3 style={{ marginBottom: 12 }}>Professional Courses</h3>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: 16,
-        }}
-      >
-        <div style={cardStyle}>
-          <h4 style={{ margin: "0 0 6px 0" }}>Become a Successful EHR Consultant</h4>
-          <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-            A practical roadmap for clinicians interested in transitioning into
-            consulting roles within the EHR and health technology space.
-          </p>
-
-          <a
-            href="https://www.udemy.com/course/become-a-successful-ehr-consultant/"
-            target="_blank"
-            rel="noreferrer"
-            style={{ ...primaryButtonStyle, marginTop: 10 }}
+        {/* BOOKS & COURSES */}
+        <section id="books-courses">
+          <div
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 16,
+              padding: 20,
+              backgroundColor: "white",
+            }}
           >
-            View Course
-          </a>
-        </div>
+            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+              Books & Courses
+            </div>
 
-        <div style={cardStyle}>
-          <h4 style={{ margin: "0 0 6px 0" }}>
-            Beyond Burnout: 20 Career Alternatives
-          </h4>
-          <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-            Explore realistic, practical career pathways for healthcare
-            professionals seeking options beyond traditional bedside roles.
-          </p>
+            <h2 style={{ margin: "0 0 10px 0" }}>Books and training by Dr. Bernadette</h2>
 
-          <a
-            href="https://www.udemy.com/course/beyond-burnout-20-career-alternatives-for-healthcare-pros/"
-            target="_blank"
-            rel="noreferrer"
-            style={{ ...primaryButtonStyle, marginTop: 10 }}
-          >
-            View Course
-          </a>
-        </div>
-      </div>
-    </div>
+            <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
+              Dr. Bernadette is the author of multiple books and training programs that help clinicians improve
+              documentation, explore informatics careers, and build sustainable professional pathways beyond the bedside.
+            </p>
 
-    {/* Optional personal content */}
-    <div
-      style={{
-        marginTop: 24,
-        borderTop: `1px solid ${BORDER}`,
-        paddingTop: 18,
-      }}
-    >
-      <div style={{ fontWeight: 700, marginBottom: 6 }}>
-        More from Dr. Bernadette
-      </div>
+            {/* BOOKS */}
+            <div
+              style={{
+                marginTop: 18,
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: 16,
+              }}
+            >
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 6px 0" }}>EHR Efficiency: Reclaim Your Time</h3>
+                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+                  Practical strategies to reclaim your time, streamline documentation, and reduce after-hours charting.
+                </p>
+                <a
+                  href="https://www.amazon.com/dp/B0GQSRTFSD"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ ...primaryButtonStyle, marginTop: 10 }}
+                >
+                  View on Amazon
+                </a>
+              </div>
 
-      <p style={{ color: MUTED, margin: 0, lineHeight: 1.7 }}>
-        Dr. Bernadette also creates faith-based digital content focused on
-        reflection, scripture, and spiritual growth.
-      </p>
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
+                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+                  A practical guide for nurses considering the transition into health IT and clinical informatics
+                  careers.
+                </p>
+                <a
+                  href="https://www.amazon.com/dp/B0GQHN3B7G"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ ...primaryButtonStyle, marginTop: 10 }}
+                >
+                  View on Amazon
+                </a>
+              </div>
 
-      <a
-        href="https://youtube.com/channel/UCwDsZTXsFLFtHQwG4dAwvDQ"
-        target="_blank"
-        rel="noreferrer"
-        style={{ ...secondaryButtonStyle, marginTop: 10 }}
-      >
-        Visit Cornerstone Scriptures
-      </a>
-    </div>
-  </div>
-</section>      
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
+                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+                  A career pivot guide helping healthcare professionals explore meaningful alternatives beyond
+                  traditional bedside roles.
+                </p>
+                <a
+                  href="https://www.amazon.com/dp/B0GMC3H74W"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ ...primaryButtonStyle, marginTop: 10 }}
+                >
+                  View on Amazon
+                </a>
+              </div>
 
-                 <SectionDivider />
+              <div style={softCardStyle}>
+                <h3 style={{ margin: "0 0 6px 0" }}>Offline Parent</h3>
+                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+                  A guide to raising calm, creative kids in a screen-obsessed world—supporting balance for healthcare
+                  professionals and families.
+                </p>
+                <a
+                  href="https://www.amazon.com/dp/B0GQHN3B7G" // update if different
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ ...primaryButtonStyle, marginTop: 10 }}
+                >
+                  View on Amazon
+                </a>
+              </div>
+            </div>
 
-        {/* About */}
+            {/* UDEMY COURSES SPOTLIGHT */}
+            <div
+              style={{
+                marginTop: 26,
+                borderTop: `1px solid ${BORDER}`,
+                paddingTop: 18,
+              }}
+            >
+              <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+                Self-Paced Learning
+              </div>
+              <h3 style={{ margin: "0 0 8px 0" }}>Udemy courses for nurses exploring new paths</h3>
+              <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+                Learn at your own pace with on-demand video lessons designed for busy clinicians. These courses help you
+                explore alternatives beyond the bedside and understand how informatics and workflow thinking can shape
+                your next chapter.
+              </p>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                  gap: 16,
+                  marginTop: 12,
+                }}
+              >
+                <div style={cardStyle}>
+                  <h4 style={{ margin: "0 0 6px 0" }}>
+                    Beyond Burnout: 20 Career Alternatives for Healthcare Professionals
+                  </h4>
+                  <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+                    Explore realistic, practical career pathways for healthcare professionals seeking options beyond
+                    traditional bedside roles.
+                  </p>
+                  <ul style={miniListStyle}>
+                    <li>Identify non-bedside roles that fit your strengths</li>
+                    <li>Understand what skills transfer from bedside practice</li>
+                    <li>Gain clarity on your next professional step</li>
+                  </ul>
+                  <a
+                    href="https://www.udemy.com/course/beyond-burnout-20-career-alternatives-for-healthcare-pros/"
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ ...primaryButtonStyle, marginTop: 10 }}
+                  >
+                    View Course on Udemy
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* OPTIONAL PERSONAL CONTENT */}
+            <div
+              style={{
+                marginTop: 24,
+                borderTop: `1px solid ${BORDER}`,
+                paddingTop: 18,
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>More from Dr. Bernadette</div>
+              <p style={{ color: MUTED, margin: 0, lineHeight: 1.7 }}>
+                Dr. Bernadette also creates faith-based digital content focused on reflection, scripture, and spiritual
+                growth.
+              </p>
+              <a
+                href="https://youtube.com/channel/UCwDsZTXsFLFtHQwG4dAwvDQ"
+                target="_blank"
+                rel="noreferrer"
+                style={{ ...secondaryButtonStyle, marginTop: 10 }}
+              >
+                Visit Cornerstone Scriptures
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
+        {/* ABOUT */}
         <section id="about" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -916,13 +912,13 @@ export default function Home() {
             </div>
             <h2 style={{ margin: "0 0 10px 0" }}>Meet Dr. Bernadette Amao</h2>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: 0 }}>
-              Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified
-              clinical informatics analyst with more than 13 years of experience supporting hospital systems,
-              clinicians, and digital health initiatives.
+              Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified clinical informatics
+              analyst with more than 13 years of experience supporting hospital systems, clinicians, and digital health
+              initiatives.
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: "10px 0 0 0" }}>
-              Her work focuses on bridging the gap between bedside clinicians and healthcare technology
-              while mentoring the next generation of informatics professionals.
+              Her work focuses on bridging the gap between bedside clinicians and healthcare technology while mentoring
+              the next generation of informatics professionals.
             </p>
             <div style={{ marginTop: 16 }}>
               <a href="#contact" style={primaryButtonStyle}>
@@ -934,7 +930,7 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Contact */}
+        {/* CONTACT */}
         <section id="contact" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -960,6 +956,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* FOOTER */}
         <footer
           style={{
             borderTop: `1px solid ${BORDER}`,
