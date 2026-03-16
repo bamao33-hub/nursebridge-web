@@ -547,6 +547,88 @@ export default function Home() {
 
         <SectionDivider />
 
+{/* Career Paths Section */}
+
+<section
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 18,
+    background: "#ffffff",
+    padding: "26px",
+    marginTop: 24,
+  }}
+>
+  <div
+    style={{
+      color: COLORS.teal,
+      fontWeight: 800,
+      fontSize: 13,
+      marginBottom: 6,
+    }}
+  >
+    Nursing Informatics
+  </div>
+
+  <h2 style={{ margin: "0 0 16px 0" }}>
+    Career Paths in Nursing Informatics
+  </h2>
+
+  <p style={{ color: COLORS.muted, marginBottom: 20, maxWidth: 800 }}>
+    Nursing informatics is a diverse field that blends clinical expertise,
+    technology, workflow design, and leadership. Students entering the field
+    may pursue different types of roles depending on their interests and
+    strengths.
+  </p>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+      gap: 18,
+    }}
+  >
+    <div style={miniCard}>
+      <div style={miniTitle}>Systems & Technical Roles</div>
+      <ul style={miniList}>
+        <li>Clinical Systems Analyst</li>
+        <li>EHR Builder</li>
+        <li>Data Analyst</li>
+        <li>Reporting Specialist</li>
+      </ul>
+    </div>
+
+    <div style={miniCard}>
+      <div style={miniTitle}>Clinical Liaison Roles</div>
+      <ul style={miniList}>
+        <li>Clinical Informatics Liaison</li>
+        <li>Clinical Champion / Super User</li>
+        <li>Workflow Redesign Specialist</li>
+        <li>Clinical Transformation Partner</li>
+      </ul>
+    </div>
+
+    <div style={miniCard}>
+      <div style={miniTitle}>Education & Training</div>
+      <ul style={miniList}>
+        <li>Clinical Systems Trainer</li>
+        <li>EHR Onboarding Specialist</li>
+        <li>Informatics Educator</li>
+        <li>Change Management Trainer</li>
+      </ul>
+    </div>
+
+    <div style={miniCard}>
+      <div style={miniTitle}>Leadership & Strategy</div>
+      <ul style={miniList}>
+        <li>Informatics Manager</li>
+        <li>CNIO / Associate CNIO</li>
+        <li>Project Manager</li>
+        <li>Quality & Safety Informatics Lead</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
         {/* How the Preceptorship Works */}
         <section style={{ paddingTop: 18, paddingBottom: 8 }}>
           <div
