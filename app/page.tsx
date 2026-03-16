@@ -551,7 +551,7 @@ export default function Home() {
 
 <section
   style={{
-    border: `1px solid ${COLORS.border}`,
+    border: `1px solid ${BORDER}`,
     borderRadius: 18,
     background: "#ffffff",
     padding: "26px",
@@ -560,7 +560,7 @@ export default function Home() {
 >
   <div
     style={{
-      color: COLORS.teal,
+      color: TEAL,
       fontWeight: 800,
       fontSize: 13,
       marginBottom: 6,
@@ -573,7 +573,7 @@ export default function Home() {
     Career Paths in Nursing Informatics
   </h2>
 
-  <p style={{ color: COLORS.muted, marginBottom: 20, maxWidth: 800 }}>
+  <p style={{ color: MUTED, marginBottom: 20, maxWidth: 800 }}>
     Nursing informatics is a diverse field that blends clinical expertise,
     technology, workflow design, and leadership. Students entering the field
     may pursue different types of roles depending on their interests and
