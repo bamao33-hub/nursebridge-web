@@ -934,3 +934,20 @@ Request Access
     </main>
   );
 }
+const miniCard: React.CSSProperties = {
+  border: "1px solid #dbe7e5",
+  borderRadius: 16,
+  padding: 18,
+  background: "#ffffff",
+};
+
+const miniTitle: React.CSSProperties = {
+  fontWeight: 800,
+  marginBottom: 8,
+};
+
+const miniList: React.CSSProperties = {
+  paddingLeft: 18,
+  lineHeight: 1.7,
+  color: "#475569",
+};
