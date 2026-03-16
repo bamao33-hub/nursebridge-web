@@ -217,9 +217,10 @@ export default function Home() {
                 <Link href="/preceptorship" style={{ ...primaryButtonStyle, padding: "12px 16px" }}>
                   Start Preceptorship Inquiry
                 </Link>
-                <a href="#services" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
-                  Explore Services
-                </a>
+                <a href="#start-here" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
+  Start Your Informatics Journey
+</a>
+                
               </div>
 
               <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
@@ -275,7 +276,75 @@ export default function Home() {
             </div>
           </div>
         </section>
+{/* Start Here */}
+<section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Start Here
+    </div>
+    <h2 style={{ margin: "0 0 10px 0" }}>Start your informatics journey</h2>
+    <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+      New to nursing informatics? Use the pathways below to decide where to begin based on your goals.
+    </p>
 
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 16,
+        marginTop: 12,
+      }}
+    >
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 8px 0" }}>Explore Career Paths</h3>
+        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+          Learn about systems, liaison, training, and leadership pathways in nursing informatics.
+        </p>
+        <a href="#pathways" style={primaryButtonStyle}>
+          Explore Pathways
+        </a>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 8px 0" }}>Learn About Preceptorship</h3>
+        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+          See how NurseBridge supports MSN/DNP students through structured informatics mentorship.
+        </p>
+        <a href="#preceptorship-process" style={primaryButtonStyle}>
+          View Preceptorship
+        </a>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 8px 0" }}>Try the Practice Lab</h3>
+        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+          Practice chart review, structured documentation, and informatics thinking in a guided simulation.
+        </p>
+        <Link href="/practice-lab" style={primaryButtonStyle}>
+          Enter Practice Lab
+        </Link>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 8px 0" }}>Connect with NurseBridge</h3>
+        <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
+          Reach out for preceptorship questions, workflow guidance, or resource support.
+        </p>
+        <a href="#contact" style={primaryButtonStyle}>
+          Contact NurseBridge
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+        
         <SectionDivider />
 
         {/* Who We Serve */}
@@ -388,11 +457,67 @@ export default function Home() {
             </div>
           </div>
         </section>
+{/* What You'll Learn */}
+<section style={{ paddingTop: 8, paddingBottom: 8 }}>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Student Outcomes
+    </div>
+    <h2 style={{ margin: "0 0 10px 0" }}>What you’ll learn through NurseBridge</h2>
+    <p style={{ marginTop: 0, color: MUTED, lineHeight: 1.7, maxWidth: 820 }}>
+      Whether you are exploring informatics for the first time or completing a graduate practicum,
+      NurseBridge is designed to help you build practical, transferable skills.
+    </p>
 
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 16,
+        marginTop: 12,
+      }}
+    >
+      <div style={cardStyle}>
+        <div style={{ fontWeight: 800, marginBottom: 8 }}>Workflow Analysis</div>
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Learn how to identify workflow gaps, reduce friction, and connect documentation to clinical operations.
+        </div>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{ fontWeight: 800, marginBottom: 8 }}>Structured Documentation Thinking</div>
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Practice how structured charting supports patient safety, compliance, trending, and communication.
+        </div>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{ fontWeight: 800, marginBottom: 8 }}>EHR Confidence</div>
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Build comfort with chart review, flowsheet logic, orders, MAR follow-up, and documentation workflows.
+        </div>
+      </div>
+
+      <div style={cardStyle}>
+        <div style={{ fontWeight: 800, marginBottom: 8 }}>Career Exposure</div>
+        <div style={{ color: MUTED, lineHeight: 1.6 }}>
+          Explore multiple informatics pathways including technical, liaison, training, and leadership roles.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
         <SectionDivider />
 
-        {/* Informatics pathways */}
-        <section>
+       {/* Informatics pathways */}
+<section id="pathways" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
               border: `1px solid ${BORDER}`,
@@ -509,7 +634,7 @@ export default function Home() {
         <SectionDivider />
 
         {/* Preceptorship process */}
-        <section>
+<section id="preceptorship-process" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
               border: `1px solid ${BORDER}`,
