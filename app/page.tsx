@@ -723,96 +723,183 @@ export default function Home() {
 
         <SectionDivider />
 
-        {/* Resources */}
-        <section>
-          <div
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 16,
-              padding: 20,
-              backgroundColor: "white",
-            }}
+        {/* Books & Courses */}
+<section>
+  <div
+    style={{
+      border: `1px solid ${BORDER}`,
+      borderRadius: 16,
+      padding: 20,
+      backgroundColor: "white",
+    }}
+  >
+    <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
+      Books & Courses
+    </div>
+
+    <h2 style={{ margin: "0 0 10px 0" }}>
+      Books and training by Dr. Bernadette
+    </h2>
+
+    <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
+      Dr. Bernadette is the author of multiple books and training programs that help
+      clinicians improve documentation, explore informatics careers, and build
+      sustainable professional pathways beyond the bedside.
+    </p>
+
+    {/* BOOKS */}
+    <div
+      style={{
+        marginTop: 18,
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: 16,
+      }}
+    >
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 6px 0" }}>Mastering EHR Efficiency</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          Practical strategies to reclaim your time, streamline documentation,
+          and reduce after-hours charting.
+        </p>
+        <a
+          href="https://www.amazon.com/dp/B0GQSRTFSD"
+          target="_blank"
+          rel="noreferrer"
+          style={{ ...primaryButtonStyle, marginTop: 10 }}
+        >
+          View on Amazon
+        </a>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          A practical guide for nurses considering the transition into health IT
+          and clinical informatics careers.
+        </p>
+        <a
+          href="https://www.amazon.com/dp/B0GQHN3B7G"
+          target="_blank"
+          rel="noreferrer"
+          style={{ ...primaryButtonStyle, marginTop: 10 }}
+        >
+          View on Amazon
+        </a>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          A career pivot guide helping healthcare professionals explore
+          meaningful alternatives beyond traditional bedside roles.
+        </p>
+        <a
+          href="https://www.amazon.com/dp/B0GMC3H74W"
+          target="_blank"
+          rel="noreferrer"
+          style={{ ...primaryButtonStyle, marginTop: 10 }}
+        >
+          View on Amazon
+        </a>
+      </div>
+
+      <div style={softCardStyle}>
+        <h3 style={{ margin: "0 0 6px 0" }}>The Offline Parent</h3>
+        <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+          A thoughtful guide to raising calm, creative children in a world
+          increasingly dominated by screens.
+        </p>
+        <a
+          href="https://www.amazon.com/dp/B0F4YK3T25"
+          target="_blank"
+          rel="noreferrer"
+          style={{ ...primaryButtonStyle, marginTop: 10 }}
+        >
+          View on Amazon
+        </a>
+      </div>
+    </div>
+
+    {/* COURSES */}
+    <div style={{ marginTop: 24 }}>
+      <h3 style={{ marginBottom: 12 }}>Professional Courses</h3>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: 16,
+        }}
+      >
+        <div style={cardStyle}>
+          <h4 style={{ margin: "0 0 6px 0" }}>Become a Successful EHR Consultant</h4>
+          <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+            A practical roadmap for clinicians interested in transitioning into
+            consulting roles within the EHR and health technology space.
+          </p>
+
+          <a
+            href="https://www.udemy.com/course/become-a-successful-ehr-consultant/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ ...primaryButtonStyle, marginTop: 10 }}
           >
-            <div style={{ color: TEAL, fontWeight: 800, fontSize: 13, marginBottom: 6 }}>
-              Resources & Learning
-            </div>
+            View Course
+          </a>
+        </div>
 
-            <h2 style={{ margin: "0 0 10px 0" }}>
-              Explore books, training, and content by Dr. Bernadette
-            </h2>
+        <div style={cardStyle}>
+          <h4 style={{ margin: "0 0 6px 0" }}>
+            Beyond Burnout: 20 Career Alternatives
+          </h4>
+          <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+            Explore realistic, practical career pathways for healthcare
+            professionals seeking options beyond traditional bedside roles.
+          </p>
 
-            <p style={{ color: MUTED, lineHeight: 1.7, marginTop: 0, maxWidth: 850 }}>
-              In addition to consulting and preceptorship, NurseBridge offers practical resources
-              for clinicians exploring informatics, EHR efficiency, and professional growth.
-            </p>
+          <a
+            href="https://www.udemy.com/course/beyond-burnout-20-career-alternatives-for-healthcare-pros/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ ...primaryButtonStyle, marginTop: 10 }}
+          >
+            View Course
+          </a>
+        </div>
+      </div>
+    </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-                gap: 16,
-                marginTop: 12,
-              }}
-            >
-              <div style={softCardStyle}>
-                <h3 style={{ margin: "0 0 8px 0" }}>Books</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  Practical books on EHR efficiency, informatics, and career growth for clinicians.
-                </p>
-                <a
-                  href="https://www.amazon.com/author/bernadetteamao"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    marginTop: 10,
-                    fontWeight: 700,
-                    color: TEAL,
-                    textDecoration: "none",
-                  }}
-                >
-                  View Books on Amazon →
-                </a>
-              </div>
+    {/* Optional personal content */}
+    <div
+      style={{
+        marginTop: 24,
+        borderTop: `1px solid ${BORDER}`,
+        paddingTop: 18,
+      }}
+    >
+      <div style={{ fontWeight: 700, marginBottom: 6 }}>
+        More from Dr. Bernadette
+      </div>
 
-              <div style={softCardStyle}>
-                <h3 style={{ margin: "0 0 8px 0" }}>Courses</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  Self-paced learning resources designed to help healthcare professionals pivot and grow.
-                </p>
-                <a
-                  href="https://www.udemy.com/course/become-a-successful-ehr-consultant/?referralCode=FB961F9293A8FCC6FA7E"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    marginTop: 10,
-                    fontWeight: 700,
-                    color: TEAL,
-                    textDecoration: "none",
-                  }}
-                >
-                  View Udemy Course →
-                </a>
-              </div>
+      <p style={{ color: MUTED, margin: 0, lineHeight: 1.7 }}>
+        Dr. Bernadette also creates faith-based digital content focused on
+        reflection, scripture, and spiritual growth.
+      </p>
 
-              <div style={softCardStyle}>
-                <h3 style={{ margin: "0 0 8px 0" }}>YouTube & Teaching Content</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  Educational and reflective content that supports professional development and personal growth.
-                </p>
-              </div>
-            </div>
+      <a
+        href="https://youtube.com/channel/UCwDsZTXsFLFtHQwG4dAwvDQ"
+        target="_blank"
+        rel="noreferrer"
+        style={{ ...secondaryButtonStyle, marginTop: 10 }}
+      >
+        Visit Cornerstone Scriptures
+      </a>
+    </div>
+  </div>
+</section>      
 
-            <div style={{ marginTop: 16 }}>
-              <a href="#contact" style={primaryButtonStyle}>
-                Ask About Resources
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <SectionDivider />
+                 <SectionDivider />
 
         {/* About */}
         <section id="about" style={{ scrollMarginTop: 90 }}>
