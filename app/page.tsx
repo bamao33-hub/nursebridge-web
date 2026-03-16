@@ -733,99 +733,135 @@ export default function Home() {
               documentation, explore informatics careers, and build sustainable professional pathways beyond the bedside.
             </p>
 
-            {/* BOOKS WITH LARGE COVERS */}
-            <div
-              style={{
-                marginTop: 18,
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: 22,
-              }}
-            >
-              {/* Mastering EHR Efficiency */}
-              <div style={softCardStyle}>
-                <img
-                  src="/mastering-ehr-efficiency.jpeg"
-                  alt="Mastering EHR Efficiency book cover"
-                  style={shadowImage}
-                />
-                <h3 style={{ margin: "0 0 6px 0" }}>Mastering EHR Efficiency</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  Reclaim your time, reduce after-hours charting, and streamline documentation with practical strategies.
-                </p>
-                <a
-                  href="https://books2read.com/u/mlVxlq"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ ...primaryButtonStyle, marginTop: 10 }}
-                >
-                  View Retailers
-                </a>
-              </div>
+           {/* BOOKS WITH LARGE COVERS */}
+<div
+  style={{
+    marginTop: 18,
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: 22,
+  }}
+>
+  {/* Mastering EHR Efficiency */}
+  <div style={softCardStyle}>
+    <img
+      src="/mastering-ehr-efficiency.jpeg"
+      alt="Mastering EHR Efficiency book cover"
+      style={shadowImage}
+    />
+    <h3 style={{ margin: "0 0 6px 0" }}>Mastering EHR Efficiency</h3>
+    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+      Reclaim your time, reduce after-hours charting, and streamline documentation with practical strategies.
+    </p>
 
-              {/* From Bedside to Informatics */}
-              <div style={softCardStyle}>
-                <img
-                  src="/bedside-to-informatics.jpeg"
-                  alt="From Bedside to Informatics book cover"
-                  style={shadowImage}
-                />
-                <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  A practical guide for nurses considering the transition into health IT and clinical informatics.
-                </p>
-                <a
-                  href="https://books2read.com/u/31p0lv"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ ...primaryButtonStyle, marginTop: 10 }}
-                >
-                  View Retailers
-                </a>
-              </div>
+    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+      <a
+        href="https://books2read.com/u/mlVxlq"
+        target="_blank"
+        rel="noreferrer"
+        style={primaryButtonStyle}
+      >
+        View Retailers
+      </a>
+      <a
+        href="https://www.amazon.com/dp/B0CQ5Q7ZQH"
+        target="_blank"
+        rel="noreferrer"
+        style={secondaryButtonStyle}
+      >
+        Amazon
+      </a>
+    </div>
+  </div>
 
-              {/* Beyond Burnout */}
-              <div style={softCardStyle}>
-                <img
-                  src="/beyond-burnout.jpeg"
-                  alt="Beyond Burnout book cover"
-                  style={shadowImage}
-                />
-                <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  A career pivot guide helping healthcare professionals explore meaningful alternatives beyond bedside roles.
-                </p>
-                <a
-                  href="https://books2read.com/u/m2w6g1"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ ...primaryButtonStyle, marginTop: 10 }}
-                >
-                  View Retailers
-                </a>
-              </div>
+  {/* From Bedside to Informatics */}
+  <div style={softCardStyle}>
+    <img
+      src="/bedside-to-informatics.jpeg"
+      alt="From Bedside to Informatics book cover"
+      style={shadowImage}
+    />
+    <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
+    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+      A practical guide for nurses considering the transition into health IT and clinical informatics.
+    </p>
 
-              {/* Offline Parent */}
-              <div style={softCardStyle}>
-                <img
-                  src="/offline-parent.jpeg"
-                  alt="Offline Parent book cover"
-                  style={shadowImage}
-                />
-                <h3 style={{ margin: "0 0 6px 0" }}>Offline Parent</h3>
-                <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-                  A guide to raising calm, creative kids in a screen-obsessed world—supporting balance for families.
-                </p>
-                <a
-                  href="https://www.amazon.com/dp/B0GQHN3B7G"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ ...primaryButtonStyle, marginTop: 10 }}
-                >
-                  View Retailers
-                </a>
-              </div>
-            </div>
+    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+      <a
+        href="https://books2read.com/u/31p0lv"
+        target="_blank"
+        rel="noreferrer"
+        style={primaryButtonStyle}
+      >
+        View Retailers
+      </a>
+      <a
+        href="https://www.amazon.com/dp/B0CJLZQ5QW"
+        target="_blank"
+        rel="noreferrer"
+        style={secondaryButtonStyle}
+      >
+        Amazon
+      </a>
+    </div>
+  </div>
+
+  {/* Beyond Burnout */}
+  <div style={softCardStyle}>
+    <img
+      src="/beyond-burnout.jpeg"
+      alt="Beyond Burnout book cover"
+      style={shadowImage}
+    />
+    <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
+    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+      A career pivot guide helping healthcare professionals explore meaningful alternatives beyond bedside roles.
+    </p>
+
+    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+      <a
+        href="https://books2read.com/u/m2w6g1"
+        target="_blank"
+        rel="noreferrer"
+        style={primaryButtonStyle}
+      >
+        View Retailers
+      </a>
+      <a
+        href="https://www.amazon.com/dp/B0CJLZQ5QW"
+        target="_blank"
+        rel="noreferrer"
+        style={secondaryButtonStyle}
+      >
+        Amazon
+      </a>
+    </div>
+  </div>
+
+  {/* Offline Parent — Amazon Only */}
+  <div style={softCardStyle}>
+    <img
+      src="/offline-parent.jpeg"
+      alt="Offline Parent book cover"
+      style={shadowImage}
+    />
+    <h3 style={{ margin: "0 0 6px 0" }}>Offline Parent</h3>
+    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+      A guide to raising calm, creative kids in a screen-obsessed world—supporting balance for families.
+    </p>
+
+    <div style={{ marginTop: 10 }}>
+      <a
+        href="https://www.amazon.com/dp/B0GQHN3B7G"
+        target="_blank"
+        rel="noreferrer"
+        style={primaryButtonStyle}
+      >
+        Amazon
+      </a>
+    </div>
+  </div>
+</div>
 
             {/* UDEMY COURSES */}
             <div
