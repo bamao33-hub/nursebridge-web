@@ -1,5 +1,8 @@
 "use client";
 
+import SummaryTab from "./chart/tabs/SummaryTab";
+import { CASES, CaseKey } from "./chart/cases";
+
 import { useState } from "react";
 import ChartShell from "./ChartShell";
 
@@ -16,6 +19,8 @@ const TABS = [
 
 export default function ChartPage() {
   const [activeTab, setActiveTab] = useState("Summary");
+  const [caseKey] = useState<CaseKey>("pneumonia");
+
 
   return (
     <ChartShell
