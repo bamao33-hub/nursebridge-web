@@ -1,1 +1,316 @@
+// app/practice-lab-v2/chart/cases/index.ts
 
+export type MarStatus = "Due" | "Given" | "Held" | "Late";
+
+export type CaseKey =
+  | "pneumonia"
+  | "chf"
+  | "sepsis"
+  | "diabetes"
+  | "trauma";
+
+export type LabItem = {
+  lab: string;
+  result: string;
+  reference: string;
+  status: string;
+};
+
+export type MarItem = {
+  med: string;
+  route: string;
+  schedule: string;
+  due: string;
+  status: MarStatus;
+  note: string;
+};
+
+export type CaseConfig = {
+  key: CaseKey;
+  label: string;
+  patientName: string;
+  dob: string;
+  mrn: string;
+  admitDx: string;
+  room: string;
+  scenario: string;
+  learningGoals: string[];
+  summary: string;
+  summaryPrompt: string;
+  noteTitle: string;
+  noteBody: string;
+  notePrompt: string;
+  labs: LabItem[];
+  labPrompt: string;
+  orders: string[];
+  orderPrompt: string;
+  mar: MarItem[];
+  summaryCards: { label: string; value: string }[];
+};
+
+export const CASES: Record<CaseKey, CaseConfig> = {
+  pneumonia: {
+    key: "pneumonia",
+    label: "Case 1 • Pneumonia",
+    patientName: "Maria Gonzalez",
+    dob: "04/12/1972",
+    mrn: "847221",
+    admitDx: "Pneumonia",
+    room: "412B",
+    scenario:
+      "Community-acquired pneumonia with oxygen therapy, respiratory reassessment workflow, flowsheet completion, medication administration follow-up, and patient teaching.",
+    learningGoals: [
+      "Document key respiratory elements",
+      "Identify missing structured data",
+      "Connect charting to workflow quality",
+      "Practice flowsheet completion",
+      "Review MAR follow-up logic",
+    ],
+    summary:
+      "Patient admitted with community-acquired pneumonia. Oxygen saturation was initially 88% on room air. Currently receiving IV antibiotics and oxygen therapy. Intermittent cough, diminished breath sounds at bases, and fatigue with exertion noted.",
+    summaryPrompt:
+      "What documentation fields should be completed to support oxygen therapy management, respiratory reassessment, and patient education?",
+    noteTitle: "Nursing Progress Note",
+    noteBody:
+      "Patient alert and oriented x3. Mild shortness of breath with exertion. Receiving 2L oxygen via nasal cannula. Tolerating antibiotics without adverse reaction. Encouraged cough, deep breathing, and incentive spirometer use.",
+    notePrompt:
+      "Strengthen the note by adding measurable respiratory assessment data, response to oxygen therapy, and patient teaching outcomes.",
+    labs: [
+      { lab: "WBC", result: "14.2", reference: "4.0–11.0", status: "High" },
+      { lab: "Hgb", result: "11.8", reference: "12.0–16.0", status: "Low" },
+      { lab: "Sodium", result: "136", reference: "135–145", status: "Normal" },
+      { lab: "Lactate", result: "2.1", reference: "0.5–2.0", status: "Slightly High" },
+    ],
+    labPrompt:
+      "Which lab values may matter most for pneumonia monitoring, and how could they affect clinical workflow or escalation decisions?",
+    orders: [
+      "Oxygen via nasal cannula at 2L/min",
+      "Ceftriaxone 1g IV every 24 hours",
+      "Azithromycin 500mg PO daily",
+      "Incentive spirometry every 2 hours while awake",
+    ],
+    orderPrompt:
+      "Which orders require nursing follow-through documentation, and where would you expect that documentation to appear in the chart?",
+    mar: [
+      { med: "Ceftriaxone 1g", route: "IV", schedule: "q24h", due: "09:00", status: "Due", note: "" },
+      { med: "Azithromycin 500mg", route: "PO", schedule: "Daily", due: "09:00", status: "Given", note: "Given with water" },
+      { med: "Acetaminophen 650mg", route: "PO", schedule: "PRN", due: "12:00", status: "Late", note: "" },
+      { med: "Albuterol Neb", route: "Neb", schedule: "q6h", due: "14:00", status: "Held", note: "Patient resting; reassess respiratory status" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "J. Thompson, RN" },
+      { label: "Attending", value: "R. Patel, MD" },
+      { label: "Allergies", value: "NKDA" },
+      { label: "Isolation", value: "None" },
+      { label: "Current O₂", value: "2L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
+
+  /* ---------------- CHF ---------------- */
+
+  chf: {
+    key: "chf",
+    label: "Case 2 • CHF Exacerbation",
+    patientName: "James Carter",
+    dob: "11/03/1958",
+    mrn: "552904",
+    admitDx: "CHF Exacerbation",
+    room: "518A",
+    scenario:
+      "Heart failure exacerbation with fluid overload, edema monitoring, oxygen support, diuretic administration, intake/output tracking, and escalation workflow.",
+    learningGoals: [
+      "Document fluid overload indicators",
+      "Track structured CHF assessment data",
+      "Review medication administration follow-up",
+      "Connect charting to escalation logic",
+      "Practice workflow-based decision support",
+    ],
+    summary:
+      "Patient admitted with acute on chronic CHF exacerbation. Reports shortness of breath, orthopnea, and bilateral lower-extremity edema. Receiving oxygen and IV diuretics. Weight gain and reduced activity tolerance noted.",
+    summaryPrompt:
+      "Which structured fields are most important for documenting fluid overload, oxygen status, and response to diuretic therapy?",
+    noteTitle: "Cardiopulmonary Nursing Note",
+    noteBody:
+      "Patient reports dyspnea with minimal exertion and difficulty lying flat. Bilateral ankle edema present. Oxygen in use via nasal cannula. Diuretic therapy ongoing. Reinforced low-sodium diet and fluid restriction teaching.",
+    notePrompt:
+      "Strengthen the note by adding measurable edema, respiratory status, weight trend, and response-to-treatment details.",
+    labs: [
+      { lab: "BNP", result: "1280", reference: "<100", status: "High" },
+      { lab: "Potassium", result: "3.4", reference: "3.5–5.1", status: "Low" },
+      { lab: "Creatinine", result: "1.4", reference: "0.6–1.2", status: "Slightly High" },
+      { lab: "Sodium", result: "132", reference: "135–145", status: "Low" },
+    ],
+    labPrompt:
+      "Which lab values may affect diuretic management, fluid balance, and escalation decisions in CHF?",
+    orders: [
+      "Furosemide 40mg IV twice daily",
+      "Oxygen via nasal cannula at 2L/min",
+      "Daily weights",
+      "Strict intake and output",
+    ],
+    orderPrompt:
+      "Which CHF-related orders require consistent nursing documentation and trending for safe care?",
+    mar: [
+      { med: "Furosemide 40mg", route: "IV", schedule: "BID", due: "08:00", status: "Due", note: "" },
+      { med: "Potassium Chloride 20 mEq", route: "PO", schedule: "Daily", due: "09:00", status: "Given", note: "Given with breakfast" },
+      { med: "Metoprolol 25mg", route: "PO", schedule: "BID", due: "09:00", status: "Held", note: "" },
+      { med: "Enoxaparin 40mg", route: "SubQ", schedule: "Daily", due: "10:00", status: "Given", note: "Administered to abdomen" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "L. Harris, RN" },
+      { label: "Attending", value: "D. Nguyen, MD" },
+      { label: "Allergies", value: "ACE inhibitors" },
+      { label: "Diet", value: "Low sodium" },
+      { label: "Current O₂", value: "2L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
+
+  /* ---------------- SEPSIS ---------------- */
+
+  sepsis: {
+    key: "sepsis",
+    label: "Case 3 • Sepsis / Infection Escalation",
+    patientName: "Angela Brooks",
+    dob: "07/19/1966",
+    mrn: "661782",
+    admitDx: "Sepsis secondary to UTI",
+    room: "620C",
+    scenario:
+      "Sepsis screening, abnormal vital sign trending, elevated lactate review, culture timing, antibiotic administration, fluid resuscitation, and rapid escalation workflow.",
+    learningGoals: [
+      "Recognize sepsis-related abnormal trends",
+      "Connect time-sensitive tasks to documentation quality",
+      "Review escalation and provider notification workflow",
+      "Track culture / antibiotic timing logic",
+      "Practice structured documentation under urgency",
+    ],
+    summary:
+      "Patient admitted with suspected sepsis secondary to urinary tract infection. Febrile, tachycardic, hypotensive, and intermittently confused. Blood cultures, lactate, IV fluids, and broad-spectrum antibiotics ordered. Escalation timing and reassessment are critical.",
+    summaryPrompt:
+      "Which structured documentation fields are most critical when a patient is showing possible sepsis and requires rapid reassessment and escalation?",
+    noteTitle: "Sepsis Reassessment Note",
+    noteBody:
+      "Patient febrile and tachycardic with soft blood pressure. Provider notified of clinical deterioration. Blood cultures obtained and IV fluid bolus initiated per order. Antibiotic timing and lactate follow-up under review.",
+    notePrompt:
+      "Strengthen the note by adding exact abnormal findings, escalation timing, intervention response, and reassessment details.",
+    labs: [
+      { lab: "WBC", result: "18.9", reference: "4.0–11.0", status: "High" },
+      { lab: "Lactate", result: "4.3", reference: "0.5–2.0", status: "Critical High" },
+      { lab: "Creatinine", result: "1.8", reference: "0.6–1.2", status: "High" },
+      { lab: "Procalcitonin", result: "6.2", reference: "<0.10", status: "High" },
+    ],
+    labPrompt:
+      "Which laboratory findings most strongly support urgent sepsis escalation, and how should they influence reassessment and communication workflow?",
+    orders: [
+      "Blood cultures x2 prior to antibiotics",
+      "Normal saline 30 mL/kg bolus",
+      "Piperacillin-tazobactam 3.375g IV now",
+      "Repeat lactate in 2 hours",
+    ],
+    orderPrompt:
+      "Which sepsis orders are most time-sensitive, and where should completion and follow-up be documented to support safe escalation?",
+    mar: [
+      { med: "Piperacillin-tazobactam 3.375g", route: "IV", schedule: "Now", due: "08:15", status: "Due", note: "" },
+      { med: "Normal Saline Bolus", route: "IV", schedule: "Once", due: "08:20", status: "Given", note: "Bolus started" },
+      { med: "Acetaminophen 650mg", route: "PO", schedule: "PRN", due: "08:30", status: "Late", note: "" },
+      { med: "Vancomycin 1g", route: "IV", schedule: "Now", due: "09:00", status: "Held", note: "" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "S. Reed, RN" },
+      { label: "Attending", value: "M. Ellis, MD" },
+      { label: "Allergies", value: "Sulfa" },
+      { label: "Isolation", value: "Standard" },
+      { label: "Current O₂", value: "3L NC" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
+
+  /* ---------------- DIABETES ---------------- */
+
+  diabetes: {
+    key: "diabetes",
+    label: "Case 4 • Diabetes / Hyperglycemia",
+    patientName: "Robert Nelson",
+    dob: "02/14/1964",
+    mrn: "774315",
+    admitDx: "Type 2 Diabetes with Hyperglycemia",
+    room: "534B",
+    scenario:
+      "Adult patient admitted with uncontrolled blood glucose, insulin administration needs, finger-stick monitoring, diet teaching, and documentation of symptoms and response to treatment.",
+    learningGoals: [
+      "Document blood glucose monitoring accurately",
+      "Connect insulin administration to reassessment workflow",
+      "Identify patient education needs for diabetes self-management",
+      "Practice documentation of symptoms related to hyperglycemia",
+      "Review medication timing and follow-up charting",
+    ],
+    summary:
+      "Patient admitted with hyperglycemia related to poorly controlled type 2 diabetes. Reports increased thirst, fatigue, and frequent urination. Sliding-scale insulin and blood glucose monitoring ordered. Diabetes education and follow-up assessment are needed.",
+    summaryPrompt:
+      "Which documentation fields are most important for blood glucose trends, insulin administration follow-up, and patient education?",
+    noteTitle: "Diabetes Nursing Note",
+    noteBody:
+      "Patient alert and oriented. Reports increased thirst and fatigue. Blood glucose elevated this shift. Sliding-scale insulin administered per order. Reinforced diabetic diet and need for routine glucose monitoring.",
+    notePrompt:
+      "Strengthen the note by adding exact glucose values, symptom details, insulin follow-up, and patient teaching response.",
+    labs: [
+      { lab: "Glucose", result: "328", reference: "70–110", status: "High" },
+      { lab: "A1c", result: "10.4%", reference: "<5.7%", status: "High" },
+      { lab: "Sodium", result: "134", reference: "135–145", status: "Low" },
+      { lab: "Potassium", result: "4.2", reference: "3.5–5.1", status: "Normal" },
+    ],
+    labPrompt:
+      "Which laboratory findings support poor glycemic control, and which values should the nurse monitor closely during treatment?",
+    orders: [
+      "Blood glucose checks before meals and at bedtime",
+      "Sliding-scale insulin lispro subcutaneous",
+      "Consistent carbohydrate diet",
+      "Diabetes education consult",
+    ],
+    orderPrompt:
+      "Which diabetes-related orders require clear nursing follow-through documentation, and where would that documentation appear in the chart?",
+    mar: [
+      { med: "Insulin Lispro", route: "SubQ", schedule: "AC/HS", due: "07:30", status: "Due", note: "" },
+      { med: "Metformin 500mg", route: "PO", schedule: "BID", due: "08:00", status: "Given", note: "Given with breakfast" },
+      { med: "Lantus 20 units", route: "SubQ", schedule: "Nightly", due: "21:00", status: "Due", note: "" },
+      { med: "Ondansetron 4mg", route: "PO", schedule: "PRN", due: "10:00", status: "Held", note: "" },
+    ],
+    summaryCards: [
+      { label: "Primary Nurse", value: "K. Morris, RN" },
+      { label: "Attending", value: "T. Shah, MD" },
+      { label: "Allergies", value: "NKDA" },
+      { label: "Diet", value: "Consistent carbohydrate" },
+      { label: "Finger-stick", value: "AC/HS" },
+      { label: "Code Status", value: "Full Code" },
+    ],
+  },
+
+  /* ---------------- TRAUMA ---------------- */
+
+  trauma: {
+    key: "trauma",
+    label: "Case 5 • Trauma / Post-Op to ICU",
+    patientName: "Daniel Reed",
+    dob: "09/28/1991",
+    mrn: "912440",
+    admitDx: "Motor Vehicle Collision with Splenic Injury",
+    room: "ICU-12",
+    scenario:
+      "Adult trauma patient initially evaluated after motor vehicle collision, taken emergently to surgery for splenic injury, and transferred post-operatively to ICU for close monitoring, neuro checks, pain management, and hemodynamic reassessment.",
+    learningGoals: [
+      "Document trauma mechanism and post-op ICU priorities",
+      "Connect surgical timeline to nursing reassessment",
+      "Recognize hemodynamic and neuro monitoring needs",
+      "Practice time-sensitive documentation and escalation",
+      "Review ICU medication follow-up logic",
+    ],
+    summary:
+      "Patient involved in high-speed motor vehicle collision. Underwent exploratory laparotomy and splenectomy for intra-abdominal bleeding. Now post-op in ICU with arterial line, Foley catheter, and pain control needs. Ongoing neuro assessment, drain monitoring, and escalation readiness are required.",
+    summaryPrompt:
+      "Which structured nursing documentation fields are most important after emergent surgery and ICU transfer in a trauma patient?",
+    noteTitle: "Post-Op ICU Nursing Note",
+    noteBody:
+      "Patient transferred from OR to ICU following exploratory laparotomy and splenectomy. Drowsy but arousable. Hemodynamics under close observation. Surgical dressing dry and intact. Foley draining clear yellow urine. Pain control and neuro checks ongoing.",
+    note
