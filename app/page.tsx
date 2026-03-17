@@ -322,7 +322,7 @@ export default function Home() {
                 <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>
                   Practice chart review, structured documentation, and informatics thinking in a guided simulation.
                 </p>
-                <Link href="/practice-lab" style={primaryButtonStyle}>Enter Practice Lab</Link>
+                <Link href="/practice-lab-access" style={primaryButtonStyle}>Enter Practice Lab</Link>
               </div>
 
               <div style={softCardStyle}>
@@ -701,7 +701,7 @@ export default function Home() {
             </p>
 
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
-              <Link href="/practice-lab" style={primaryButtonStyle}>
+              <Link href="/practice-lab-access" style={primaryButtonStyle}>
                 Enter Practice Lab
               </Link>
               <Link href="/practice-lab-access" style={secondaryButtonStyle}>
