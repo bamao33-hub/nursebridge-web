@@ -28,7 +28,7 @@ const [caseKey] = useState<CaseKey>("pneumonia");
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
-      <TabContent activeTab={activeTab} />
+      <TabContent activeTab={activeTab} caseKey={caseKey} />
     </ChartShell>
   );
 }
