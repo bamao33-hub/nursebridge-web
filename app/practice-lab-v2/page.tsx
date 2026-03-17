@@ -21,17 +21,16 @@ export default function ChartPage() {
   const [activeTab, setActiveTab] = useState("Summary");
 const [caseKey] = useState<CaseKey>("pneumonia");
 
-  return (
-    <ChartShell
-      header={<Header />}
-      tabs={TABS}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
-    >
-      <TabContent activeTab={activeTab} caseKey={caseKey} />
-    </ChartShell>
-  );
-}
+24  return (
+25    <ChartShell
+26      header={<Header />}
+27      tabs={TABS}
+28      activeTab={activeTab}
+29      onTabChange={setActiveTab}
+30    >
+31      <TabContent activeTab={activeTab} caseKey={caseKey} />
+32    </ChartShell>
+33  );
 
 /* ---------------- HEADER ---------------- */
 
