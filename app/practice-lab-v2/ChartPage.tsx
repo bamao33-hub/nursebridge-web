@@ -19,8 +19,7 @@ const TABS = [
 
 export default function ChartPage() {
   const [activeTab, setActiveTab] = useState("Summary");
-  const [caseKey] = useState<CaseKey>("pneumonia");
-
+const [caseKey] = useState<CaseKey>("pneumonia");
 
   return (
     <ChartShell
