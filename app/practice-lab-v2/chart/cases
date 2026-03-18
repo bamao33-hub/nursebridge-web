@@ -314,3 +314,4 @@ export const CASES: Record<CaseKey, CaseConfig> = {
     noteBody:
       "Patient transferred from OR to ICU following exploratory laparotomy and splenectomy. Drowsy but arousable. Hemodynamics under close observation. Surgical dressing dry and intact. Foley draining clear yellow urine. Pain control and neuro checks ongoing.",
     note
+
