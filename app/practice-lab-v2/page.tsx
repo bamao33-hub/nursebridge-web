@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ChartShell from "./ChartShell";
-import SummaryTab from "./chart/tabs/SummaryTab";
+import SummaryTab from "./chart/tabs/SummaryTabs";
 import { CASES, CaseKey } from "./chart/cases";
 
 /* --------------- TABS --------------- */
