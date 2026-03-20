@@ -158,7 +158,6 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <div>
               <div
                 style={{
                   display: "inline-flex",
