@@ -184,15 +184,14 @@ export default function Home() {
                   lineHeight: 1.08,
                 }}
               >
-                Clinical informatics support that improves workflow—and builds careers.
+                Secure Your Nursing Informatics Preceptorship Placement
               </h1>
 
               <p style={{ fontSize: 18, lineHeight: 1.7, color: MUTED, margin: 0 }}>
-                Founded by <strong>Dr. Bernadette Amao, DNP</strong>, NurseBridge Consulting helps
-                clinicians, graduate students, and healthcare teams strengthen documentation workflows,
-                explore informatics career pathways, and gain hands-on learning through structured mentorship
-                and simulation.
-              </p>
+  Led by <strong>Dr. Bernadette Amao, DNP</strong>, this preceptorship provides real-world experience,
+  project guidance, and career clarity in nursing informatics. Designed for MSN and DNP students
+  seeking hands-on exposure in systems, clinical liaison, training, or leadership roles.
+</p>
 
               <div
                 style={{
@@ -619,6 +618,19 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <div
+  style={{
+    marginTop: 18,
+    paddingTop: 16,
+    borderTop: "1px solid #d7e6e3",
+    color: MUTED,
+    lineHeight: 1.7,
+    fontSize: 16,
+  }}
+>
+   Not sure which pathway aligns with your strengths or practicum goals? <br /><br />
+  NurseBridge preceptorship helps MSN and DNP students connect career interests with real-world informatics exposure, project direction, and structured mentorship.
+</div>
         </section>
 
         <SectionDivider />
@@ -980,13 +992,11 @@ export default function Home() {
             </div>
             <h2 style={{ margin: "0 0 10px 0" }}>Meet Dr. Bernadette Amao</h2>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: 0 }}>
-              Dr. Bernadette Amao is a Doctor of Nursing Practice–prepared nurse and Epic-certified clinical informatics
-              analyst with more than 13 years of experience supporting hospital systems, clinicians, and digital health
-              initiatives.
+              Dr. Bernadette Amao is a DNP-prepared nurse and clinical informatics analyst with over 13 years of experience supporting hospital workflows, clinicians, and digital health initiatives. 
+              She is Epic-certified and actively works in a hospital setting.
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: MUTED, margin: "10px 0 0 0" }}>
-              Her work focuses on bridging the gap between bedside clinicians and healthcare technology while mentoring
-              the next generation of informatics professionals.
+              She also mentors MSN and DNP students through structured nursing informatics preceptorship—helping them gain real-world exposure, strengthen project direction, and build confidence in their informatics career path.
             </p>
             <div style={{ marginTop: 16 }}>
               <a href="#contact" style={primaryButtonStyle}>
@@ -1019,24 +1029,27 @@ export default function Home() {
             </div>
 
             <Link href="/preceptorship" style={primaryButtonStyle}>
-              Preceptorship Inquiry Form
+              Apply Now
             </Link>
           </div>
         </section>
 
         {/* FOOTER */}
         <footer
-          style={{
-            borderTop: `1px solid ${BORDER}`,
-            paddingTop: 16,
-            marginTop: 20,
-            color: MUTED,
-            fontSize: 13,
-          }}
-        >
-          © 2026 NurseBridge Consulting LLC
-        </footer>
-      </div>
+  style={{
+    borderTop: `1px solid ${BORDER}`,
+    paddingTop: 16,
+    marginTop: 20,
+    color: MUTED,
+    fontSize: 13,
+  }}
+>
+  <div>© 2026 NurseBridge Consulting LLC</div>
+
+  <div style={{ marginTop: 6, fontSize: 12 }}>
+    Epic is a registered trademark of Epic Systems Corporation. NurseBridge Consulting LLC is not affiliated with or endorsed by Epic Systems.
+  </div>
+</footer>
     </main>
   );
 }
