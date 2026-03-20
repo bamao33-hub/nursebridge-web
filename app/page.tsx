@@ -142,105 +142,106 @@ export default function Home() {
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 20px 46px" }}>
         {/* HERO */}
-        <section
-          style={{
-            border: `1px solid ${BORDER}`,
-            borderRadius: 18,
-            padding: "28px 26px",
-            background: SOFT,
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: 28,
-              alignItems: "center",
-            }}
-          >
-          <div>
+<section
+  style={{
+    border: `1px solid ${BORDER}`,
+    borderRadius: 18,
+    padding: "28px 26px",
+    background: SOFT,
+  }}
+>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+      gap: 28,
+      alignItems: "center",
+    }}
+  >
+    <div>
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "6px 10px",
+          borderRadius: 999,
+          backgroundColor: "rgba(15,118,110,0.10)",
+          color: TEAL_DARK,
+          fontSize: 12,
+          fontWeight: 700,
+          border: "1px solid rgba(15,118,110,0.18)",
+          marginBottom: 14,
+        }}
+      >
+        NurseBridge Consulting • Texas-based • Remote-friendly
+      </div>
 
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "6px 10px",
-                  borderRadius: 999,
-                  backgroundColor: "rgba(15,118,110,0.10)",
-                  color: TEAL_DARK,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  border: `1px solid rgba(15,118,110,0.18)`,
-                  marginBottom: 14,
-                }}
-              >
-                NurseBridge Consulting • Texas-based • Remote-friendly
-              </div>
+      <h1
+        style={{
+          fontSize: "clamp(34px, 6vw, 58px)",
+          margin: "0 0 12px 0",
+          lineHeight: 1.08,
+        }}
+      >
+        Secure Your Nursing Informatics Preceptorship Placement
+      </h1>
 
-              <h1
-                style={{
-                  fontSize: "clamp(34px, 6vw, 58px)",
-                  margin: "0 0 12px 0",
-                  lineHeight: 1.08,
-                }}
-              >
-                Secure Your Nursing Informatics Preceptorship Placement
-              </h1>
+      <p style={{ fontSize: 18, lineHeight: 1.7, color: MUTED, margin: 0 }}>
+        Led by <strong>Dr. Bernadette Amao, DNP</strong>, this preceptorship provides
+        real-world experience, project guidance, and career clarity in nursing informatics.
+        Designed for MSN and DNP students seeking hands-on exposure in systems, clinical
+        liaison, training, or leadership roles.
+      </p>
 
-              <p style={{ fontSize: 18, lineHeight: 1.7, color: MUTED, margin: 0 }}>
-  Led by <strong>Dr. Bernadette Amao, DNP</strong>, this preceptorship provides real-world experience,
-  project guidance, and career clarity in nursing informatics. Designed for MSN and DNP students
-  seeking hands-on exposure in systems, clinical liaison, training, or leadership roles.
-</p>
+      <div
+        style={{
+          marginTop: 14,
+          display: "inline-flex",
+          gap: 10,
+          flexWrap: "wrap",
+          fontSize: 13,
+          color: MUTED,
+          fontWeight: 700,
+        }}
+      >
+        <span>Books</span>
+        <span>•</span>
+        <span>Courses</span>
+        <span>•</span>
+        <span>Preceptorship</span>
+        <span>•</span>
+        <span>EHR Practice Lab</span>
+      </div>
 
-              <div
-                style={{
-                  marginTop: 14,
-                  display: "inline-flex",
-                  gap: 10,
-                  flexWrap: "wrap",
-                  fontSize: 13,
-                  color: MUTED,
-                  fontWeight: 700,
-                }}
-              >
-                <span>Books</span>
-                <span>•</span>
-                <span>Courses</span>
-                <span>•</span>
-                <span>Preceptorship</span>
-                <span>•</span>
-                <span>EHR Practice Lab</span>
-              </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
+        <Link href="/preceptorship" style={{ ...primaryButtonStyle, padding: "12px 16px" }}>
+          Start Preceptorship Inquiry
+        </Link>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-                <Link href="/preceptorship" style={{ ...primaryButtonStyle, padding: "12px 16px" }}>
-              Start Preceptorship Inquiry
-              </Link>
+        <Link href="/career-paths" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
+          Explore Career Paths
+        </Link>
+      </div>
 
-              <Link href="/career-paths" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
-                Explore Career Paths
-              </Link>
+      <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
+        Helping nurses transition into health informatics through mentorship, practicum support,
+        workflow guidance, and hands-on EHR simulation.
+      </div>
+    </div>
 
-              <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
-                Helping nurses transition into health informatics through mentorship, practicum support,
-                workflow guidance, and hands-on EHR simulation.
-            </div>
-
-            <div style={cardStyle}>
-              <div style={{ fontWeight: 800, marginBottom: 10 }}>Why clinicians choose NurseBridge</div>
-              <ul style={miniListStyle}>
-                <li>DNP-prepared clinical informatics specialist</li>
-                <li>Epic-certified with 13+ years experience</li>
-                <li>Real hospital workflow optimization</li>
-                <li>Mentorship for nurses transitioning into informatics</li>
-                <li>Structured MSN/DNP preceptorship guidance</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
+    <div style={cardStyle}>
+      <div style={{ fontWeight: 800, marginBottom: 10 }}>Why clinicians choose NurseBridge</div>
+      <ul style={miniListStyle}>
+        <li>DNP-prepared clinical informatics specialist</li>
+        <li>Epic-certified with 13+ years experience</li>
+        <li>Real hospital workflow optimization</li>
+        <li>Mentorship for nurses transitioning into informatics</li>
+        <li>Structured MSN/DNP preceptorship guidance</li>
+      </ul>
+    </div>
+  </div>
+</section>
         {/* PROOF BAND */}
         <section style={{ paddingTop: 18, paddingBottom: 8 }}>
           <div
