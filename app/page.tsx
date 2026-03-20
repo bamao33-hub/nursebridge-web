@@ -219,7 +219,6 @@ export default function Home() {
                 <Link href="/career-paths" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
                 Explore Career Paths
               </Link>
-              </div>
 
               <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
                 Helping nurses transition into health informatics through mentorship, practicum support,
