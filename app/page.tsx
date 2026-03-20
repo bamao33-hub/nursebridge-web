@@ -216,10 +216,9 @@ export default function Home() {
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
                 <Link href="/preceptorship" style={{ ...primaryButtonStyle, padding: "12px 16px" }}>
                   Start Preceptorship Inquiry
-                </Link>
-                <a href="#start-here" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
-                  Start Your Informatics Journey
-                </a>
+                <Link href="/career-paths" style={{ ...secondaryButtonStyle, padding: "12px 16px" }}>
+                Explore Career Paths
+              </Link>
               </div>
 
               <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
