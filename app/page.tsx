@@ -226,7 +226,6 @@ export default function Home() {
               <div style={{ marginTop: 14, color: MUTED, fontSize: 13 }}>
                 Helping nurses transition into health informatics through mentorship, practicum support,
                 workflow guidance, and hands-on EHR simulation.
-              </div>
             </div>
 
             <div style={cardStyle}>
