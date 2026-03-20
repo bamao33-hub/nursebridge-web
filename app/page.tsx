@@ -631,6 +631,7 @@ export default function Home() {
    Not sure which pathway aligns with your strengths or practicum goals? <br /><br />
   NurseBridge preceptorship helps MSN and DNP students connect career interests with real-world informatics exposure, project direction, and structured mentorship.
 </div>
+            </div>
         </section>
 
         <SectionDivider />
