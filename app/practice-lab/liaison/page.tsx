@@ -225,8 +225,53 @@ export default function LiaisonLabPage() {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-    </main>
+                    <div style={cardStyle}>
+            <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+              Scenario 3: Order Set Optimization Request
+            </div>
+            <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+              A provider reports that an order set includes outdated lab orders. Review the request,
+              identify stakeholders, and determine whether this reflects workflow optimization,
+              governance, or provider preference.
+            </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <Link href="/practice-lab/liaison/scenario-3" style={primaryButtonStyle}>
+                Start Scenario 3
+              </Link>
+            </div>
+          </div>
+          <div style={cardStyle}>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+    Scenario 4: Downtime Recovery
+  </div>
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    The EHR system experienced a downtime event. Validate documentation recovery,
+    ensure reconciliation is complete, and communicate safely with leadership.
+  </div>
+
+  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+    <Link href="/practice-lab/liaison/scenario-4" style={primaryButtonStyle}>
+      Start Scenario 4
+    </Link>
+  </div>
+</div>
+          <div style={cardStyle}>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+    Scenario 5: Device Integration Issue
+  </div>
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    Vitals monitoring devices stop sending data into the EHR. Identify whether the issue
+    is device, network, or system-related, and escalate appropriately.
+  </div>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+    <Link href="/practice-lab/liaison/scenario-5" style={primaryButtonStyle}>
+      Start Scenario 5
+    </Link>
+  </div>
+</div>
+</div>
+</div>
+</main>
   );
 }
