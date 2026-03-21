@@ -292,7 +292,15 @@ export default function LiaisonLabPage() {
     </Link>
   </div>
 </div>
-          <section style={sectionStyle}>
+          <section
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 16,
+    background: "#ffffff",
+    padding: "18px 20px",
+    marginBottom: 16,
+  }}
+>
   <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
     You’ve Completed the Clinical Liaison Lab
   </div>
