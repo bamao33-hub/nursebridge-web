@@ -218,19 +218,21 @@ useEffect(() => {
   Clinical Liaison
 </Link>
 
-            <div
-              style={{
-                padding: "10px 14px",
-                borderRadius: 12,
-                border: `1px solid ${COLORS.border}`,
-                background: "#f8fafb",
-                color: COLORS.muted,
-                fontWeight: 700,
-                fontSize: 14,
-              }}
-            >
-              Training
-            </div>
+           <Link
+  href="/practice-lab/training"
+  style={{
+    textDecoration: "none",
+    padding: "10px 14px",
+    borderRadius: 12,
+    border: `1px solid ${COLORS.border}`,
+    background: "#f8fafb",
+    color: COLORS.muted,
+    fontWeight: 700,
+    fontSize: 14,
+  }}
+>
+  Training
+</Link>
 
             <div
               style={{
