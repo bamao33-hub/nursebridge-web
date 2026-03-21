@@ -427,6 +427,12 @@ export default function Home() {
                   desc: "A structured pathway for bedside clinicians transitioning into informatics roles.",
                 },
                 {
+                  title: "ANCC Certification Guidance",
+                  desc: "Not sure if you're ready for ANCC certification? Learn how experience, project direction, and real-world exposure support your readiness.",
+                  link: "/ancc-certification",
+                  linkText: "Learn More",
+                },
+                {
                   title: "Graduate Informatics Preceptorship",
                   desc: "Structured MSN/DNP preceptorship with clear goals, deliverables, and coaching.",
                   cta: true,
@@ -435,9 +441,13 @@ export default function Home() {
                 <div key={s.title} style={cardStyle}>
                   <h3 style={{ margin: "0 0 8px 0" }}>{s.title}</h3>
                   <p style={{ margin: "0 0 12px 0", color: MUTED, lineHeight: 1.6 }}>{s.desc}</p>
-                  {s.cta ? (
+                   {s.cta ? (
                     <Link href="/preceptorship" style={primaryButtonStyle}>
                       Apply for Preceptorship
+                    </Link>
+                  ) : s.link ? (
+                    <Link href={s.link} style={secondaryButtonStyle}>
+                      {s.linkText}
                     </Link>
                   ) : null}
                 </div>
