@@ -139,6 +139,9 @@ export default function LiaisonLabPage() {
             Explore different nursing informatics pathways within the practice lab.
           </div>
 
+          <div style={{ color: COLORS.muted, fontSize: 14, marginBottom: 12 }}>
+  Recommended progression: Scenario 1 → Scenario 5
+</div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <Link href="/practice-lab" style={secondaryButtonStyle}>
               Systems
@@ -187,6 +190,25 @@ export default function LiaisonLabPage() {
           </div>
         </section>
 
+        <section
+  style={{
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 16,
+    background: "#ffffff",
+    padding: "18px 20px",
+    marginBottom: 16,
+  }}
+>
+  <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 8 }}>
+    What You Are Practicing
+  </div>
+
+  <ul style={{ margin: "10px 0 0 18px", color: COLORS.muted, lineHeight: 1.8 }}>
+    <li>Workflow analysis and root cause identification</li>
+    <li>Clinical communication and stakeholder coordination</li>
+    <li>Ticket triage, escalation, and ownership clarity</li>
+  </ul>
+</section>
         <div
           style={{
             display: "grid",
@@ -270,6 +292,15 @@ export default function LiaisonLabPage() {
     </Link>
   </div>
 </div>
+          <section style={sectionStyle}>
+  <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
+    You’ve Completed the Clinical Liaison Lab
+  </div>
+  <div style={{ color: COLORS.muted, lineHeight: 1.8 }}>
+    You have practiced key informatics liaison skills including workflow analysis,
+    stakeholder communication, escalation, and system evaluation across multiple real-world scenarios.
+  </div>
+</section>
 </div>
 </div>
 </main>
