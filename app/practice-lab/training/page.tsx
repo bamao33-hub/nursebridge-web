@@ -202,36 +202,36 @@ export default function TrainingLabPage() {
           }}
         >
           <div style={cardStyle}>
-            <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
-              Scenario 1: Flowsheet Documentation Teaching Moment
-            </div>
-            <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
-              A unit is showing recurring flowsheet documentation errors. Identify the teaching
-              need, explain the workflow clearly, and plan a short corrective education session.
-            </div>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+    Scenario 1: New Hire EHR Training & Competency Support
+  </div>
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    A newly hired nurse is overwhelmed during onboarding and falling behind in hands-on EHR training.
+    Assess learning gaps, adjust teaching style, and provide targeted support to build confidence and competency.
+  </div>
 
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <Link href="/practice-lab/training/scenario-1" style={primaryButtonStyle}>
-                Start Scenario 1
-              </Link>
-            </div>
-          </div>
+  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+    <Link href="/practice-lab/training/scenario-1" style={primaryButtonStyle}>
+      Start Scenario 1
+    </Link>
+  </div>
+</div>
 
           <div style={cardStyle}>
-            <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
-              Scenario 2: New Workflow Go-Live Support
-            </div>
-            <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
-              A new discharge workflow is going live. Build a communication plan, outline
-              tip-sheet content, and prepare a practical support strategy for staff.
-            </div>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+    Scenario 2: Go-Live Support Escalation
+  </div>
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    During go-live, a nurse becomes overwhelmed and says, “I can’t find anything.” Provide calm,
+    structured at-the-elbow support, reinforce workflow, and help the user regain confidence.
+  </div>
 
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <Link href="/practice-lab/training/scenario-2" style={primaryButtonStyle}>
-                Start Scenario 2
-              </Link>
-            </div>
-          </div>
+  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+    <Link href="/practice-lab/training/scenario-2" style={primaryButtonStyle}>
+      Start Scenario 2
+    </Link>
+  </div>
+</div>
         </div>
       </div>
     </main>
