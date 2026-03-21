@@ -171,6 +171,82 @@ useEffect(() => {
       </div>
 
       <div style={{ maxWidth: 1240, margin: "0 auto", padding: "24px 20px 40px" }}>
+                <section
+          style={{
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 16,
+            background: "#ffffff",
+            padding: "18px 20px",
+            marginBottom: 16,
+          }}
+        >
+          <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
+            Switch Informatics Role
+          </div>
+          <div style={{ color: COLORS.muted, fontSize: 14, lineHeight: 1.6, marginBottom: 14 }}>
+            Explore different nursing informatics pathways within the practice lab. Systems is the
+            current active lab. Additional tracks help students practice liaison, training, and leadership thinking.
+          </div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 12,
+                background: COLORS.teal,
+                color: "#ffffff",
+                fontWeight: 800,
+                fontSize: 14,
+              }}
+            >
+              Systems
+            </div>
+
+            <Link
+              href="/practice-lab/liaison"
+              style={{
+                textDecoration: "none",
+                padding: "10px 14px",
+                borderRadius: 12,
+                border: `1px solid ${COLORS.border}`,
+                background: "#ffffff",
+                color: COLORS.text,
+                fontWeight: 800,
+                fontSize: 14,
+              }}
+            >
+              Clinical Liaison
+            </Link>
+
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 12,
+                border: `1px solid ${COLORS.border}`,
+                background: "#f8fafb",
+                color: COLORS.muted,
+                fontWeight: 700,
+                fontSize: 14,
+              }}
+            >
+              Training
+            </div>
+
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 12,
+                border: `1px solid ${COLORS.border}`,
+                background: "#f8fafb",
+                color: COLORS.muted,
+                fontWeight: 700,
+                fontSize: 14,
+              }}
+            >
+              Leadership
+            </div>
+          </div>
+        </section>
         <section
           style={{
             border: `1px solid ${COLORS.border}`,
