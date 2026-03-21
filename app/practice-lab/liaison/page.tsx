@@ -160,20 +160,22 @@ export default function LiaisonLabPage() {
               Clinical Liaison
             </div>
 
-            <div
-              style={{
-                padding: "10px 14px",
-                borderRadius: 12,
-                border: `1px solid ${COLORS.border}`,
-                background: "#f8fafb",
-                color: COLORS.muted,
-                fontWeight: 700,
-                fontSize: 14,
-              }}
-            >
-              Training
-            </div>
-
+          <Link
+  href="/practice-lab/training"
+  style={{
+    textDecoration: "none",
+    padding: "10px 14px",
+    borderRadius: 12,
+    border: `1px solid ${COLORS.border}`,
+    background: "#ffffff",
+    color: COLORS.text,
+    fontWeight: 800,
+    fontSize: 14,
+    cursor: "pointer",
+  }}
+>
+  Training
+</Link>
             <div
               style={{
                 padding: "10px 14px",
