@@ -202,7 +202,7 @@ export default function LiaisonScenarioFourPage() {
             Back
           </Link>
           <Link href="/practice-lab/liaison/scenario-5" style={primaryButtonStyle}>
-            Continue
+            Continue to Scenario 5
           </Link>
         </div>
 
