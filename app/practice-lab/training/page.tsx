@@ -191,7 +191,7 @@ export default function TrainingLabPage() {
         </section>
 
         <div style={{ color: COLORS.muted, fontSize: 14, marginBottom: 12 }}>
-          Recommended progression: Scenario 1 → Scenario 2
+          Recommended progression: Scenario 1 → Scenario 5
         </div>
         <div
   style={{
