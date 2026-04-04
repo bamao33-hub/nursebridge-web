@@ -193,46 +193,86 @@ export default function TrainingLabPage() {
         <div style={{ color: COLORS.muted, fontSize: 14, marginBottom: 12 }}>
           Recommended progression: Scenario 1 → Scenario 2
         </div>
-
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 18,
-          }}
-        >
-          <div style={cardStyle}>
-  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
-    Scenario 1: New Hire EHR Training & Competency Support
-  </div>
-  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
-    A newly hired nurse is overwhelmed during onboarding and falling behind in hands-on EHR training.
-    Assess learning gaps, adjust teaching style, and provide targeted support to build confidence and competency.
-  </div>
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gap: 18,
+  }}
+>
 
-  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+  {/* Scenario 1 */}
+  <div style={cardStyle}>
+    <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+      Scenario 1: New Hire EHR Training & Competency Support
+    </div>
+    <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+      A newly hired nurse is overwhelmed during onboarding and falling behind in hands-on EHR training.
+      Assess learning gaps, adjust teaching style, and provide targeted support.
+    </div>
     <Link href="/practice-lab/training/scenario-1" style={primaryButtonStyle}>
       Start Scenario 1
     </Link>
   </div>
-</div>
 
-          <div style={cardStyle}>
-  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
-    Scenario 2: Go-Live Support Escalation
-  </div>
-  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
-    During go-live, a nurse becomes overwhelmed and says, “I can’t find anything.” Provide calm,
-    structured at-the-elbow support, reinforce workflow, and help the user regain confidence.
-  </div>
-
-  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+  {/* Scenario 2 */}
+  <div style={cardStyle}>
+    <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+      Scenario 2: Provider Training for a New Workflow
+    </div>
+    <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+      A provider is frustrated with a new discharge workflow. Identify the pain point,
+      demonstrate the workflow, and build provider buy-in.
+    </div>
     <Link href="/practice-lab/training/scenario-2" style={primaryButtonStyle}>
       Start Scenario 2
     </Link>
   </div>
-</div>
-        </div>
+
+  {/* Scenario 3 */}
+  <div style={cardStyle}>
+    <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+      Scenario 3: Competency Validation Failure
+    </div>
+    <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+      A new hire repeatedly fails EHR competency validation. Identify learning gaps,
+      build a remediation plan, and support the learner toward competency.
+    </div>
+    <Link href="/practice-lab/training/scenario-3" style={primaryButtonStyle}>
+      Start Scenario 3
+    </Link>
+  </div>
+
+  {/* Scenario 4 */}
+  <div style={cardStyle}>
+    <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+      Scenario 4: Workflow Drift Correction
+    </div>
+    <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+      Staff are using workarounds that bypass the intended workflow. Identify the drift,
+      understand the cause, and retrain the unit.
+    </div>
+    <Link href="/practice-lab/training/scenario-4" style={primaryButtonStyle}>
+      Start Scenario 4
+    </Link>
+  </div>
+
+  {/* Scenario 5 */}
+  <div style={cardStyle}>
+    <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 8 }}>
+      Scenario 5: New Feature Rollout Training
+    </div>
+    <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+      A new EHR feature has been released, but staff are confused. Develop a micro-training plan,
+      create tip sheets, and support adoption.
+    </div>
+    <Link href="/practice-lab/training/scenario-5" style={primaryButtonStyle}>
+      Start Scenario 5
+    </Link>
+  </div>
+
+</div>       
+      </div>
       </div>
     </main>
   );
