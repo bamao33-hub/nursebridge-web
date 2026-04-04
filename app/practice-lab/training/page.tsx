@@ -273,7 +273,6 @@ export default function TrainingLabPage() {
 
 </div>       
       </div>
-      </div>
     </main>
   );
 }
