@@ -301,11 +301,12 @@ export default function TrainingScenarioOnePage() {
   </div>
 
   <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
-    Use this quick reference guide to reinforce MAR navigation and medication documentation during training.
+    Use this guide to support new hires during onboarding, build confidence,
+    and reinforce effective EHR learning strategies.
   </div>
 
   <a
-    href="/tipsheets/mar-tip-sheet.pdf"
+    href="/tipsheets/new-hire-ehr-survival-guide.pdf"
     download
     style={{
       display: "inline-block",
@@ -317,7 +318,7 @@ export default function TrainingScenarioOnePage() {
       borderRadius: 12,
     }}
   >
-    Download MAR Tip Sheet
+    Download New Hire Survival Guide
   </a>
 </section>
 
