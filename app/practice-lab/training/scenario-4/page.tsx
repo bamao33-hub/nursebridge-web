@@ -286,6 +286,32 @@ export default function TrainingScenarioFourPage() {
             <li>appropriate follow-up planning</li>
           </ul>
         </section>
+        <section style={sectionStyle}>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>
+    Download Tip Sheet
+  </div>
+
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    Use this guide to identify workflow drift, understand its root cause,
+    and implement effective unit-based retraining strategies.
+  </div>
+
+  <a
+    href="/tipsheets/workflow-drift-correction-guide.pdf"
+    download
+    style={{
+      display: "inline-block",
+      textDecoration: "none",
+      background: COLORS.teal,
+      color: "#ffffff",
+      fontWeight: 800,
+      padding: "10px 14px",
+      borderRadius: 12,
+    }}
+  >
+    Download Workflow Drift Guide
+  </a>
+</section>
 
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
           <Link href="/practice-lab/training" style={secondaryButtonStyle}>
