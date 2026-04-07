@@ -1,0 +1,192 @@
+import Link from "next/link";
+
+const COLORS = {
+  text: "#0f172a",
+  muted: "#475569",
+  border: "#d7e6e3",
+  soft: "#eef6f5",
+  teal: "#0f766e",
+  tealDark: "#115e59",
+};
+
+const primaryButtonStyle: React.CSSProperties = {
+  display: "inline-block",
+  textDecoration: "none",
+  background: COLORS.teal,
+  color: "#ffffff",
+  fontWeight: 800,
+  padding: "10px 14px",
+  borderRadius: 12,
+};
+
+const secondaryButtonStyle: React.CSSProperties = {
+  display: "inline-block",
+  textDecoration: "none",
+  background: "#ffffff",
+  color: COLORS.text,
+  fontWeight: 800,
+  padding: "10px 14px",
+  borderRadius: 12,
+  border: `1px solid ${COLORS.border}`,
+};
+
+const cardStyle: React.CSSProperties = {
+  border: `1px solid ${COLORS.border}`,
+  borderRadius: 16,
+  background: "#ffffff",
+  padding: 20,
+};
+
+const sectionStyle: React.CSSProperties = {
+  border: `1px solid ${COLORS.border}`,
+  borderRadius: 16,
+  background: "#ffffff",
+  padding: "18px 20px",
+  marginBottom: 16,
+};
+
+export default function OptimizationLabPage() {
+  return (
+    <main style={{ background: "#f8fafb", minHeight: "100vh", color: COLORS.text }}>
+      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "28px 20px 48px" }}>
+
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", marginBottom: 18 }}>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 24 }}>Optimization Lab</div>
+            <div style={{ color: COLORS.muted, fontSize: 13 }}>
+              Efficiency • Workflow Design • System Improvement
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <Link href="/practice-lab" style={{ color: COLORS.teal, fontWeight: 700 }}>
+              Practice Lab Home
+            </Link>
+            <Link href="/preceptorship" style={{ color: COLORS.teal, fontWeight: 700 }}>
+              Preceptorship
+            </Link>
+          </div>
+        </div>
+
+        {/* Hero */}
+        <section
+          style={{
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 18,
+            background: COLORS.soft,
+            padding: "24px 22px",
+            marginBottom: 18,
+          }}
+        >
+          <div
+            style={{
+              display: "inline-flex",
+              padding: "6px 12px",
+              borderRadius: 999,
+              border: `1px solid ${COLORS.border}`,
+              background: "#ffffff",
+              color: COLORS.tealDark,
+              fontSize: 12,
+              fontWeight: 800,
+              marginBottom: 12,
+            }}
+          >
+            Optimization • Scenario-Based Practice
+          </div>
+
+          <h1 style={{ fontSize: "clamp(30px, 5vw, 54px)", marginBottom: 12 }}>
+            Improve workflows, reduce clicks, and optimize the EHR experience.
+          </h1>
+
+          <p style={{ color: COLORS.muted, fontSize: 18, lineHeight: 1.7 }}>
+            These scenarios help learners think like optimization analysts by identifying inefficiencies,
+            reducing redundancy, improving usability, and aligning the system with real clinical workflows.
+          </p>
+        </section>
+
+        {/* Role Switch */}
+        <section style={sectionStyle}>
+          <div style={{ fontWeight: 800, marginBottom: 10 }}>Switch Informatics Role</div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <Link href="/practice-lab" style={secondaryButtonStyle}>Systems</Link>
+            <Link href="/practice-lab/liaison" style={secondaryButtonStyle}>Clinical Liaison</Link>
+            <Link href="/practice-lab/training" style={secondaryButtonStyle}>Training</Link>
+
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 12,
+                background: COLORS.teal,
+                color: "#ffffff",
+                fontWeight: 800,
+              }}
+            >
+              Optimization
+            </div>
+          </div>
+        </section>
+
+        {/* What You Practice */}
+        <section style={sectionStyle}>
+          <div style={{ fontWeight: 800, marginBottom: 10 }}>What You Are Practicing</div>
+          <ul style={{ marginLeft: 18, color: COLORS.muted, lineHeight: 1.8 }}>
+            <li>Identifying workflow inefficiencies</li>
+            <li>Reducing documentation burden</li>
+            <li>Improving usability and navigation</li>
+            <li>Aligning system build with clinical reality</li>
+          </ul>
+        </section>
+
+        {/* Scenarios */}
+        <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))" }}>
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800 }}>Scenario 1: Reducing Click Burden</div>
+            <p style={{ color: COLORS.muted }}>
+              Nurses report excessive clicking to complete documentation. Identify inefficiencies and streamline the workflow.
+            </p>
+            <Link href="/practice-lab/optimization/scenario-1" style={primaryButtonStyle}>Start Scenario</Link>
+          </div>
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800 }}>Scenario 2: Duplicate Documentation</div>
+            <p style={{ color: COLORS.muted }}>
+              The same information is being documented in multiple places. Reduce redundancy and improve efficiency.
+            </p>
+            <Link href="/practice-lab/optimization/scenario-2" style={primaryButtonStyle}>Start Scenario</Link>
+          </div>
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800 }}>Scenario 3: Order Set Optimization</div>
+            <p style={{ color: COLORS.muted }}>
+              Providers complain about an outdated and inefficient order set. Improve usability and relevance.
+            </p>
+            <Link href="/practice-lab/optimization/scenario-3" style={primaryButtonStyle}>Start Scenario</Link>
+          </div>
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800 }}>Scenario 4: Alert Fatigue</div>
+            <p style={{ color: COLORS.muted }}>
+              Users are ignoring alerts due to overload. Evaluate and refine clinical decision support.
+            </p>
+            <Link href="/practice-lab/optimization/scenario-4" style={primaryButtonStyle}>Start Scenario</Link>
+          </div>
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800 }}>Scenario 5: Workflow vs System Mismatch</div>
+            <p style={{ color: COLORS.muted }}>
+              The system does not match real clinical workflows. Identify gaps and propose improvements.
+            </p>
+            <Link href="/practice-lab/optimization/scenario-5" style={primaryButtonStyle}>Start Scenario</Link>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  );
+}
+
+
