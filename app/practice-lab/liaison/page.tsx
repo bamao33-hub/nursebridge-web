@@ -187,6 +187,22 @@ export default function LiaisonLabPage() {
                 fontSize: 14,
               }}
             >
+              <Link
+  href="/practice-lab/optimization"
+  style={{
+    textDecoration: "none",
+    padding: "10px 14px",
+    borderRadius: 12,
+    border: `1px solid ${COLORS.border}`,
+    background: "#ffffff",
+    color: COLORS.text,
+    fontWeight: 800,
+    fontSize: 14,
+    cursor: "pointer",
+  }}
+>
+  Optimization
+</Link>
               Leadership
             </div>
           </div>
