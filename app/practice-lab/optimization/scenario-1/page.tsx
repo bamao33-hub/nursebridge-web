@@ -190,6 +190,32 @@ export default function OptimizationScenarioOnePage() {
           </ul>
         </section>
 
+        <section style={sectionStyle}>
+  <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>
+    Download Tip Sheet
+  </div>
+
+  <div style={{ color: COLORS.muted, lineHeight: 1.7, marginBottom: 14 }}>
+    Use this guide to identify excessive clicks, understand inefficiencies,
+    and apply practical optimization strategies with real-world examples.
+  </div>
+
+  <a
+    href="/tipsheets/click-optimization-guide.pdf"
+    download
+    style={{
+      display: "inline-block",
+      textDecoration: "none",
+      background: COLORS.teal,
+      color: "#ffffff",
+      fontWeight: 800,
+      padding: "10px 14px",
+      borderRadius: 12,
+    }}
+  >
+    Download Optimization Guide
+  </a>
+</section>
         {/* Navigation */}
         <div style={{ display: "flex", gap: 12 }}>
           <Link href="/practice-lab/optimization" style={secondaryButtonStyle}>
