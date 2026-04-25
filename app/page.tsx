@@ -804,94 +804,109 @@ export default function Home() {
 
   </div>
 </div>
- 
   {/* From Bedside to Informatics */}
-  <div style={softCardStyle}>
-    <img
-      src="/bedside-to-informatics.jpeg"
-      alt="From Bedside to Informatics book cover"
-      style={shadowImage}
-    />
-    <h3 style={{ margin: "0 0 6px 0" }}>From Bedside to Informatics</h3>
-    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-      A practical guide for nurses considering the transition into health IT and clinical informatics.
-    </p>
+<div style={softCardStyle}>
+  <img
+    src="/bedside-to-informatics.jpeg"
+    alt="From Bedside to Informatics book cover"
+    style={shadowImage}
+  />
 
-    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-      <a
-        href="https://books2read.com/u/31p0lv"
-        target="_blank"
-        rel="noreferrer"
-        style={primaryButtonStyle}
-      >
-        View Retailers
-      </a>
-      <a
-        href="https://www.amazon.com/dp/B0CJLZQ5QW"
-        target="_blank"
-        rel="noreferrer"
-        style={secondaryButtonStyle}
-      >
-        Amazon
-      </a>
-    </div>
+  <h3 style={{ margin: "0 0 6px 0" }}>
+    From Bedside to Informatics
+  </h3>
+
+  <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+    A practical guide for nurses considering the transition into health IT and clinical informatics.
+  </p>
+
+  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+    
+    <a
+      href="https://books2read.com/u/31p0lv"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={primaryButtonStyle}
+    >
+      View All Retailers
+    </a>
+
+    <a
+      href="https://www.amazon.com/dp/B0GJM8QNSZ"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={secondaryButtonStyle}
+    >
+      Buy on Amazon
+    </a>
+
   </div>
-
+</div>
   {/* Beyond Burnout */}
-  <div style={softCardStyle}>
-    <img
-      src="/beyond-burnout.jpeg"
-      alt="Beyond Burnout book cover"
-      style={shadowImage}
-    />
-    <h3 style={{ margin: "0 0 6px 0" }}>Beyond Burnout</h3>
-    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-      A career pivot guide helping healthcare professionals explore meaningful alternatives beyond bedside roles.
-    </p>
+<div style={softCardStyle}>
+  <img
+    src="/beyond-burnout.jpeg"
+    alt="Beyond Burnout book cover"
+    style={shadowImage}
+  />
 
-    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-      <a
-        href="https://books2read.com/u/m2w6g1"
-        target="_blank"
-        rel="noreferrer"
-        style={primaryButtonStyle}
-      >
-        View Retailers
-      </a>
-      <a
-        href="https://www.amazon.com/dp/B0CJLZQ5QW"
-        target="_blank"
-        rel="noreferrer"
-        style={secondaryButtonStyle}
-      >
-        Amazon
-      </a>
-    </div>
+  <h3 style={{ margin: "0 0 6px 0" }}>
+    Beyond Burnout
+  </h3>
+
+  <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+    A career pivot guide helping healthcare professionals explore meaningful alternatives beyond bedside roles.
+  </p>
+
+  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+    
+    <a
+      href="https://books2read.com/u/m2w6g1"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={primaryButtonStyle}
+    >
+      View All Retailers
+    </a>
+
+    <a
+      href="https://www.amazon.com/dp/B0GMB15SV1"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={secondaryButtonStyle}
+    >
+      Buy on Amazon
+    </a>
+
   </div>
-
+</div>
   {/* Offline Parent — Amazon Only */}
-  <div style={softCardStyle}>
-    <img
-      src="/offline-parent.jpeg"
-      alt="Offline Parent book cover"
-      style={shadowImage}
-    />
-    <h3 style={{ margin: "0 0 6px 0" }}>Offline Parent</h3>
-    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-      A guide to raising calm, creative kids in a screen-obsessed world—supporting balance for families.
-    </p>
+<div style={softCardStyle}>
+  <img
+    src="/offline-parent.jpeg"
+    alt="Offline Parent book cover"
+    style={shadowImage}
+  />
 
-    <div style={{ marginTop: 10 }}>
-      <a
-        href="https://www.amazon.com/dp/B0GQHN3B7G"
-        target="_blank"
-        rel="noreferrer"
-        style={primaryButtonStyle}
-      >
-        Amazon
-      </a>
-    </div>
+  <h3 style={{ margin: "0 0 6px 0" }}>
+    Offline Parent
+  </h3>
+
+  <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+    A guide to raising calm, creative kids in a screen-obsessed world—supporting balance for families.
+  </p>
+
+  <div style={{ marginTop: 12 }}>
+    <a
+      href="https://www.amazon.com/dp/B0F4VKHQKQ"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={primaryButtonStyle}
+    >
+      Buy on Amazon
+    </a>
   </div>
+</div>
 </div>
 
             {/* UDEMY COURSES */}
