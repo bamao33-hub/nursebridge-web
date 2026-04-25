@@ -870,13 +870,13 @@ export default function Home() {
     </a>
 
     <a
-      href="https://www.amazon.com/dp/B0GMB15SV1"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={secondaryButtonStyle}
-    >
-      Buy on Amazon
-    </a>
+  href="https://www.amazon.com/dp/B0GMC3H74W"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={secondaryButtonStyle}
+>
+  Buy on Amazon
+</a>
 
   </div>
 </div>
