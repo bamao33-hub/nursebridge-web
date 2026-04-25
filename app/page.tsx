@@ -767,37 +767,44 @@ export default function Home() {
   }}
 >
   {/* Mastering EHR Efficiency */}
-  <div style={softCardStyle}>
-    <img
-      src="/mastering-ehr-efficiency.jpeg"
-      alt="Mastering EHR Efficiency book cover"
-      style={shadowImage}
-    />
-    <h3 style={{ margin: "0 0 6px 0" }}>Mastering EHR Efficiency</h3>
-    <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
-      Reclaim your time, reduce after-hours charting, and streamline documentation with practical strategies.
-    </p>
+<div style={softCardStyle}>
+  <img
+    src="/mastering-ehr-efficiency.jpeg"
+    alt="Mastering EHR Efficiency book cover"
+    style={shadowImage}
+  />
 
-    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-      <a
-        href="https://books2read.com/u/mlVxlq"
-        target="_blank"
-        rel="noreferrer"
-        style={primaryButtonStyle}
-      >
-        View Retailers
-      </a>
-      <a
-        href="https://www.amazon.com/dp/B0CQ5Q7ZQH"
-        target="_blank"
-        rel="noreferrer"
-        style={secondaryButtonStyle}
-      >
-        Amazon
-      </a>
-    </div>
+  <h3 style={{ margin: "0 0 6px 0" }}>
+    Mastering EHR Efficiency
+  </h3>
+
+  <p style={{ margin: 0, color: MUTED, lineHeight: 1.6 }}>
+    Reclaim your time, reduce after-hours charting, and streamline documentation with practical strategies.
+  </p>
+
+  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+    
+    <a
+      href="https://books2read.com/u/mlVxlq"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={primaryButtonStyle}
+    >
+      View All Retailers
+    </a>
+
+    <a
+      href="https://www.amazon.com/dp/B0GT6BZFSJ"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={secondaryButtonStyle}
+    >
+      Buy on Amazon
+    </a>
+
   </div>
-
+</div>
+ 
   {/* From Bedside to Informatics */}
   <div style={softCardStyle}>
     <img
