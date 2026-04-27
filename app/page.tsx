@@ -898,7 +898,7 @@ export default function Home() {
 
   <div style={{ marginTop: 12 }}>
     <a
-      href="https://www.amazon.com/dp/B0F4VKHQKQ"
+       href="https://www.amazon.com/dp/B0GYPQ4D95"
       target="_blank"
       rel="noopener noreferrer"
       style={primaryButtonStyle}
