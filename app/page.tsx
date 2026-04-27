@@ -883,8 +883,8 @@ export default function Home() {
   {/* Offline Parent — Amazon Only */}
 <div style={softCardStyle}>
   <img
-    src="/offline-parent.jpeg"
-    alt="Offline Parent book cover"
+    src="/offline-parent-revised.png"
+    alt="Offline Parent: Less Screen Time. More Childhood. book cover"
     style={shadowImage}
   />
 
