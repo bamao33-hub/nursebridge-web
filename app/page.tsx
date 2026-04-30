@@ -20,6 +20,9 @@ const primaryButtonStyle: CSSProperties = {
   fontWeight: 800,
   textDecoration: "none",
   border: `1px solid ${TEAL_DARK}`,
+  cursor: "pointer",
+fontFamily: "inherit",
+fontSize: 16,
 };
 
 const secondaryButtonStyle: CSSProperties = {
@@ -31,6 +34,9 @@ const secondaryButtonStyle: CSSProperties = {
   fontWeight: 800,
   textDecoration: "none",
   border: `1px solid ${BORDER}`,
+  cursor: "pointer",
+fontFamily: "inherit",
+fontSize: 16,
 };
 
 const cardStyle: CSSProperties = {
