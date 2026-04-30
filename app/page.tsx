@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 
 const TEAL = "#0f766e";
 const TEAL_DARK = "#115e59";
@@ -73,6 +73,7 @@ const SectionDivider = () => (
 );
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState("start");
   return (
     <main
       style={{
@@ -130,13 +131,20 @@ export default function Home() {
           </Link>
 
           <nav style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            <a href="#start-here" style={secondaryButtonStyle}>Start Here</a>
-            <a href="#services" style={secondaryButtonStyle}>Services</a>
-            <a href="#pathways" style={secondaryButtonStyle}>Career Paths</a>
-            <a href="#books-courses" style={secondaryButtonStyle}>Books & Courses</a>
-            <a href="#practice-lab" style={secondaryButtonStyle}>EHR Practice Lab</a>
-            <Link href="/preceptorship" style={primaryButtonStyle}>Apply for Preceptorship</Link>
-          </nav>
+            <button onClick={() => setActiveSection("start")} style={secondaryButtonStyle}>Start Here</button>
+
+            <button onClick={() => setActiveSection("services")} style={secondaryButtonStyle}>Services</button>
+
+            <button onClick={() => setActiveSection("pathways")} style={secondaryButtonStyle}>Career Paths</button>
+
+            <button onClick={() => setActiveSection("books")} style={secondaryButtonStyle}>Books & Courses</button>
+
+            <button onClick={() => setActiveSection("practice")} style={secondaryButtonStyle}>EHR Practice Lab</button>
+
+            <button onClick={() => setActiveSection("preceptorship")} style={primaryButtonStyle}>
+            Apply for Preceptorship
+        </button>          
+        </nav>
         </div>
       </header>
 
