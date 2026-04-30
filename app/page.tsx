@@ -360,6 +360,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        )}
 
         {activeSection === "start" && (
         <>
