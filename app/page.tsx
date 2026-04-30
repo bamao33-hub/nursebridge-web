@@ -365,6 +365,8 @@ export default function Home() {
         {activeSection === "start" && (
         <>
       {/* WHO WE SERVE */}
+          {activeSection === "start" && (
+          <>
         <section>
           <div
             style={{
@@ -415,12 +417,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-          </section>
-  <SectionDivider />
+         </section>
+<SectionDivider />
+  </>
 )}
 
         {/* SERVICES */}
           {activeSection === "services" && (
+          <>
         <section id="services" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -482,10 +486,10 @@ export default function Home() {
               ))}
             </div>
           </div>
-          </section>
-  <SectionDivider />
+              </section>
+    <SectionDivider />
+  </>
 )}
-
         {/* STUDENT OUTCOMES */}
           {activeSection === "pathways" && (
           <>
