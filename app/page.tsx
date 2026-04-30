@@ -133,7 +133,17 @@ export default function Home() {
           <nav style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
             <button onClick={() => setActiveSection("start")} style={secondaryButtonStyle}>Start Here</button>
 
-            <button onClick={() => setActiveSection("services")} style={secondaryButtonStyle}>Services</button>
+            <button
+  onClick={() => {
+    setActiveSection("services");
+    setTimeout(() => {
+      document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  }}
+  style={secondaryButtonStyle}
+>
+  Services
+</button>
 
             <button onClick={() => setActiveSection("pathways")} style={secondaryButtonStyle}>Career Paths</button>
 
