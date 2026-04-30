@@ -344,9 +344,10 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <SectionDivider />
 
-        {/* WHO WE SERVE */}
+        {activeSection === "start" && (
+        <>
+      {/* WHO WE SERVE */}
         <section>
           <div
             style={{
@@ -397,11 +398,12 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
-
-        <SectionDivider />
+          </section>
+  <SectionDivider />
+)}
 
         {/* SERVICES */}
+          {activeSection === "services" && (
         <section id="services" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -463,11 +465,13 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
-
-        <SectionDivider />
+          </section>
+  <SectionDivider />
+)}
 
         {/* STUDENT OUTCOMES */}
+          {activeSection === "pathways" && (
+          <>
         <section style={{ paddingTop: 8, paddingBottom: 8 }}>
           <div
             style={{
@@ -654,9 +658,12 @@ export default function Home() {
             </div>
         </section>
 
-        <SectionDivider />
+      <SectionDivider />
+  </>
+)}
 
         {/* PRECEPTORSHIP PROCESS */}
+          {activeSection === "preceptorship" && (
         <section id="preceptorship-process" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -713,7 +720,7 @@ export default function Home() {
         </section>
 
         <SectionDivider />
-
+)}
         {/* PRACTICE LAB */}
         <section id="practice-lab" style={{ scrollMarginTop: 90 }}>
           <div
