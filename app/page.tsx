@@ -685,6 +685,7 @@ export default function Home() {
 
         {/* PRECEPTORSHIP PROCESS */}
           {activeSection === "preceptorship" && (
+           <>
         <section id="preceptorship-process" style={{ scrollMarginTop: 90 }}>
           <div
             style={{
@@ -740,7 +741,8 @@ export default function Home() {
           </div>
         </section>
 
-        <SectionDivider />
+<SectionDivider />
+  </>
 )}
         {/* PRACTICE LAB */}
         <section id="practice-lab" style={{ scrollMarginTop: 90 }}>
