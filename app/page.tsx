@@ -286,8 +286,9 @@ export default function Home() {
         </section>
 
         {/* START HERE */}
-        <section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
-          <div
+        {activeSection === "start" && (
+      <section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
+                  <div
             style={{
               border: `1px solid ${BORDER}`,
               borderRadius: 16,
