@@ -1131,7 +1131,6 @@ export default function Home() {
     Epic is a registered trademark of Epic Systems Corporation. NurseBridge Consulting LLC is not affiliated with or endorsed by Epic Systems.
   </div>
 </footer>
-        </div>
-      </main>
+        </main>
   );
 }
