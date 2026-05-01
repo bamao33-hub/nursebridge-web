@@ -744,6 +744,8 @@ export default function Home() {
 <SectionDivider />
   </>
 )}
+          {activeSection === "practice" && (
+          <>
         {/* PRACTICE LAB */}
         <section id="practice-lab" style={{ scrollMarginTop: 90 }}>
           <div
@@ -772,9 +774,11 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </section>
-        <SectionDivider />
-
+            </section>
+    <SectionDivider />
+  </>
+)}
+          
           {activeSection === "books" && (
   <>
     {/* BOOKS & COURSES */}
