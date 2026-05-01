@@ -301,10 +301,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* START HERE */}
-        {activeSection === "start" && (
-         <>
-      <section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
+       {/* START HERE */}
+{activeSection === "start" && (
+  <>
+    <section id="start-here" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
                   <div
             style={{
               border: `1px solid ${BORDER}`,
@@ -361,13 +361,9 @@ export default function Home() {
             </div>
           </div>
         </section>
-      
-        {activeSection === "start" && (
-        <>
-      {/* WHO WE SERVE */}
-          {activeSection === "start" && (
-          <>
-        <section>
+      <SectionDivider />
+        {/* WHO WE SERVE */}
+          <section id="who-we-serve" style={{ scrollMarginTop: 90, paddingTop: 8, paddingBottom: 8 }}>
           <div
             style={{
               border: `1px solid ${BORDER}`,
