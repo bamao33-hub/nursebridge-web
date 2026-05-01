@@ -137,29 +137,58 @@ export default function Home() {
           </Link>
 
           <nav style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-            <button onClick={() => setActiveSection("start")} style={secondaryButtonStyle}>Start Here</button>
-
             <button
-  onClick={() => {
-    setActiveSection("services");
-    setTimeout(() => {
-      document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
+  onClick={() => setActiveSection("start")}
+  style={{
+    ...(activeSection === "start" ? primaryButtonStyle : secondaryButtonStyle),
   }}
-  style={secondaryButtonStyle}
+>
+  Start Here
+</button>
+   <button
+  onClick={() => setActiveSection("services")}
+  style={{
+    ...(activeSection === "services" ? primaryButtonStyle : secondaryButtonStyle),
+  }}
 >
   Services
 </button>
+            
+             <button
+  onClick={() => setActiveSection("pathways")}
+  style={{
+    ...(activeSection === "pathways" ? primaryButtonStyle : secondaryButtonStyle),
+  }}
+>
+  Career Paths
+</button>
 
-            <button onClick={() => setActiveSection("pathways")} style={secondaryButtonStyle}>Career Paths</button>
+            <button
+  onClick={() => setActiveSection("books")}
+  style={{
+    ...(activeSection === "books" ? primaryButtonStyle : secondaryButtonStyle),
+  }}
+>
+  Books & Courses
+</button>
 
-            <button onClick={() => setActiveSection("books")} style={secondaryButtonStyle}>Books & Courses</button>
+           <button
+  onClick={() => setActiveSection("practice")}
+  style={{
+    ...(activeSection === "practice" ? primaryButtonStyle : secondaryButtonStyle),
+  }}
+>
+  EHR Practice Lab
+</button>
 
-            <button onClick={() => setActiveSection("practice")} style={secondaryButtonStyle}>EHR Practice Lab</button>
-
-            <button onClick={() => setActiveSection("preceptorship")} style={primaryButtonStyle}>
-            Apply for Preceptorship
-        </button>          
+           <button
+  onClick={() => setActiveSection("preceptorship")}
+  style={{
+    ...(activeSection === "preceptorship" ? primaryButtonStyle : secondaryButtonStyle),
+  }}
+>
+  Apply for Preceptorship
+</button>    
         </nav>
         </div>
       </header>
