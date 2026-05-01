@@ -79,7 +79,7 @@ const SectionDivider = () => (
 );
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("start");
+  const [activeSection, setActiveSection] = useState("");
   return (
     <main
       style={{
