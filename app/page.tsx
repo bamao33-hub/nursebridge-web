@@ -361,8 +361,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        )}
-
+      
         {activeSection === "start" && (
         <>
       {/* WHO WE SERVE */}
