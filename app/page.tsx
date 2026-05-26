@@ -1131,7 +1131,7 @@ export default function Home() {
           >
             <div>
               <div style={{ fontSize: 14, color: MUTED, marginBottom: 4 }}>Email</div>
-              <div style={{ fontSize: 16, fontWeight: 800 }}>nursebridgeconsulting@gmail.com</div>
+              <div style={{ fontSize: 16, fontWeight: 800 }}>info@nursebridgeconsulting.com</div>
             </div>
 
             <Link href="/preceptorship" style={primaryButtonStyle}>
